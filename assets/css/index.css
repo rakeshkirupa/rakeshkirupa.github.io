@@ -1,32 +1,28 @@
 body {
   background-color: #000;
-  /* background-color: #fff; */
 }
 
 #console {
   font-family: courier, monospace;
-  /* color: #fff; */
   color: #000;
   max-width: 750px;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 25px;
+  width: 90%; /* Makes it responsive */
+  margin: 25px auto;
   font-size: 14px;
+  overflow-wrap: break-word; /* Prevents text overflow */
 }
 
 pre {
   display: block;
   color: white;
   font-family: courier, monospace;
-  white-space: pre;
+  white-space: pre-wrap; /* Ensures text wraps */
   font-size: 12px;
   max-width: 750px;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 35px;
-  margin-bottom: 25px;
+  width: 90%;
+  margin: 35px auto 25px;
+  overflow-x: auto; /* Enables horizontal scroll if needed */
 }
-
 
 a {
   color: #0bc;
@@ -43,7 +39,6 @@ a {
 
 #b {
   color: #fff;
-  /* color: #000; */
 }
 
 #k {
@@ -63,5 +58,20 @@ a {
   }
   99% {
     color: black;
+  }
+}
+
+/* Mobile Responsive Styles */
+@media (max-width: 768px) {
+  #console, pre {
+    max-width: 100%;
+    width: 95%;
+    font-size: 12px; /* Adjusts font size for smaller screens */
+    margin: 15px auto;
+  }
+
+  pre {
+    white-space: pre-wrap; /* Ensures text wraps properly */
+    word-wrap: break-word;
   }
 }
