@@ -6,10 +6,10 @@ body {
   font-family: courier, monospace;
   color: #000;
   max-width: 750px;
-  width: 90%; /* Makes it responsive */
+  width: 90%; /* Ensures responsiveness */
   margin: 25px auto;
   font-size: 14px;
-  overflow-wrap: break-word; /* Prevents text overflow */
+  overflow-wrap: break-word; /* Prevents text from overflowing */
 }
 
 pre {
@@ -17,11 +17,14 @@ pre {
   color: white;
   font-family: courier, monospace;
   white-space: pre-wrap; /* Ensures text wraps */
+  word-wrap: break-word; /* Helps in older browsers */
   font-size: 12px;
   max-width: 750px;
-  width: 90%;
+  width: 95%;
   margin: 35px auto 25px;
   overflow-x: auto; /* Enables horizontal scroll if needed */
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.1); /* Optional: Adds slight contrast */
 }
 
 a {
@@ -66,12 +69,13 @@ a {
   #console, pre {
     max-width: 100%;
     width: 95%;
-    font-size: 12px; /* Adjusts font size for smaller screens */
+    font-size: 12px;
     margin: 15px auto;
   }
 
   pre {
-    white-space: pre-wrap; /* Ensures text wraps properly */
+    white-space: pre-wrap; /* Wraps text properly */
     word-wrap: break-word;
+    overflow-x: auto; /* Keeps long lines scrollable */
   }
 }
