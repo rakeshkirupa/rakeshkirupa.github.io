@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rakesh Kirupanandan | Senior DevOps Engineer</title>
+    <link rel="icon" href="assets/icons/favicon.ico">
+    <link rel="icon" type="image/png" href="assets/icons/favicon.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Orbitron:wght@900&display=swap" rel="stylesheet">
@@ -1055,7 +1057,8 @@
         </div>
     </div>
 
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+    <script>
         // All 8 projects data
         const allProjects = {
             "paltalk-migration": {
@@ -1127,6 +1130,10 @@
 <div style="margin-top: 15px; padding: 10px; background: rgba(0,255,65,0.08); border-radius: 5px;">
   💡 <strong>Tip:</strong> Try "stats" for quick overview, or explore hidden commands!
 </div>`,
+
+            date: () => new Date().toDateString(),
+
+            time: () => new Date().toLocaleTimeString(),
 
             about: `<div style="color: var(--secondary); font-weight: 700; font-size: 1.05rem; margin-bottom: 15px;">👨‍💻 About Rakesh Kirupanandan</div>
 <div style="padding: 15px; background: rgba(0,255,65,0.05); border-radius: 8px; line-height: 1.8;">
@@ -1645,7 +1652,8 @@
                 // Call projects as function
                 addOutput(terminalCommands.projects());
             } else if (terminalCommands[lowerCommand]) {
-                addOutput(terminalCommands[lowerCommand]);
+                const cmd = terminalCommands[lowerCommand];
+                addOutput(typeof cmd === 'function' ? cmd() : cmd);
             } else if (lowerCommand === 'hello' || lowerCommand === 'hi' || lowerCommand === 'hey') {
                 addOutput('<div style="color: var(--primary); font-weight: 600;">👋 Hello! Welcome back! Type <strong>"help"</strong> to see what I can do.</div>');
             } else {
