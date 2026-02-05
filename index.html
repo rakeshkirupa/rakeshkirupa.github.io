@@ -824,13 +824,13 @@
                             <strong>skills</strong> - My expertise | <strong>projects</strong> - My work<br>
                             <strong>project &lt;name&gt;</strong> - Project details | <strong>contact</strong> - Get in touch
                         </div>
-                        <div class="output-line" style="margin-top: 15px; opacity: 0.8;">
+                        <!-- <div class="output-line" style="margin-top: 15px; opacity: 0.8;">
                             <span class="prompt">$</span> Type a command to explore! Try "projects" to see my work.
-                        </div>
+                        </div> -->
                     </div>
                     <div class="terminal-input-container">
                         <span class="prompt">$</span>
-                        <input type="text" class="terminal-input" id="terminal-input" placeholder="Type a command..." autocomplete="off" autofocus>
+                        <input type="text" class="terminal-input" id="terminal-input" placeholder="Type a command..." autocomplete="off">
                     </div>
                     <div class="terminal-help">
                         💡 <strong>Pro Tip:</strong> Use ↑/↓ arrows for command history. Mobile users can scroll to see all content below!
@@ -1055,7 +1055,7 @@
         </div>
     </div>
 
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
         // All 8 projects data
         const allProjects = {
             "paltalk-migration": {
@@ -1539,6 +1539,9 @@
                     historyIndex = commandHistory.length;
                 }
                 terminalInput.value = '';
+                window.__tabMatches = null;
+                window.__tabIndex = 0;
+                window.__tabValue = '';
             } else if (e.key === 'ArrowUp') {
                 e.preventDefault();
                 if (historyIndex > 0) {
@@ -1554,6 +1557,21 @@
                     historyIndex = commandHistory.length;
                     terminalInput.value = '';
                 }
+            } else if (e.key === 'Tab') {
+                e.preventDefault();
+                const value = terminalInput.value.trim().toLowerCase();
+                if (!value) return;
+                const commands = Object.keys(terminalCommands);
+                if (!window.__tabMatches || window.__tabValue !== value) {
+                    window.__tabMatches = commands.filter(cmd => cmd.startsWith(value));
+                    window.__tabIndex = 0;
+                    window.__tabValue = value;
+                }
+                if (window.__tabMatches.length) {
+                    terminalInput.value = window.__tabMatches[window.__tabIndex];
+                    window.__tabIndex =
+                    (window.__tabIndex + 1) % window.__tabMatches.length;
+                }
             }
         });
 
@@ -1567,6 +1585,11 @@
             if (lowerCommand.startsWith('echo ')) {
                 const message = command.substring(5);
                 addOutput('<div style="color: var(--primary); font-size: 1rem; padding: 10px; background: rgba(0,255,65,0.05); border-radius: 6px;">' + message + '</div>');
+            }
+            // alias: cls -> clear
+            else if (lowerCommand === 'cls') {
+            executeCommand('clear');
+            return;
             }
             // Check for project command (by name or number)
             else if (lowerCommand.startsWith('project ')) {
@@ -1623,7 +1646,7 @@
                 addOutput(terminalCommands.projects());
             } else if (terminalCommands[lowerCommand]) {
                 addOutput(terminalCommands[lowerCommand]);
-            } else if (lowerCommand === 'hello' || lowerCommand === 'hi') {
+            } else if (lowerCommand === 'hello' || lowerCommand === 'hi' || lowerCommand === 'hey') {
                 addOutput('<div style="color: var(--primary); font-weight: 600;">👋 Hello! Welcome back! Type <strong>"help"</strong> to see what I can do.</div>');
             } else {
                 // Trigger shake animation for invalid command
@@ -1673,6 +1696,20 @@
         // Click terminal output to focus input
         terminalOutput.addEventListener('click', () => {
             terminalInput.focus();
+        });
+    </script>
+    <script>
+        window.addEventListener("load", () => {
+        if (sessionStorage.getItem("bootPlayed")) return;
+        sessionStorage.setItem("bootPlayed", "true");
+        const input = document.getElementById("terminal-input");
+        window.scrollTo(0, 0);
+        setTimeout(() => {
+            if (input) input.focus();
+        }, 1400);
+        setTimeout(() => {
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        }, 2800);
         });
     </script>
 </body>
