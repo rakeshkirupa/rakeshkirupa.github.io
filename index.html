@@ -1,46 +1,1679 @@
-<html>
-
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <title>Rakesh Kirupanandan</title>
-  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
-  <link rel="stylesheet" type="text/css" href="assets/css/index.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rakesh Kirupanandan | Senior DevOps Engineer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Orbitron:wght@900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #00ff41;
+            --secondary: #0dff00;
+            --tertiary: #39ff14;
+            --bg: #0a0e0a;
+            --terminal-bg: #050705;
+            --text: #00ff41;
+            --shadow: #00ff4133;
+            --glow: #00ff4166;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--bg);
+            color: var(--text);
+            overflow-x: hidden;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"><rect width="10" height="10" fill="%2300ff41"/></svg>') 10 10, auto;
+        }
+
+        /* CRT Effect */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0, 255, 65, 0.05) 0px,
+                rgba(0, 255, 65, 0.05) 1px,
+                transparent 1px,
+                transparent 2px
+            );
+            pointer-events: none;
+            z-index: 9999;
+            animation: scanline 8s linear infinite;
+        }
+
+        @keyframes scanline {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(100vh); }
+        }
+
+        body::after {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            opacity: 0.03;
+            pointer-events: none;
+            z-index: 9998;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200"><filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4"/></filter><rect width="200" height="200" filter="url(%23noise)" opacity="1"/></svg>');
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Terminal Window */
+        .terminal {
+            background: var(--terminal-bg);
+            border: 2px solid var(--primary);
+            border-radius: 12px;
+            box-shadow: 
+                0 0 30px var(--shadow),
+                0 0 60px var(--shadow),
+                inset 0 0 20px rgba(0, 255, 65, 0.05);
+            margin-bottom: 30px;
+            animation: terminalBoot 0.5s ease-out;
+            overflow: hidden;
+        }
+
+        @keyframes terminalBoot {
+            0% {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .terminal-header {
+            background: linear-gradient(135deg, #0a0e0a 0%, #0f140f 100%);
+            padding: 12px 20px;
+            border-bottom: 1px solid var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .terminal-button {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            border: 1px solid var(--primary);
+            box-shadow: 0 0 5px var(--shadow);
+        }
+
+        .terminal-button:nth-child(1) { background: #ff3b3b; border-color: #ff3b3b; }
+        .terminal-button:nth-child(2) { background: #ffbb00; border-color: #ffbb00; }
+        .terminal-button:nth-child(3) { background: var(--primary); }
+
+        .terminal-title {
+            margin-left: auto;
+            font-size: 12px;
+            opacity: 0.8;
+            letter-spacing: 1px;
+        }
+
+        .terminal-body {
+            padding: clamp(15px, 4vw, 30px);
+        }
+
+        /* Welcome Section */
+        .welcome-section {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 40px;
+            margin-bottom: 40px;
+            align-items: center;
+        }
+
+        .profile-info-section {
+            animation: slideInLeft 0.6s ease-out;
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .glitch-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(1.5rem, 5vw, 3.5rem);
+            font-weight: 900;
+            color: var(--primary);
+            text-shadow: 
+                0 0 10px var(--glow),
+                0 0 20px var(--glow),
+                2px 2px 0px #00cc33;
+            letter-spacing: 3px;
+            margin-bottom: 15px;
+            animation: flicker 4s infinite alternate;
+        }
+
+        @keyframes flicker {
+            0%, 100% { opacity: 1; }
+            41%, 43% { opacity: 0.85; }
+        }
+
+        .subtitle {
+            font-size: clamp(0.85rem, 2.5vw, 1.2rem);
+            color: var(--secondary);
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .tagline {
+            opacity: 0.85;
+            font-size: clamp(0.75rem, 2vw, 0.95rem);
+            line-height: 1.6;
+        }
+
+        /* DevOps Animation */
+        .devops-animation {
+            width: clamp(250px, 30vw, 300px);
+            height: clamp(250px, 30vw, 300px);
+            position: relative;
+            animation: floatAnimation 3s ease-in-out infinite;
+        }
+
+        @keyframes floatAnimation {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .laptop {
+            width: clamp(160px, 25vw, 200px);
+            height: clamp(96px, 15vw, 120px);
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            border-radius: 8px 8px 0 0;
+            position: absolute;
+            bottom: 20%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 2px solid var(--primary);
+            box-shadow: 0 0 20px var(--shadow);
+        }
+
+        .laptop::before {
+            content: "";
+            width: 90%;
+            height: 83%;
+            background: var(--terminal-bg);
+            position: absolute;
+            top: 8%;
+            left: 5%;
+            border-radius: 4px;
+            box-shadow: inset 0 0 20px rgba(0, 255, 65, 0.3);
+        }
+
+        .laptop::after {
+            content: "";
+            width: 120%;
+            height: 8%;
+            background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%);
+            position: absolute;
+            bottom: -8%;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 0 0 8px 8px;
+            border: 2px solid rgba(0, 255, 65, 0.3);
+            border-top: none;
+        }
+
+        .code-lines {
+            position: absolute;
+            top: 20%;
+            left: 10%;
+            display: flex;
+            flex-direction: column;
+            gap: clamp(3px, 1vw, 5px);
+        }
+
+        .code-line {
+            height: 3px;
+            background: var(--primary);
+            border-radius: 2px;
+            animation: codeTyping 2s ease-in-out infinite;
+            box-shadow: 0 0 5px var(--glow);
+        }
+
+        .code-line:nth-child(1) { width: clamp(50px, 10vw, 80px); animation-delay: 0s; }
+        .code-line:nth-child(2) { width: clamp(75px, 15vw, 120px); animation-delay: 0.3s; }
+        .code-line:nth-child(3) { width: clamp(40px, 8vw, 60px); animation-delay: 0.6s; }
+        .code-line:nth-child(4) { width: clamp(60px, 12vw, 100px); animation-delay: 0.9s; }
+
+        @keyframes codeTyping {
+            0%, 100% { opacity: 0.3; width: 20%; }
+            50% { opacity: 1; }
+        }
+
+        .cloud-icons {
+            position: absolute;
+            top: 10%;
+            width: 100%;
+            display: flex;
+            justify-content: space-around;
+            padding: 0 10%;
+        }
+
+        .cloud-icon {
+            width: clamp(35px, 8vw, 45px);
+            height: clamp(35px, 8vw, 45px);
+            background: rgba(0, 255, 65, 0.1);
+            border: 2px solid var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: clamp(0.7rem, 2vw, 1rem);
+            animation: cloudFloat 4s ease-in-out infinite;
+            box-shadow: 0 0 15px var(--shadow);
+        }
+
+        .cloud-icon:nth-child(1) { animation-delay: 0s; }
+        .cloud-icon:nth-child(2) { animation-delay: 0.5s; }
+        .cloud-icon:nth-child(3) { animation-delay: 1s; }
+
+        @keyframes cloudFloat {
+            0%, 100% { transform: translateY(0px) scale(1); }
+            50% { transform: translateY(-15px) scale(1.1); }
+        }
+
+        .deployment-arrow {
+            position: absolute;
+            bottom: 42%;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: clamp(1.5rem, 4vw, 2rem);
+            animation: deployPulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes deployPulse {
+            0%, 100% { opacity: 0.3; transform: translateX(-50%) translateY(0); }
+            50% { opacity: 1; transform: translateX(-50%) translateY(10px); }
+        }
+
+        .prompt {
+            color: var(--tertiary);
+            font-weight: 700;
+            font-size: 1.1rem;
+            text-shadow: 0 0 5px var(--glow);
+        }
+
+        /* Interactive Terminal */
+        .terminal-interactive {
+            margin-bottom: 35px;
+            padding: clamp(15px, 3vw, 25px);
+            background: rgba(0, 255, 65, 0.03);
+            border: 2px solid var(--primary);
+            border-radius: 10px;
+            box-shadow: 
+                0 0 20px var(--shadow),
+                inset 0 0 20px rgba(0, 255, 65, 0.05);
+        }
+
+        .terminal-interactive-title {
+            font-size: clamp(1rem, 3vw, 1.4rem);
+            color: var(--primary);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 700;
+        }
+
+        .terminal-interactive-title::before {
+            content: "⚡";
+            font-size: 1.5rem;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.2); }
+        }
+
+        .terminal-output {
+            min-height: clamp(200px, 40vh, 300px);
+            max-height: clamp(300px, 50vh, 500px);
+            overflow-y: auto;
+            margin-bottom: 20px;
+            padding: clamp(12px, 3vw, 20px);
+            font-size: clamp(0.75rem, 2vw, 0.9rem);
+            line-height: 1.8;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 8px;
+            border: 1px solid rgba(0, 255, 65, 0.2);
+        }
+
+        .terminal-output::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        .terminal-output::-webkit-scrollbar-track {
+            background: rgba(0, 255, 65, 0.05);
+            border-radius: 5px;
+        }
+
+        .terminal-output::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 5px;
+            box-shadow: 0 0 5px var(--glow);
+        }
+
+        .output-line {
+            margin-bottom: 12px;
+            word-wrap: break-word;
+        }
+
+        .user-command {
+            color: var(--tertiary);
+            font-weight: 700;
+        }
+
+        .error {
+            color: #ff5555;
+            background: rgba(255, 85, 85, 0.1);
+            padding: 10px;
+            border-radius: 5px;
+            border-left: 3px solid #ff5555;
+        }
+
+        .success {
+            color: var(--primary);
+        }
+
+        .terminal-input-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(0, 0, 0, 0.4);
+            padding: clamp(10px, 2vw, 15px);
+            border-radius: 8px;
+            border: 2px solid rgba(0, 255, 65, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .terminal-input-container:focus-within {
+            border-color: var(--primary);
+            box-shadow: 0 0 15px var(--shadow);
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .terminal-input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: var(--primary);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: clamp(0.85rem, 2vw, 1rem);
+            outline: none;
+        }
+
+        .terminal-input::placeholder {
+            color: rgba(0, 255, 65, 0.4);
+        }
+
+        .terminal-input:focus {
+            outline: none;
+            caret-color: var(--primary);
+        }
+
+        /* Enhanced typing feedback - glowing pulse animation */
+        .terminal-input-container:has(.terminal-input:focus) {
+            border-color: var(--primary);
+            box-shadow: 0 0 20px var(--glow), 0 0 40px var(--shadow);
+            animation: typingPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes typingPulse {
+            0%, 100% { 
+                box-shadow: 0 0 20px var(--glow), 0 0 40px var(--shadow);
+            }
+            50% { 
+                box-shadow: 0 0 30px var(--glow), 0 0 60px var(--shadow);
+            }
+        }
+
+        /* Shake animation for invalid command */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+
+        .shake-error {
+            animation: shake 0.5s;
+            border-color: #ff5555 !important;
+        }
+
+        .terminal-help {
+            margin-top: 20px;
+            padding: clamp(10px, 2vw, 15px);
+            background: rgba(0, 255, 65, 0.05);
+            border-left: 4px solid var(--primary);
+            font-size: clamp(0.7rem, 1.8vw, 0.85rem);
+            opacity: 0.9;
+            border-radius: 0 6px 6px 0;
+            line-height: 1.6;
+        }
+
+        /* Content Sections */
+        .section {
+            margin-bottom: 40px;
+            animation: fadeInUp 0.6s ease-out backwards;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section-title {
+            font-size: clamp(1.2rem, 3vw, 1.6rem);
+            margin-bottom: 25px;
+            color: var(--secondary);
+            border-left: 5px solid var(--primary);
+            padding-left: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px var(--glow);
+            font-weight: 700;
+        }
+
+        .command-line {
+            margin-bottom: 15px;
+            line-height: 1.8;
+            font-size: clamp(0.8rem, 2vw, 0.95rem);
+        }
+
+        .command-line::before {
+            content: "$ ";
+            color: var(--tertiary);
+            font-weight: 700;
+        }
+
+        /* Skills Categories */
+        .skills-category {
+            margin-bottom: 30px;
+        }
+
+        .category-title {
+            font-size: clamp(1rem, 2.5vw, 1.1rem);
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-weight: 700;
+            border-bottom: 2px solid rgba(0, 255, 65, 0.3);
+            padding-bottom: 8px;
+        }
+
+        .skills-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(clamp(120px, 20vw, 150px), 1fr));
+            gap: clamp(10px, 2vw, 15px);
+        }
+
+        .skill-item {
+            padding: clamp(10px, 2vw, 14px);
+            border: 2px solid rgba(0, 255, 65, 0.3);
+            border-radius: 6px;
+            text-align: center;
+            background: rgba(0, 255, 65, 0.04);
+            transition: all 0.3s ease;
+            position: relative;
+            font-size: clamp(0.75rem, 1.8vw, 0.9rem);
+            font-weight: 500;
+        }
+
+        .skill-item::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: var(--primary);
+            transition: width 0.4s ease;
+            box-shadow: 0 0 8px var(--glow);
+        }
+
+        .skill-item:hover::after {
+            width: 100%;
+        }
+
+        .skill-item:hover {
+            border-color: var(--primary);
+            box-shadow: 0 0 20px var(--shadow);
+            transform: scale(1.08);
+            background: rgba(0, 255, 65, 0.08);
+        }
+
+        /* Projects */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(clamp(250px, 40vw, 300px), 1fr));
+            gap: clamp(15px, 3vw, 25px);
+        }
+
+        .project-card {
+            background: linear-gradient(135deg, rgba(0, 255, 65, 0.05) 0%, rgba(0, 255, 65, 0.02) 100%);
+            border: 2px solid rgba(0, 255, 65, 0.3);
+            border-radius: 10px;
+            padding: clamp(15px, 3vw, 25px);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 65, 0.15), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .project-card:hover::before {
+            left: 100%;
+        }
+
+        .project-card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 0 25px var(--shadow);
+            transform: translateY(-8px);
+        }
+
+        .project-title {
+            color: var(--primary);
+            font-weight: 700;
+            margin-bottom: 12px;
+            font-size: clamp(0.95rem, 2.5vw, 1.15rem);
+        }
+
+        .project-desc {
+            color: rgba(0, 255, 65, 0.75);
+            font-size: clamp(0.8rem, 1.8vw, 0.9rem);
+            line-height: 1.7;
+            margin-bottom: 15px;
+        }
+
+        .project-tech {
+            display: flex;
+            gap: clamp(6px, 1.5vw, 10px);
+            flex-wrap: wrap;
+        }
+
+        .tech-tag {
+            font-size: clamp(0.65rem, 1.5vw, 0.75rem);
+            padding: clamp(4px, 1vw, 5px) clamp(8px, 2vw, 12px);
+            border: 1px solid rgba(0, 255, 65, 0.5);
+            border-radius: 4px;
+            color: var(--tertiary);
+            background: rgba(0, 255, 65, 0.08);
+            transition: all 0.3s ease;
+        }
+
+        .tech-tag:hover {
+            background: rgba(0, 255, 65, 0.15);
+            transform: scale(1.05);
+        }
+
+        /* Contact */
+        .contact-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(clamp(150px, 30vw, 200px), 1fr));
+            gap: clamp(15px, 3vw, 20px);
+        }
+
+        .contact-link {
+            color: var(--primary);
+            text-decoration: none;
+            padding: clamp(12px, 2.5vw, 15px) clamp(15px, 3vw, 25px);
+            border: 2px solid var(--primary);
+            border-radius: 8px;
+            transition: all 0.4s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            position: relative;
+            overflow: hidden;
+            font-weight: 600;
+            font-size: clamp(0.8rem, 2vw, 0.95rem);
+        }
+
+        .contact-link::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--primary);
+            transition: left 0.4s ease;
+            z-index: -1;
+        }
+
+        .contact-link:hover::before {
+            left: 0;
+        }
+
+        .contact-link:hover {
+            color: var(--bg);
+            box-shadow: 0 0 25px var(--shadow);
+            transform: translateY(-3px);
+        }
+
+        /* Resume Link Hover Effect - Header only (subtle) */
+        p a[href*="drive.google.com"]:hover {
+            text-shadow: 0 0 10px var(--glow);
+            opacity: 0.8;
+        }
+
+        /* Resume Button Hover Effect - Bottom section (prominent, no background change) */
+        .section a[href*="drive.google.com"]:hover {
+            transform: scale(1.05) translateY(-3px);
+            box-shadow: 0 0 40px var(--glow);
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(0, 255, 65, 0.2);
+            opacity: 0.7;
+            font-size: clamp(0.7rem, 1.8vw, 0.85rem);
+        }
+
+        .blink-cursor {
+            animation: blink-cursor 1s infinite;
+        }
+
+        @keyframes blink-cursor {
+            0%, 49% { opacity: 1; }
+            50%, 100% { opacity: 0; }
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .welcome-section {
+                grid-template-columns: 1fr;
+                gap: 25px;
+                text-align: center;
+            }
+
+            .devops-animation {
+                margin: 0 auto;
+            }
+
+            .terminal-output {
+                font-size: 0.8rem;
+            }
+
+            .terminal-input {
+                font-size: 0.85rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 10px;
+            }
+
+            .terminal-body {
+                padding: 15px;
+            }
+
+            .devops-animation {
+                transform: scale(0.9);
+            }
+        }
+    </style>
 </head>
 <body>
-  <script type="text/javascript" src="assets/js/index.js">
-  </script>
-   <pre>
-                                                                                         -%%%
-                                                                                       %#%*#:*%
-                                                                                     .%*:::.****:%
-                                                                                 #*****************%
-                                                                                 %#####**#*#####***#
-                                                                                  %%%####*#%%+:%%***%
-                                                                                  %*%:::::::::::::#*%
-                                                                                  %*%:%*%:::::**%:%#
-                                                                                  *#%%%%%%%%%%%%%%#
-                                                                                  %#%*....%:*....%%%
-  _____       _             _                                                     #-%#.%%.%-%.%%.%%-%
-  |  _ \ __ _| | _____  ___| |__                                                  %-%#.....-%....%%-%
-  | |_) / _` | |/ / _ \/ __| '_ \                                                 %-%:%+*%:::%**%:%-
-  |  _ < (_| |   <  __/\__ \ | | |                                                 *%:::%%%%%%%::-#.
-  |_| \_\__,_|_|\_\___||___/_| |_|                     _                            %::% ..   %%:%:
-  | |/ (_)_ __ _   _ _ __   __ _ _ __   __ _ _ __   __| | __ _ _ __                 %*:%%     %%%#
-  | ' /| | '__| | | | '_ \ / _` | '_ \ / _` | '_ \ / _` |/ _` | '_ \                 %*%:%%%%-%**%
-  | . \| | |  | |_| | |_) | (_| | | | | (_| | | | | (_| | (_| | | | |                 %#*******#%.
-  |_|\_\_|_|   \__,_| .__/ \__,_|_| |_|\__,_|_| |_|\__,_|\__,_|_| |_|              %%..%%%%%%%=:%.@%%    
-                    |_|                                                          %..::::=:::::::::..%*  
-                                                                                 %.:::::::#.:::%:::::..
-                                                                               #.%==================%.%
-                                                                               %.                  ::#.
-                                                                               ::                 :::#.%
-                                                                              %.:                ::::#::
-                                                                              .::               :::::#:.
-                                                                              +::::::::::::::::::::::#::
-                                                                              %%%%%%%%%%%%#%%%%%%%%%%%%%                                                                                        
- </pre>
-  <div id="console"></div>
-  </script>
+    <div class="container">
+        <div class="terminal">
+            <div class="terminal-header">
+                <div class="terminal-button"></div>
+                <div class="terminal-button"></div>
+                <div class="terminal-button"></div>
+                <div class="terminal-title">rakesh@devops-portfolio:~$</div>
+            </div>
+            <div class="terminal-body">
+                <!-- Welcome Section -->
+                <div class="welcome-section">
+                    <div class="profile-info-section">
+                        <h1 class="glitch-title">RAKESH KIRUPANANDAN</h1>
+                        <p class="subtitle">$ whoami > Senior DevOps Engineer @ Foodhub</p>
+                        <p class="tagline">
+                            🚀 AWS & Oracle Cloud Migration Specialist | 5+ Years Experience<br>
+                            🐳 Kubernetes, Terraform, CI/CD Expert | Leading DevOps Teams
+                        </p>
+                        <p style="margin-top: 20px; font-size: clamp(0.85rem, 2vw, 0.95rem);">
+                            Feel free to check out my <a href="https://drive.google.com/file/d/106HT88wi2Px9l-24l-3T2l-znASJG2TV/view" target="_blank" rel="noopener noreferrer" style="color: var(--primary); text-decoration: none; font-weight: 600; transition: all 0.3s ease;"><i class="far fa-file-alt" style="font-size: 18px; margin-right: 5px;"></i>Resume</a> to explore my professional journey.
+                        </p>
+                    </div>
+                    
+                    <!-- DevOps Animation -->
+                    <div class="devops-animation">
+                        <div class="cloud-icons">
+                            <div class="cloud-icon">☁️</div>
+                            <div class="cloud-icon">⚙️</div>
+                            <div class="cloud-icon">🐳</div>
+                        </div>
+                        <div class="deployment-arrow">↓</div>
+                        <div class="laptop">
+                            <div class="code-lines">
+                                <div class="code-line"></div>
+                                <div class="code-line"></div>
+                                <div class="code-line"></div>
+                                <div class="code-line"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Interactive Terminal -->
+                <div class="terminal-interactive">
+                    <div class="terminal-interactive-title">Interactive Terminal</div>
+                    <div class="terminal-output" id="terminal-output">
+                        <div class="output-line success">
+                            <span class="prompt">$</span> <strong>Welcome to my portfolio!</strong> 👋
+                        </div>
+                        <div class="output-line">
+                            <span class="prompt">$</span> I'm Rakesh, a Senior DevOps Engineer with 5+ years of experience.
+                        </div>
+                        <div class="output-line" style="margin-top: 15px;">
+                            <span class="prompt">$</span> <strong style="color: var(--tertiary);">Quick Commands:</strong>
+                        </div>
+                        <div class="output-line" style="padding-left: 20px; opacity: 0.9;">
+                            <strong>help</strong> - All commands | <strong>about</strong> - About me<br>
+                            <strong>skills</strong> - My expertise | <strong>projects</strong> - My work<br>
+                            <strong>project &lt;name&gt;</strong> - Project details | <strong>contact</strong> - Get in touch
+                        </div>
+                        <div class="output-line" style="margin-top: 15px; opacity: 0.8;">
+                            <span class="prompt">$</span> Type a command to explore! Try "projects" to see my work.
+                        </div>
+                    </div>
+                    <div class="terminal-input-container">
+                        <span class="prompt">$</span>
+                        <input type="text" class="terminal-input" id="terminal-input" placeholder="Type a command..." autocomplete="off" autofocus>
+                    </div>
+                    <div class="terminal-help">
+                        💡 <strong>Pro Tip:</strong> Use ↑/↓ arrows for command history. Mobile users can scroll to see all content below!
+                    </div>
+                </div>
+
+                <!-- About Section -->
+                <div class="section">
+                    <h2 class="section-title">&gt; About Me</h2>
+                    <p class="command-line">Senior DevOps Engineer at Foodhub, Chennai</p>
+                    <p class="command-line">5+ years of experience in cloud migration, infrastructure automation, and DevOps practices</p>
+                    <p class="command-line">Leading team of DevOps engineers and designing architecture for new projects</p>
+                    <p class="command-line">Expert in AWS, Oracle Cloud, Terraform, Kubernetes, and CI/CD pipeline design <span class="blink-cursor">█</span></p>
+                </div>
+
+                <!-- Projects Section - Shows top 3, terminal shows all -->
+                <div class="section">
+                    <h2 class="section-title">&gt; Featured Projects (Top 3)</h2>
+                    <div class="projects-grid">
+                        <div class="project-card">
+                            <div class="project-title">▸ paltalk-migration</div>
+                            <div class="project-desc">
+                                AWS to Oracle Cloud migration of 70+ services from ECS to OKE. Migrated 50+ repositories to GitHub Actions with reusable workflows.
+                            </div>
+                            <div class="project-tech">
+                                <span class="tech-tag">OCI</span>
+                                <span class="tech-tag">OKE</span>
+                                <span class="tech-tag">AWS</span>
+                                <span class="tech-tag">GitHub Actions</span>
+                            </div>
+                        </div>
+                        <div class="project-card">
+                            <div class="project-title">▸ neuberg-migration</div>
+                            <div class="project-desc">
+                                Healthcare infrastructure migration from GoDaddy VPS to AWS ECS. 8 websites migrated with zero downtime.
+                            </div>
+                            <div class="project-tech">
+                                <span class="tech-tag">AWS ECS</span>
+                                <span class="tech-tag">Terraform</span>
+                                <span class="tech-tag">Docker</span>
+                            </div>
+                        </div>
+                        <div class="project-card">
+                            <div class="project-title">▸ devops-automation</div>
+                            <div class="project-desc">
+                                CI/CD automation with GitLab on Fargate, SonarQube integration, and Grafana/Prometheus monitoring.
+                            </div>
+                            <div class="project-tech">
+                                <span class="tech-tag">Fargate</span>
+                                <span class="tech-tag">SonarQube</span>
+                                <span class="tech-tag">Grafana</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p style="margin-top: 20px; text-align: center; opacity: 0.8; font-size: 0.9rem;">
+                        💡 Type <strong style="color: var(--tertiary);">"projects"</strong> in the terminal above to see all 8 projects!
+                    </p>
+                </div>
+
+                <!-- Experience Section -->
+                <div class="section">
+                    <h2 class="section-title">&gt; Professional Experience</h2>
+                    <div class="command-line" style="margin-bottom: 25px;">
+                        <strong style="color: var(--primary); font-size: 1.1rem;">Senior DevOps Engineer</strong> @ Foodhub
+                        <br><span style="opacity: 0.75; font-size: 0.9rem; margin-left: 10px;">📍 Chennai, India | 📅 Current Position</span>
+                        <br><span style="opacity: 0.85; margin-left: 10px;">Leading DevOps operations, cloud infrastructure, and automation strategies for food-tech platform.</span>
+                    </div>
+                    <div class="command-line" style="margin-bottom: 25px;">
+                        <strong style="color: var(--primary); font-size: 1.1rem;">Senior DevOps Engineer</strong> @ Thapovan Info System Inc
+                        <br><span style="opacity: 0.75; font-size: 0.9rem; margin-left: 10px;">📍 Chennai, India | 📅 April 2024 - October 2025</span>
+                        <br><span style="opacity: 0.85; margin-left: 10px;">Led cloud migration projects for Paltalk (70+ services from AWS to OCI). Migrated 50+ repositories to GitHub Actions, implemented Atlantis for Terraform automation.</span>
+                    </div>
+                    <div class="command-line" style="margin-bottom: 25px;">
+                        <strong style="color: var(--primary); font-size: 1.1rem;">DevOps Engineer</strong> @ Thapovan Info System Inc
+                        <br><span style="opacity: 0.75; font-size: 0.9rem; margin-left: 10px;">📍 Chennai, India | 📅 April 2022 - March 2024</span>
+                        <br><span style="opacity: 0.85; margin-left: 10px;">Migrated EC2 to ECS, auto-scaling GitLab CI on Fargate, SonarQube deployment, Grafana/Prometheus monitoring.</span>
+                    </div>
+                    <div class="command-line">
+                        <strong style="color: var(--primary); font-size: 1.1rem;">Junior DevOps Engineer</strong> @ Thapovan Info System Inc
+                        <br><span style="opacity: 0.75; font-size: 0.9rem; margin-left: 10px;">📍 Chennai, India | 📅 May 2021 - March 2022</span>
+                        <br><span style="opacity: 0.85; margin-left: 10px;">ECS Fargate migration, Jenkins automation, CloudWatch monitoring, Terraform IaC templates.</span>
+                    </div>
+                </div>
+
+                <!-- Education & Certifications -->
+                <div class="section">
+                    <h2 class="section-title">&gt; Education & Certifications</h2>
+                    <p class="command-line"><strong style="color: var(--primary);">Oracle Cloud Infrastructure Architect Associate</strong> - Oracle</p>
+                    <p class="command-line"><strong style="color: var(--primary);">GitOps Fundamentals</strong> - Codefresh</p>
+                    <p class="command-line"><strong style="color: var(--primary);">B1 Business Preliminary</strong> - Cambridge University</p>
+                    <p class="command-line"><strong style="color: var(--primary);">B.E. Electrical & Electronics</strong> - Vel Tech (2016-2020)</p>
+                </div>
+
+                <!-- Skills Section - Categorized -->
+                <div class="section">
+                    <h2 class="section-title">&gt; Technical Skills</h2>
+                    
+                    <div class="skills-category">
+                        <div class="category-title">☁️ Cloud Platforms</div>
+                        <div class="skills-list">
+                            <div class="skill-item">AWS EC2</div>
+                            <div class="skill-item">AWS ECS/ECR</div>
+                            <div class="skill-item">AWS S3</div>
+                            <div class="skill-item">AWS VPC</div>
+                            <div class="skill-item">AWS Lambda</div>
+                            <div class="skill-item">AWS RDS</div>
+                            <div class="skill-item">Oracle Cloud (OCI)</div>
+                            <div class="skill-item">OKE</div>
+                        </div>
+                    </div>
+
+                    <div class="skills-category">
+                        <div class="category-title">🔄 CI/CD & Automation</div>
+                        <div class="skills-list">
+                            <div class="skill-item">GitHub Actions</div>
+                            <div class="skill-item">GitLab CI</div>
+                            <div class="skill-item">Jenkins</div>
+                            <div class="skill-item">Terraform</div>
+                            <div class="skill-item">Ansible</div>
+                            <div class="skill-item">Atlantis</div>
+                        </div>
+                    </div>
+
+                    <div class="skills-category">
+                        <div class="category-title">🐳 Containers & Orchestration</div>
+                        <div class="skills-list">
+                            <div class="skill-item">Docker</div>
+                            <div class="skill-item">Kubernetes</div>
+                            <div class="skill-item">AWS Fargate</div>
+                            <div class="skill-item">AWS ECS</div>
+                        </div>
+                    </div>
+
+                    <div class="skills-category">
+                        <div class="category-title">📊 Monitoring & Observability</div>
+                        <div class="skills-list">
+                            <div class="skill-item">Prometheus</div>
+                            <div class="skill-item">Grafana</div>
+                            <div class="skill-item">Kibana</div>
+                            <div class="skill-item">CloudWatch</div>
+                            <div class="skill-item">SonarQube</div>
+                        </div>
+                    </div>
+
+                    <div class="skills-category">
+                        <div class="category-title">💻 Programming & Scripting</div>
+                        <div class="skills-list">
+                            <div class="skill-item">Python</div>
+                            <div class="skill-item">Bash/Shell</div>
+                            <div class="skill-item">Ruby</div>
+                            <div class="skill-item">YAML</div>
+                            <div class="skill-item">JSON</div>
+                        </div>
+                    </div>
+
+                    <div class="skills-category">
+                        <div class="category-title">🗄️ Databases</div>
+                        <div class="skills-list">
+                            <div class="skill-item">MySQL</div>
+                            <div class="skill-item">PostgreSQL</div>
+                            <div class="skill-item">MongoDB</div>
+                            <div class="skill-item">DynamoDB</div>
+                        </div>
+                    </div>
+
+                    <div class="skills-category">
+                        <div class="category-title">🛠️ Other Tools</div>
+                        <div class="skills-list">
+                            <div class="skill-item">Nginx</div>
+                            <div class="skill-item">Apache</div>
+                            <div class="skill-item">Git</div>
+                            <div class="skill-item">Linux/Ubuntu</div>
+                            <div class="skill-item">Kafka</div>
+                            <div class="skill-item">Selenium</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact Section -->
+                <div class="section">
+                    <h2 class="section-title">&gt; Get In Touch</h2>
+                    <div class="contact-links">
+                        <a href="https://github.com/rakeshkirupa" class="contact-link" target="_blank" rel="noopener noreferrer">
+                            <span>›</span> GitHub
+                        </a>
+                        <a href="https://linkedin.com/in/rakesh-kirupanandan" class="contact-link" target="_blank" rel="noopener noreferrer">
+                            <span>›</span> LinkedIn
+                        </a>
+                        <a href="mailto:rakeshkirupa276@gmail.com" class="contact-link">
+                            <span>›</span> Email
+                        </a>
+                        <a href="tel:+919962415414" class="contact-link">
+                            <span>›</span> Call
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Resume Download Section - Prominent & Separate -->
+                <div class="section" style="margin-top: 50px;">
+                    <h2 class="section-title" style="text-align: center; border-left: none; padding-left: 0;">&gt; Download Resume</h2>
+                    <div style="text-align: center; padding: 40px 20px; background: linear-gradient(135deg, rgba(0, 255, 65, 0.08) 0%, rgba(0, 255, 65, 0.03) 100%); border-radius: 15px; border: 2px solid var(--primary); box-shadow: 0 0 30px var(--shadow);">
+                        <div style="margin-bottom: 25px; font-size: clamp(0.9rem, 2vw, 1.05rem); opacity: 0.95; line-height: 1.8;">
+                            📄 View my complete professional journey, certifications, and detailed project portfolio
+                        </div>
+                        <a href="https://drive.google.com/file/d/106HT88wi2Px9l-24l-3T2l-znASJG2TV/view" target="_blank" rel="noopener noreferrer" style="display: inline-flex; align-items: center; gap: 15px; padding: 20px 40px; background: var(--primary); color: var(--bg); text-decoration: none; font-weight: 700; font-size: clamp(1rem, 2.5vw, 1.2rem); border-radius: 10px; transition: all 0.4s ease; box-shadow: 0 0 20px var(--glow); border: 2px solid var(--primary);">
+                            <i class="far fa-file-alt" style="font-size: clamp(1.3rem, 3vw, 1.5rem);"></i>
+                            <span>RESUME</span>
+                            <span style="font-size: clamp(1.2rem, 3vw, 1.5rem);">→</span>
+                        </a>
+                        <div style="margin-top: 20px; font-size: clamp(0.8rem, 1.8vw, 0.9rem); opacity: 0.8;">
+                            💼 Complete work history • 🎓 Certifications • 🚀 Project details • 🛠️ Technical skills
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer -->
+                <div class="footer">
+                    <p>© 2025 Rakesh Kirupanandan. Built with DevOps principles <span class="blink-cursor">█</span></p>
+                    <p style="margin-top: 10px;">$ echo "Thanks for visiting! Let's build something amazing together."</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+        // All 8 projects data
+        const allProjects = {
+            "paltalk-migration": {
+                name: "AWS to Oracle Cloud Migration (Paltalk)",
+                description: "Comprehensive cloud migration project migrating 70+ services from AWS ECS to Oracle Kubernetes Engine (OKE). Configured Site-to-Site VPN for secure hybrid cloud connectivity. Managed OCI networking with VCN and load balancers. Migrated 50+ repositories from GitLab CI/CD to GitHub Actions with reusable workflow templates. Implemented Atlantis for Terraform automation with remote state storage.",
+                tech: ["Oracle Cloud (OCI)", "OKE", "AWS ECS", "GitHub Actions", "Terraform", "Atlantis", "Site-to-Site VPN", "VCN", "IAM"],
+                highlights: ["70+ services migrated", "50+ repos to GitHub Actions", "Zero downtime migration", "Hybrid cloud setup"]
+            },
+            "neuberg-migration": {
+                name: "Healthcare Infrastructure Migration (Neuberg)",
+                description: "Led migration project from GoDaddy VPS to AWS ECS for healthcare and diagnostics company. Designed scalable ECS architecture with capacity providers for load-based auto-scaling. Successfully migrated 8 websites with zero downtime through careful planning and execution.",
+                tech: ["AWS ECS", "Terraform", "Docker", "Auto Scaling", "Capacity Providers"],
+                highlights: ["8 websites migrated", "Zero downtime", "Scalable architecture", "Healthcare compliance"]
+            },
+            "devops-automation": {
+                name: "DevOps Automation & CI/CD Enhancement (Paltalk)",
+                description: "Implemented comprehensive DevOps automation including auto-scaling GitLab CI on AWS Fargate (reducing costs), deployed SonarQube for code quality analysis, migrated Selenium servers to ECS cluster, and established Grafana/Prometheus monitoring for proactive issue resolution.",
+                tech: ["AWS Fargate", "GitLab CI", "SonarQube", "Grafana", "Prometheus", "Selenium", "ECS"],
+                highlights: ["Cost reduction via Fargate", "SAST integration", "Automated testing", "Real-time monitoring"]
+            },
+            "reimbursify-optimization": {
+                name: "Infrastructure Optimization (Reimbursify)",
+                description: "Optimized AWS infrastructure for healthcare reimbursement platform by migrating to ECS Fargate serverless with Jenkins-based automation. Implemented comprehensive CloudWatch monitoring with alarms, events, logs, and metrics. Designed scalable, reusable Terraform templates for infrastructure provisioning.",
+                tech: ["AWS Fargate", "Jenkins", "CloudWatch", "Terraform", "IaC"],
+                highlights: ["Serverless migration", "Automated deployments", "High availability", "Reusable IaC templates"]
+            },
+            "radiance-ticketing": {
+                name: "Event Management Platform (Radiance Ticketing)",
+                description: "Containerized Odoo application using Docker and implemented full CI/CD pipeline with GitLab Runner for event management platform. Streamlined deployment process and improved development workflow efficiency.",
+                tech: ["Docker", "GitLab Runner", "Odoo", "CI/CD"],
+                highlights: ["Application containerization", "Automated pipeline", "Streamlined deployments"]
+            },
+            "lifestyle-housing": {
+                name: "Infrastructure Automation (Lifestyle Housing)",
+                description: "Developed AWS Terraform templates integrated with Ansible to automate infrastructure provisioning and configuration for residential real estate platform. Enabled consistent and repeatable infrastructure deployment.",
+                tech: ["AWS", "Terraform", "Ansible", "IaC"],
+                highlights: ["Automated provisioning", "Configuration management", "Repeatable deployments"]
+            },
+            "gsquare-casagrand": {
+                name: "Real Estate Platform (G-Square / Casagrand)",
+                description: "Deployed secure web server with SSL encryption and traffic management using Infrastructure as Code. Automated MySQL backups with Slack notifications and established CI/CD pipeline for efficient deployments of booking board platform.",
+                tech: ["IaC", "MySQL", "Slack", "CI/CD", "SSL/TLS"],
+                highlights: ["Secure deployment", "Automated backups", "Slack integration", "SSL encryption"]
+            },
+            "ec2-to-ecs-migration": {
+                name: "EC2 to ECS Migration (Multiple Projects)",
+                description: "Successfully migrated multiple services from EC2 instances to ECS using capacity providers, improving service management and operational efficiency. Enhanced deployment processes and established better resource utilization patterns.",
+                tech: ["AWS EC2", "AWS ECS", "Capacity Providers", "Auto Scaling"],
+                highlights: ["Improved efficiency", "Better resource utilization", "Capacity-based scaling"]
+            }
+        };
+
+        // Terminal Commands
+        const terminalCommands = {
+            help: `<div style="color: var(--secondary); font-weight: 700; font-size: 1.05rem; margin-bottom: 15px;">📚 Available Commands</div>
+<div style="padding: 15px; background: rgba(0,255,65,0.05); border-radius: 8px; border-left: 3px solid var(--primary);">
+  <div style="margin-bottom: 8px;"><strong style="color: var(--tertiary);">help</strong> - Display this help menu</div>
+  <div style="margin-bottom: 8px;"><strong style="color: var(--tertiary);">about</strong> - Learn about my background and expertise</div>
+  <div style="margin-bottom: 8px;"><strong style="color: var(--tertiary);">skills</strong> - View categorized technical skills</div>
+  <div style="margin-bottom: 8px;"><strong style="color: var(--tertiary);">experience</strong> - Professional career journey</div>
+  <div style="margin-bottom: 8px;"><strong style="color: var(--tertiary);">projects</strong> - See what I've built</div>
+  <div style="margin-bottom: 8px;"><strong style="color: var(--tertiary);">contact</strong> - Get my contact information</div>
+  <div style="margin-bottom: 8px;"><strong style="color: var(--tertiary);">resume</strong> - View resume information</div>
+  <div style="margin-bottom: 8px;"><strong style="color: var(--tertiary);">download</strong> - Download my resume</div>
+  <div style="margin-bottom: 8px;"><strong style="color: var(--tertiary);">stats</strong> - Portfolio statistics</div>
+  <div style="margin-bottom: 8px;"><strong style="color: var(--tertiary);">theme</strong> - Change terminal theme</div>
+  <div><strong style="color: var(--tertiary);">clear</strong> - Clear terminal screen</div>
+</div>
+<div style="margin-top: 15px; padding: 10px; background: rgba(0,255,65,0.08); border-radius: 5px;">
+  💡 <strong>Tip:</strong> Try "stats" for quick overview, or explore hidden commands!
+</div>`,
+
+            about: `<div style="color: var(--secondary); font-weight: 700; font-size: 1.05rem; margin-bottom: 15px;">👨‍💻 About Rakesh Kirupanandan</div>
+<div style="padding: 15px; background: rgba(0,255,65,0.05); border-radius: 8px; line-height: 1.8;">
+  <div style="margin-bottom: 12px;">
+    Senior DevOps Engineer at <strong style="color: var(--primary);">Foodhub</strong>, Chennai, India
+  </div>
+  
+  <div style="margin-bottom: 12px; padding: 12px; background: rgba(0,255,65,0.08); border-radius: 5px;">
+    📊 <strong>Experience:</strong> 5+ years<br>
+    🎯 <strong>Specialization:</strong> Cloud Migration, Infrastructure Automation, DevOps<br>
+    👥 <strong>Role:</strong> Leading DevOps operations for food-tech platform
+  </div>
+  
+  <div style="margin-bottom: 12px;">
+    <strong style="color: var(--primary);">Key Achievements:</strong><br>
+    • Migrated 70+ services from AWS to Oracle Cloud<br>
+    • Migrated 50+ repositories to GitHub Actions<br>
+    • Led multiple zero-downtime migrations<br>
+    • Implemented Terraform automation with Atlantis<br>
+    • Designed scalable cloud architectures
+  </div>
+  
+  <div style="padding: 10px; background: rgba(0,255,65,0.08); border-radius: 5px;">
+    🎓 <strong>Certifications:</strong><br>
+    • Oracle Cloud Infrastructure Architect Associate<br>
+    • GitOps Fundamentals (Codefresh)<br>
+    • B1 Business Preliminary (Cambridge)<br>
+    • B.E. Electrical & Electronics (Vel Tech, 2016-2020)
+  </div>
+</div>`,
+
+            skills: `<div style="color: var(--secondary); font-weight: 700; font-size: 1.05rem; margin-bottom: 15px;">🛠️ Technical Skills</div>
+<div style="padding: 15px; background: rgba(0,255,65,0.05); border-radius: 8px; line-height: 1.8;">
+  
+  <div style="margin-bottom: 15px;">
+    <strong style="color: var(--primary); font-size: 1rem;">☁️ Cloud Platforms</strong>
+    <div style="padding-left: 15px; margin-top: 5px;">AWS (EC2, ECS, S3, VPC, Lambda, RDS, CloudWatch) • Oracle Cloud (OCI, OKE) • Site-to-Site VPN • Load Balancing • Auto Scaling</div>
+  </div>
+  
+  <div style="margin-bottom: 15px;">
+    <strong style="color: var(--primary); font-size: 1rem;">🔄 CI/CD & Automation</strong>
+    <div style="padding-left: 15px; margin-top: 5px;">GitHub Actions • GitLab CI • Jenkins • Terraform • Ansible • Atlantis • Infrastructure as Code</div>
+  </div>
+  
+  <div style="margin-bottom: 15px;">
+    <strong style="color: var(--primary); font-size: 1rem;">🐳 Containers & Orchestration</strong>
+    <div style="padding-left: 15px; margin-top: 5px;">Docker • Kubernetes • OKE (Oracle Kubernetes) • AWS Fargate • ECS • Container Orchestration</div>
+  </div>
+  
+  <div style="margin-bottom: 15px;">
+    <strong style="color: var(--primary); font-size: 1rem;">📊 Monitoring & Quality</strong>
+    <div style="padding-left: 15px; margin-top: 5px;">Prometheus • Grafana • Kibana • CloudWatch • SonarQube (SAST) • Selenium • End-to-End Testing</div>
+  </div>
+  
+  <div style="margin-bottom: 15px;">
+    <strong style="color: var(--primary); font-size: 1rem;">💻 Programming & Scripting</strong>
+    <div style="padding-left: 15px; margin-top: 5px;">Python • Bash/Shell Scripting • Ruby • YAML • JSON</div>
+  </div>
+  
+  <div style="margin-bottom: 15px;">
+    <strong style="color: var(--primary); font-size: 1rem;">🗄️ Databases</strong>
+    <div style="padding-left: 15px; margin-top: 5px;">MySQL • PostgreSQL • MongoDB • DynamoDB • Database Migration</div>
+  </div>
+  
+  <div>
+    <strong style="color: var(--primary); font-size: 1rem;">🛠️ Other Tools</strong>
+    <div style="padding-left: 15px; margin-top: 5px;">Nginx • Apache • Git • Linux/Ubuntu • Kafka • PM2 • SSL/TLS • Network Security</div>
+  </div>
+</div>`,
+
+            experience: `<div style="color: var(--secondary); font-weight: 700; font-size: 1.05rem; margin-bottom: 15px;">💼 Professional Experience</div>
+
+<div style="padding: 15px; background: rgba(0,255,65,0.05); border-radius: 8px; margin-bottom: 15px; border-left: 3px solid var(--primary);">
+  <div style="font-size: 1.05rem; font-weight: 700; color: var(--primary); margin-bottom: 8px;">
+    Senior DevOps Engineer @ Foodhub
+  </div>
+  <div style="opacity: 0.8; margin-bottom: 10px; font-size: 0.9rem;">
+    📍 Chennai, India | 📅 Current Position
+  </div>
+  <div style="line-height: 1.7;">
+    <strong>Current Responsibilities:</strong><br>
+    • Leading DevOps operations for food-tech platform<br>
+    • Managing cloud infrastructure and automation strategies<br>
+    • Implementing scalable deployment pipelines<br>
+    • Ensuring high availability and system reliability<br>
+    • Optimizing cloud costs and performance
+  </div>
+</div>
+
+<div style="padding: 15px; background: rgba(0,255,65,0.05); border-radius: 8px; margin-bottom: 15px; border-left: 3px solid rgba(0,255,65,0.5);">
+  <div style="font-size: 1.05rem; font-weight: 700; color: var(--primary); margin-bottom: 8px;">
+    Senior DevOps Engineer @ Thapovan Info System Inc
+  </div>
+  <div style="opacity: 0.8; margin-bottom: 10px; font-size: 0.9rem;">
+    📍 Chennai, India | 📅 April 2024 - Previous
+  </div>
+  <div style="line-height: 1.7;">
+    <strong>Key Responsibilities:</strong><br>
+    • Led cloud migration of 70+ services from AWS to Oracle Cloud (OKE)<br>
+    • Migrated 50+ repositories from GitLab CI/CD to GitHub Actions<br>
+    • Implemented Atlantis for Terraform automation<br>
+    • Designed architecture for new projects<br>
+    • Managed team of DevOps engineers<br>
+    • Established hybrid cloud connectivity with Site-to-Site VPN<br>
+    • Implemented OCI IAM policies and security controls
+  </div>
+</div>
+
+<div style="padding: 15px; background: rgba(0,255,65,0.05); border-radius: 8px; margin-bottom: 15px; border-left: 3px solid rgba(0,255,65,0.5);">
+  <div style="font-size: 1.05rem; font-weight: 700; color: var(--primary); margin-bottom: 8px;">
+    DevOps Engineer @ Thapovan Info System Inc
+  </div>
+  <div style="opacity: 0.8; margin-bottom: 10px; font-size: 0.9rem;">
+    📍 Chennai, India | 📅 April 2022 - March 2024
+  </div>
+  <div style="line-height: 1.7;">
+    <strong>Key Achievements:</strong><br>
+    • Migrated servers from EC2 to ECS with capacity providers<br>
+    • Implemented auto-scaling GitLab CI on AWS Fargate<br>
+    • Deployed SonarQube for code quality analysis (SAST)<br>
+    • Managed production deployments with SQL audits<br>
+    • Set up Grafana & Prometheus monitoring<br>
+    • Migrated Selenium servers to ECS cluster
+  </div>
+</div>
+
+<div style="padding: 15px; background: rgba(0,255,65,0.05); border-radius: 8px; border-left: 3px solid rgba(0,255,65,0.5);">
+  <div style="font-size: 1.05rem; font-weight: 700; color: var(--primary); margin-bottom: 8px;">
+    Junior DevOps Engineer @ Thapovan Info System Inc
+  </div>
+  <div style="opacity: 0.8; margin-bottom: 10px; font-size: 0.9rem;">
+    📍 Chennai, India | 📅 May 2021 - March 2022
+  </div>
+  <div style="line-height: 1.7;">
+    <strong>Foundation Work:</strong><br>
+    • Optimized AWS infrastructure migrating to ECS Fargate<br>
+    • Automated deployments with Jenkins<br>
+    • Implemented CloudWatch monitoring and alarms<br>
+    • Designed reusable Terraform templates<br>
+    • Containerized applications with Docker
+  </div>
+</div>`,
+
+            projects: function() {
+                let output = '<div style="color: var(--secondary); font-weight: 700; font-size: 1.05rem; margin-bottom: 15px;">🚀 My Projects</div>';
+                output += '<div style="padding: 15px; background: rgba(0,255,65,0.05); border-radius: 8px; line-height: 1.8;">';
+                
+                Object.keys(allProjects).forEach((key, index) => {
+                    output += '<div style="padding: 10px; margin-bottom: 8px; background: rgba(0,255,65,0.08); border-left: 3px solid var(--primary); border-radius: 4px;">';
+                    output += '<strong style="color: var(--primary);">' + (index + 1) + '. ' + key + '</strong><br>';
+                    output += '<span style="opacity: 0.9; font-size: 0.9rem;">' + allProjects[key].name + '</span>';
+                    output += '</div>';
+                });
+                
+                output += '<div style="margin-top: 20px; padding: 12px; background: rgba(0,255,65,0.1); border-radius: 6px; border: 1px solid var(--primary);">';
+                output += '💡 <strong>For details:</strong> Use <strong style="color: var(--tertiary);">project &lt;name&gt;</strong> or <strong style="color: var(--tertiary);">project &lt;number&gt;</strong><br>';
+                output += '<span style="opacity: 0.85; font-size: 0.9rem;">Example: <code style="color: var(--primary);">project 1</code> or <code style="color: var(--primary);">project paltalk-migration</code></span>';
+                output += '</div>';
+                
+                output += '</div>';
+                return output;
+            },
+
+            ls: `<div style="color: var(--secondary); font-weight: 700; font-size: 1.05rem; margin-bottom: 15px;">⚡ Accessing System</div>
+<div style="padding: 20px; background: rgba(0,255,65,0.05); border-radius: 8px; font-family: 'JetBrains Mono', monospace;">
+  <div style="margin-bottom: 15px; opacity: 0.9; line-height: 2;">
+    <span style="color: var(--primary);">⚡ Accessing mainframe...</span><br>
+    <span style="color: var(--primary);">⚡ Decrypting files...</span><br>
+    <span style="color: var(--primary);">⚡ Bypassing firewall...</span>
+  </div>
+  <div style="margin: 20px 0; padding: 15px; background: rgba(0,255,65,0.1); border-left: 4px solid var(--primary); border-radius: 4px;">
+    <strong style="font-size: 1.1rem;">Just kidding! 😄</strong><br>
+    <span style="opacity: 0.85; margin-top: 8px; display: block;">This isn't a real terminal, but you found a hidden command!</span>
+  </div>
+  <div style="padding: 12px; background: rgba(0,255,65,0.08); border-radius: 5px;">
+    💡 <strong>Try these commands instead:</strong><br>
+    <span style="opacity: 0.9;">• <code style="color: var(--tertiary);">help</code> - See all commands</span><br>
+    <span style="opacity: 0.9;">• <code style="color: var(--tertiary);">projects</code> - See what I've built</span><br>
+    <span style="opacity: 0.9;">• <code style="color: var(--tertiary);">stats</code> - Portfolio statistics</span>
+  </div>
+</div>`,
+
+            resume: `<div style="color: var(--secondary); font-weight: 700; font-size: 1.05rem; margin-bottom: 15px;">📄 Resume</div>
+<div style="padding: 20px; background: rgba(0,255,65,0.05); border-radius: 8px; line-height: 2;">
+  <div style="margin-bottom: 20px;">
+    Download my professional resume to learn more about my experience, skills, and accomplishments.
+  </div>
+  
+  <div style="padding: 15px; background: rgba(0,255,65,0.1); border: 2px solid var(--primary); border-radius: 8px; text-align: center;">
+    <a href="https://drive.google.com/file/d/106HT88wi2Px9l-24l-3T2l-znASJG2TV/view" target="_blank" rel="noopener noreferrer" style="color: var(--primary); text-decoration: none; font-weight: 700; font-size: 1.1rem; display: inline-flex; align-items: center; gap: 10px;">
+      <i class="far fa-file-alt" style="font-size: 24px;"></i>
+      <span>RESUME</span>
+      <span style="font-size: 1.3rem;">→</span>
+    </a>
+  </div>
+  
+  <div style="margin-top: 20px; opacity: 0.85; font-size: 0.9rem;">
+    📊 <strong>Includes:</strong> Complete work history, certifications, project details, technical skills
+  </div>
+</div>`,
+
+            contact: `<div style="color: var(--secondary); font-weight: 700; font-size: 1.05rem; margin-bottom: 15px;">📬 Contact Information</div>
+<div style="padding: 20px; background: rgba(0,255,65,0.05); border-radius: 8px; line-height: 2;">
+  
+  <div style="margin-bottom: 15px; padding: 12px; background: rgba(0,255,65,0.08); border-radius: 6px;">
+    <strong style="color: var(--primary);">GitHub:</strong><br>
+    <a href="https://github.com/rakeshkirupa" target="_blank" style="color: var(--tertiary); text-decoration: none;">
+      → github.com/rakeshkirupa
+    </a>
+  </div>
+  
+  <div style="margin-bottom: 15px; padding: 12px; background: rgba(0,255,65,0.08); border-radius: 6px;">
+    <strong style="color: var(--primary);">LinkedIn:</strong><br>
+    <a href="https://linkedin.com/in/rakesh-kirupanandan" target="_blank" style="color: var(--tertiary); text-decoration: none;">
+      → linkedin.com/in/rakesh-kirupanandan
+    </a>
+  </div>
+  
+  <div style="margin-bottom: 15px; padding: 12px; background: rgba(0,255,65,0.08); border-radius: 6px;">
+    <strong style="color: var(--primary);">Email:</strong><br>
+    <a href="mailto:rakeshkirupa276@gmail.com" style="color: var(--tertiary); text-decoration: none;">
+      → rakeshkirupa276@gmail.com
+    </a>
+  </div>
+  
+  <div style="padding: 12px; background: rgba(0,255,65,0.08); border-radius: 6px;">
+    <strong style="color: var(--primary);">Phone:</strong><br>
+    <a href="tel:+919962415414" style="color: var(--tertiary); text-decoration: none;">
+      → +91 99624 15414
+    </a>
+  </div>
+  
+  <div style="margin-top: 20px; padding: 15px; background: rgba(0,255,65,0.1); border-radius: 6px; border: 1px solid rgba(0,255,65,0.3);">
+    💬 <strong>Let's Connect!</strong><br>
+    Open to DevOps opportunities, collaborations, and tech discussions!
+  </div>
+</div>`,
+
+            // New Commands
+            download: `<div style="color: var(--secondary); font-weight: 700; font-size: 1.05rem; margin-bottom: 15px;">📥 Download Resume</div>
+<div style="padding: 20px; background: rgba(0,255,65,0.05); border-radius: 8px;">
+  <div style="margin-bottom: 20px; opacity: 0.9;">
+    Download my professional resume to learn more about my experience, skills, and accomplishments.
+  </div>
+  <div style="padding: 15px; background: rgba(0,255,65,0.1); border: 2px solid var(--primary); border-radius: 8px; text-align: center;">
+    <a href="https://drive.google.com/file/d/106HT88wi2Px9l-24l-3T2l-znASJG2TV/view" target="_blank" rel="noopener noreferrer" style="color: var(--primary); text-decoration: none; font-weight: 700; font-size: 1.1rem;">
+      📄 Click to View/Download Resume →
+    </a>
+  </div>
+  <div style="margin-top: 15px; opacity: 0.85; font-size: 0.9rem;">
+    💡 Opens in a new tab
+  </div>
+</div>`,
+
+            cv: `<div style="color: var(--secondary); font-weight: 700; font-size: 1.05rem; margin-bottom: 15px;">📥 Download CV</div>
+<div style="padding: 20px; background: rgba(0,255,65,0.05); border-radius: 8px;">
+  <div style="margin-bottom: 20px; opacity: 0.9;">
+    Redirecting to resume download...
+  </div>
+  <div style="padding: 15px; background: rgba(0,255,65,0.1); border: 2px solid var(--primary); border-radius: 8px; text-align: center;">
+    <a href="https://drive.google.com/file/d/106HT88wi2Px9l-24l-3T2l-znASJG2TV/view" target="_blank" rel="noopener noreferrer" style="color: var(--primary); text-decoration: none; font-weight: 700; font-size: 1.1rem;">
+      📄 Click to View/Download →
+    </a>
+  </div>
+</div>`,
+
+            stats: `<div style="color: var(--secondary); font-weight: 700; font-size: 1.05rem; margin-bottom: 15px;">📊 Portfolio Statistics</div>
+<div style="padding: 20px; background: rgba(0,255,65,0.05); border-radius: 8px; font-family: 'JetBrains Mono', monospace;">
+  <div style="padding: 20px; background: rgba(0,255,65,0.08); border: 2px solid var(--primary); border-radius: 10px;">
+    <div style="text-align: center; margin-bottom: 20px; font-size: 1.1rem; font-weight: 700;">
+      ╔════════════════════════════════════╗<br>
+      ║     PORTFOLIO STATISTICS           ║<br>
+      ╚════════════════════════════════════╝
+    </div>
+    <div style="line-height: 2; font-size: 0.95rem;">
+      <div style="padding: 8px; background: rgba(0,255,65,0.05); border-radius: 4px; margin-bottom: 8px;">
+        🚀 <strong>Projects Completed:</strong> 8
+      </div>
+      <div style="padding: 8px; background: rgba(0,255,65,0.05); border-radius: 4px; margin-bottom: 8px;">
+        🛠️  <strong>Technologies Mastered:</strong> 48+
+      </div>
+      <div style="padding: 8px; background: rgba(0,255,65,0.05); border-radius: 4px; margin-bottom: 8px;">
+        ⏱️  <strong>Years of Experience:</strong> 5+
+      </div>
+      <div style="padding: 8px; background: rgba(0,255,65,0.05); border-radius: 4px; margin-bottom: 8px;">
+        🎓 <strong>Certifications:</strong> 3
+      </div>
+      <div style="padding: 8px; background: rgba(0,255,65,0.05); border-radius: 4px; margin-bottom: 8px;">
+        ☁️  <strong>Cloud Platforms:</strong> AWS, Oracle Cloud (OCI)
+      </div>
+      <div style="padding: 8px; background: rgba(0,255,65,0.05); border-radius: 4px;">
+        🐳 <strong>Orchestration:</strong> Kubernetes, Docker, ECS
+      </div>
+    </div>
+  </div>
+</div>`,
+
+            theme: `<div style="color: var(--secondary); font-weight: 700; font-size: 1.05rem; margin-bottom: 15px;">🎨 Terminal Themes</div>
+<div style="padding: 20px; background: rgba(0,255,65,0.05); border-radius: 8px;">
+  <div style="margin-bottom: 20px;">
+    <strong>Available themes:</strong>
+  </div>
+  <div style="padding: 15px; background: rgba(0,255,65,0.08); border-radius: 6px; line-height: 2;">
+    ● <strong style="color: var(--primary);">matrix</strong> - Classic green terminal (current)<br>
+    ○ <strong>hacker</strong> - Dark green on black<br>
+    ○ <strong>ocean</strong> - Blue & cyan waves<br>
+    ○ <strong>sunset</strong> - Warm orange & red<br>
+    ○ <strong>dracula</strong> - Purple & pink<br>
+    ○ <strong>light</strong> - Clean light mode
+  </div>
+  <div style="margin-top: 20px; padding: 12px; background: rgba(0,255,65,0.1); border-radius: 6px; border: 1px solid var(--primary);">
+    💡 <strong>Usage:</strong> <code style="color: var(--tertiary);">theme &lt;name&gt;</code><br>
+    <span style="opacity: 0.85; font-size: 0.9rem;">Example: <code style="color: var(--primary);">theme ocean</code> or use the 🌙 button above!</span>
+  </div>
+  <div style="margin-top: 15px; opacity: 0.8; font-size: 0.9rem;">
+    ⚠️ Theme switching via command coming soon! Use the theme toggle button (🌙) for now.
+  </div>
+</div>`,
+
+            // Easter Eggs
+            whoami: `<div style="color: var(--secondary); font-weight: 700; font-size: 1.05rem; margin-bottom: 15px;">👤 Who Am I?</div>
+<div style="padding: 20px; background: rgba(0,255,65,0.05); border-radius: 8px; line-height: 1.8;">
+  <div style="padding: 15px; background: rgba(0,255,65,0.08); border-left: 4px solid var(--primary); border-radius: 4px; margin-bottom: 15px;">
+    <strong style="font-size: 1.1rem;">Rakesh Kirupanandan</strong><br>
+    <span style="opacity: 0.9;">Senior DevOps Engineer @ Foodhub</span>
+  </div>
+  <div style="opacity: 0.9;">
+    🎯 <strong>Mission:</strong> Building scalable cloud infrastructure<br>
+    💻 <strong>Specialization:</strong> AWS, Oracle Cloud, Kubernetes, Terraform<br>
+    📍 <strong>Location:</strong> Chennai, India<br>
+    ⚡ <strong>Superpower:</strong> Zero-downtime deployments
+  </div>
+  <div style="margin-top: 15px; padding: 10px; background: rgba(0,255,65,0.1); border-radius: 4px; font-size: 0.9rem;">
+    💡 You found a hidden command! Try <code style="color: var(--tertiary);">sudo</code> next 😉
+  </div>
+</div>`,
+
+            sudo: `<div style="color: #ff5555; font-weight: 700; font-size: 1.05rem; margin-bottom: 15px;">⚠️  sudo</div>
+<div style="padding: 20px; background: rgba(255,85,85,0.1); border: 2px solid #ff5555; border-radius: 8px;">
+  <div style="margin-bottom: 15px; font-size: 1.1rem;">
+    <strong>Nice try! 😄</strong>
+  </div>
+  <div style="opacity: 0.9; line-height: 1.8;">
+    [sudo] password for rakesh: <span style="opacity: 0.5;">●●●●●●●●</span><br>
+    <br>
+    <span style="color: #ff5555;">⚠️  Access Denied</span><br>
+    <br>
+    You're not in the sudoers file. This incident will be reported to... well, just me. 😉
+  </div>
+  <div style="margin-top: 20px; padding: 12px; background: rgba(0,255,65,0.1); border-radius: 4px;">
+    💡 <strong>Hint:</strong> Try <code style="color: var(--tertiary);">cat resume</code> or <code style="color: var(--tertiary);">pwd</code> for more easter eggs!
+  </div>
+</div>`,
+
+            pwd: `<div style="color: var(--secondary); font-weight: 700; font-size: 1.05rem; margin-bottom: 15px;">📂 Print Working Directory</div>
+<div style="padding: 20px; background: rgba(0,255,65,0.05); border-radius: 8px; font-family: 'JetBrains Mono', monospace;">
+  <div style="padding: 15px; background: rgba(0,0,0,0.3); border-radius: 6px; font-size: 1.1rem;">
+    <span style="color: var(--tertiary);">$</span> pwd<br>
+    <span style="color: var(--primary);">/home/rakesh/portfolio</span>
+  </div>
+  <div style="margin-top: 15px; padding: 10px; background: rgba(0,255,65,0.08); border-radius: 4px; opacity: 0.9; font-size: 0.9rem;">
+    💡 You're browsing my professional portfolio! Try <code style="color: var(--tertiary);">ls</code> to see what's here 😉
+  </div>
+</div>`,
+
+            cat: `<div style="color: var(--secondary); font-weight: 700; font-size: 1.05rem; margin-bottom: 15px;">📄 cat resume</div>
+<div style="padding: 20px; background: rgba(0,255,65,0.05); border-radius: 8px; font-family: 'JetBrains Mono', monospace;">
+  <div style="padding: 15px; background: rgba(0,0,0,0.3); border-radius: 6px; line-height: 1.8;">
+    <span style="color: var(--tertiary);">$</span> cat resume.txt<br>
+    <br>
+    <span style="color: var(--primary);">╔══════════════════════════════════╗</span><br>
+    <span style="color: var(--primary);">║    RAKESH KIRUPANANDAN           ║</span><br>
+    <span style="color: var(--primary);">║    Senior DevOps Engineer        ║</span><br>
+    <span style="color: var(--primary);">╚══════════════════════════════════╝</span><br>
+    <br>
+    <span style="opacity: 0.9;">Experience: 5+ years</span><br>
+    <span style="opacity: 0.9;">Projects: 8 completed</span><br>
+    <span style="opacity: 0.9;">Certifications: 3</span><br>
+    <span style="opacity: 0.9;">Expertise: Cloud Migration, K8s, CI/CD</span>
+  </div>
+  <div style="margin-top: 15px; padding: 12px; background: rgba(0,255,65,0.1); border-radius: 6px; border: 1px solid var(--primary);">
+    💡 For the full resume: <code style="color: var(--tertiary);">download</code> or <code style="color: var(--tertiary);">resume</code>
+  </div>
+</div>`,
+
+            echo: `<div style="color: var(--secondary); font-weight: 700; font-size: 1.05rem; margin-bottom: 15px;">🔊 Echo</div>
+<div style="padding: 20px; background: rgba(0,255,65,0.05); border-radius: 8px;">
+  <div style="padding: 15px; background: rgba(0,255,65,0.08); border-radius: 6px;">
+    💡 <strong>Usage:</strong> <code style="color: var(--tertiary);">echo &lt;message&gt;</code><br>
+    <span style="opacity: 0.85; font-size: 0.9rem;">Example: <code style="color: var(--primary);">echo Hello World!</code></span>
+  </div>
+  <div style="margin-top: 15px; opacity: 0.9;">
+    This command needs a message to echo back!
+  </div>
+</div>`
+        };
+
+        // Terminal functionality
+        const terminalInput = document.getElementById('terminal-input');
+        const terminalOutput = document.getElementById('terminal-output');
+        let commandHistory = [];
+        let historyIndex = -1;
+
+        terminalInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                const command = terminalInput.value.trim();
+                if (command) {
+                    executeCommand(command);
+                    commandHistory.push(command);
+                    historyIndex = commandHistory.length;
+                }
+                terminalInput.value = '';
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                if (historyIndex > 0) {
+                    historyIndex--;
+                    terminalInput.value = commandHistory[historyIndex];
+                }
+            } else if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                if (historyIndex < commandHistory.length - 1) {
+                    historyIndex++;
+                    terminalInput.value = commandHistory[historyIndex];
+                } else {
+                    historyIndex = commandHistory.length;
+                    terminalInput.value = '';
+                }
+            }
+        });
+
+        function executeCommand(command) {
+            const lowerCommand = command.toLowerCase().trim();
+            
+            // Add command to output
+            addOutput('<span class="prompt">$</span> ' + command, 'user-command');
+
+            // Check for echo command
+            if (lowerCommand.startsWith('echo ')) {
+                const message = command.substring(5);
+                addOutput('<div style="color: var(--primary); font-size: 1rem; padding: 10px; background: rgba(0,255,65,0.05); border-radius: 6px;">' + message + '</div>');
+            }
+            // Check for project command (by name or number)
+            else if (lowerCommand.startsWith('project ')) {
+                const projectInput = lowerCommand.substring(8).trim();
+                let projectKey = null;
+                
+                // Check if it's a number
+                if (/^\d+$/.test(projectInput)) {
+                    const projectIndex = parseInt(projectInput) - 1;
+                    const projectKeys = Object.keys(allProjects);
+                    if (projectIndex >= 0 && projectIndex < projectKeys.length) {
+                        projectKey = projectKeys[projectIndex];
+                    }
+                } else {
+                    // It's a name
+                    if (allProjects[projectInput]) {
+                        projectKey = projectInput;
+                    }
+                }
+                
+                if (projectKey) {
+                    const proj = allProjects[projectKey];
+                    const techTags = proj.tech.map(t => '<span style="padding: 4px 10px; background: rgba(0,255,65,0.15); border: 1px solid rgba(0,255,65,0.4); border-radius: 4px; font-size: 0.85rem;">' + t + '</span>').join('');
+                    const highlights = proj.highlights.map(h => '• ' + h).join('<br>');
+                    
+                    addOutput(
+                        '<div style="color: var(--secondary); font-weight: 700; font-size: 1.05rem; margin-bottom: 15px;">📁 ' + proj.name + '</div>' +
+                        '<div style="padding: 15px; background: rgba(0,255,65,0.05); border-radius: 8px; line-height: 1.8;">' +
+                            '<div style="margin-bottom: 15px;">' +
+                                '<strong style="color: var(--primary);">Description:</strong><br>' +
+                                proj.description +
+                            '</div>' +
+                            '<div style="margin-bottom: 15px;">' +
+                                '<strong style="color: var(--primary);">Technologies:</strong><br>' +
+                                '<div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px;">' +
+                                    techTags +
+                                '</div>' +
+                            '</div>' +
+                            '<div>' +
+                                '<strong style="color: var(--primary);">Key Highlights:</strong><br>' +
+                                highlights +
+                            '</div>' +
+                        '</div>'
+                    );
+                } else {
+                    addOutput('<div class="error">⚠️ Project "<strong>' + projectInput + '</strong>" not found.<br><br>Type <strong>"projects"</strong> to see all available projects.<br>Use <strong>"project &lt;number&gt;"</strong> or <strong>"project &lt;name&gt;"</strong></div>');
+                }
+            }
+            // Regular commands
+            else if (lowerCommand === 'clear') {
+                terminalOutput.innerHTML = '<div class="output-line success"><span class="prompt">$</span> Terminal cleared! Type <strong>"help"</strong> for commands.</div>';
+            } else if (lowerCommand === 'projects') {
+                // Call projects as function
+                addOutput(terminalCommands.projects());
+            } else if (terminalCommands[lowerCommand]) {
+                addOutput(terminalCommands[lowerCommand]);
+            } else if (lowerCommand === 'hello' || lowerCommand === 'hi') {
+                addOutput('<div style="color: var(--primary); font-weight: 600;">👋 Hello! Welcome back! Type <strong>"help"</strong> to see what I can do.</div>');
+            } else {
+                // Trigger shake animation for invalid command
+                const inputContainer = document.querySelector('.terminal-input-container');
+                inputContainer.classList.add('shake-error');
+                setTimeout(() => {
+                    inputContainer.classList.remove('shake-error');
+                }, 500);
+                
+                addOutput('<div class="error">⚠️ <strong>Command not found:</strong> "' + command + '"<br><br>Type <strong>"help"</strong> to see all available commands.</div>');
+            }
+
+            // Scroll to bottom
+            terminalOutput.scrollTop = terminalOutput.scrollHeight;
+        }
+
+        function addOutput(text, className = '') {
+            const line = document.createElement('div');
+            line.className = 'output-line ' + className;
+            line.style.marginTop = '20px';
+            line.innerHTML = text;
+            terminalOutput.appendChild(line);
+        }
+
+        // Welcome message on load
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                addOutput('<div class="success" style="font-weight: 600;">🎉 Portfolio system ready!</div><div style="margin-top: 10px; opacity: 0.9;">Type <strong style="color: var(--tertiary);">"projects"</strong> to see all my work, or <strong style="color: var(--tertiary);">"help"</strong> for all commands!</div>');
+            }, 800);
+        });
+
+        // Smooth animations for skill items
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animation = 'fadeInUp 0.6s ease-out forwards';
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.15 });
+
+            document.querySelectorAll(
+            '.section, .skill-item, .project-card'
+        ).forEach(el => observer.observe(el));
+
+        // Click terminal output to focus input
+        terminalOutput.addEventListener('click', () => {
+            terminalInput.focus();
+        });
+    </script>
 </body>
 </html>
