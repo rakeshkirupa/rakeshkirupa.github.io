@@ -10,6 +10,17 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Orbitron:wght@900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        // CRITICAL: Run before any rendering to prevent light theme flash
+        (function() {
+            const savedTheme = localStorage.getItem('theme');
+            // Default is DARK - only apply light if explicitly saved
+            if (savedTheme === 'light') {
+                document.documentElement.setAttribute('data-theme', 'light');
+            }
+            // If dark or no theme, do nothing (CSS :root is dark by default)
+        })();
+    </script>
     <style>
         :root {
             --primary: #00ff41;
@@ -20,6 +31,17 @@
             --text: #00ff41;
             --shadow: #00ff4133;
             --glow: #00ff4166;
+        }
+
+        [data-theme="light"] {
+            --primary: #2e7d32;
+            --secondary: #388e3c;
+            --tertiary: #43a047;
+            --bg: #f1f8f4;
+            --terminal-bg: #ffffff;
+            --text: #1b5e20;
+            --shadow: #2e7d3222;
+            --glow: #2e7d3233;
         }
 
         * {
@@ -34,6 +56,55 @@
             color: var(--text);
             overflow-x: hidden;
             cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"><rect width="10" height="10" fill="%2300ff41"/></svg>') 10 10, auto;
+            transition: background 0.3s ease, color 0.3s ease;
+            opacity: 0;
+            animation: fadeInBody 0.5s ease-out 0.1s forwards;
+        }
+
+        @keyframes fadeInBody {
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Theme Toggle - Small Icon Only (Option A) */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 10000;
+            background: var(--terminal-bg);
+            border: 2px solid var(--primary);
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 8px var(--shadow);
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            box-shadow: 0 4px 15px var(--glow);
+            transform: scale(1.1);
+            border-color: var(--secondary);
+        }
+
+        .theme-toggle i {
+            font-size: 16px;
+            color: var(--primary);
+            transition: transform 0.5s ease, color 0.3s ease;
+        }
+
+        .theme-toggle:hover i {
+            transform: rotate(180deg);
+            color: var(--secondary);
+        }
+
+        .theme-label {
+            display: none;
         }
 
         /* CRT Effect */
@@ -54,6 +125,16 @@
             pointer-events: none;
             z-index: 9999;
             animation: scanline 8s linear infinite;
+        }
+
+        [data-theme="light"] body::before {
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(46, 125, 50, 0.02) 0px,
+                rgba(46, 125, 50, 0.02) 1px,
+                transparent 1px,
+                transparent 2px
+            );
         }
 
         @keyframes scanline {
@@ -92,6 +173,14 @@
             margin-bottom: 30px;
             animation: terminalBoot 0.5s ease-out;
             overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        [data-theme="light"] .terminal {
+            box-shadow: 
+                0 0 10px var(--shadow),
+                0 0 20px var(--shadow),
+                inset 0 0 10px rgba(46, 125, 50, 0.03);
         }
 
         @keyframes terminalBoot {
@@ -112,6 +201,11 @@
             display: flex;
             align-items: center;
             gap: 8px;
+            transition: background 0.3s ease;
+        }
+
+        [data-theme="light"] .terminal-header {
+            background: linear-gradient(135deg, #c8e6c9 0%, #a5d6a7 100%);
         }
 
         .terminal-button {
@@ -175,6 +269,13 @@
             animation: flicker 4s infinite alternate;
         }
 
+        [data-theme="light"] .glitch-title {
+            text-shadow: 
+                0 0 5px var(--glow),
+                0 0 10px var(--glow),
+                2px 2px 0px #1b5e20;
+        }
+
         @keyframes flicker {
             0%, 100% { opacity: 1; }
             41%, 43% { opacity: 0.85; }
@@ -217,6 +318,11 @@
             transform: translateX(-50%);
             border: 2px solid var(--primary);
             box-shadow: 0 0 20px var(--shadow);
+            transition: box-shadow 0.3s ease;
+        }
+
+        [data-theme="light"] .laptop {
+            box-shadow: 0 0 5px var(--shadow);
         }
 
         .laptop::before {
@@ -229,6 +335,11 @@
             left: 5%;
             border-radius: 4px;
             box-shadow: inset 0 0 20px rgba(0, 255, 65, 0.3);
+            transition: box-shadow 0.3s ease;
+        }
+
+        [data-theme="light"] .laptop::before {
+            box-shadow: inset 0 0 5px rgba(46, 125, 50, 0.1);
         }
 
         .laptop::after {
@@ -260,6 +371,11 @@
             border-radius: 2px;
             animation: codeTyping 2s ease-in-out infinite;
             box-shadow: 0 0 5px var(--glow);
+            transition: box-shadow 0.3s ease;
+        }
+
+        [data-theme="light"] .code-line {
+            box-shadow: 0 0 1px var(--glow);
         }
 
         .code-line:nth-child(1) { width: clamp(50px, 10vw, 80px); animation-delay: 0s; }
@@ -293,6 +409,12 @@
             font-size: clamp(0.7rem, 2vw, 1rem);
             animation: cloudFloat 4s ease-in-out infinite;
             box-shadow: 0 0 15px var(--shadow);
+            transition: box-shadow 0.3s ease;
+        }
+
+        [data-theme="light"] .cloud-icon {
+            box-shadow: 0 0 3px var(--shadow);
+            background: rgba(46, 125, 50, 0.05);
         }
 
         .cloud-icon:nth-child(1) { animation-delay: 0s; }
@@ -368,7 +490,14 @@
             line-height: 1.8;
             background: rgba(0, 0, 0, 0.4);
             border-radius: 8px;
-            border: 1px solid rgba(0, 255, 65, 0.2);
+            border: 1px solid var(--primary);
+            opacity: 0.9;
+            transition: all 0.3s ease;
+        }
+
+        [data-theme="light"] .terminal-output {
+            background: rgba(255, 255, 255, 0.7);
+            border: 1px solid var(--primary);
         }
 
         .terminal-output::-webkit-scrollbar {
@@ -376,7 +505,7 @@
         }
 
         .terminal-output::-webkit-scrollbar-track {
-            background: rgba(0, 255, 65, 0.05);
+            background: var(--shadow);
             border-radius: 5px;
         }
 
@@ -415,14 +544,24 @@
             background: rgba(0, 0, 0, 0.4);
             padding: clamp(10px, 2vw, 15px);
             border-radius: 8px;
-            border: 2px solid rgba(0, 255, 65, 0.3);
+            border: 2px solid var(--primary);
+            opacity: 0.8;
             transition: all 0.3s ease;
+        }
+
+        [data-theme="light"] .terminal-input-container {
+            background: rgba(255, 255, 255, 0.7);
         }
 
         .terminal-input-container:focus-within {
             border-color: var(--primary);
             box-shadow: 0 0 15px var(--shadow);
             background: rgba(0, 0, 0, 0.5);
+            opacity: 1;
+        }
+
+        [data-theme="light"] .terminal-input-container:focus-within {
+            background: rgba(255, 255, 255, 0.9);
         }
 
         .terminal-input {
@@ -436,7 +575,8 @@
         }
 
         .terminal-input::placeholder {
-            color: rgba(0, 255, 65, 0.4);
+            color: var(--primary);
+            opacity: 0.4;
         }
 
         .terminal-input:focus {
@@ -475,7 +615,7 @@
         .terminal-help {
             margin-top: 20px;
             padding: clamp(10px, 2vw, 15px);
-            background: rgba(0, 255, 65, 0.05);
+            background: var(--shadow);
             border-left: 4px solid var(--primary);
             font-size: clamp(0.7rem, 1.8vw, 0.85rem);
             opacity: 0.9;
@@ -512,6 +652,10 @@
             font-weight: 700;
         }
 
+        [data-theme="light"] .section-title {
+            text-shadow: 0 0 3px var(--glow);
+        }
+
         .command-line {
             margin-bottom: 15px;
             line-height: 1.8;
@@ -534,7 +678,8 @@
             color: var(--primary);
             margin-bottom: 15px;
             font-weight: 700;
-            border-bottom: 2px solid rgba(0, 255, 65, 0.3);
+            border-bottom: 2px solid var(--primary);
+            opacity: 0.8;
             padding-bottom: 8px;
         }
 
@@ -546,14 +691,15 @@
 
         .skill-item {
             padding: clamp(10px, 2vw, 14px);
-            border: 2px solid rgba(0, 255, 65, 0.3);
+            border: 2px solid var(--primary);
             border-radius: 6px;
             text-align: center;
-            background: rgba(0, 255, 65, 0.04);
+            background: var(--shadow);
             transition: all 0.3s ease;
             position: relative;
             font-size: clamp(0.75rem, 1.8vw, 0.9rem);
             font-weight: 500;
+            opacity: 0.9;
         }
 
         .skill-item::after {
@@ -573,10 +719,11 @@
         }
 
         .skill-item:hover {
-            border-color: var(--primary);
-            box-shadow: 0 0 20px var(--shadow);
+            border-color: var(--secondary);
+            box-shadow: 0 0 20px var(--glow);
             transform: scale(1.08);
-            background: rgba(0, 255, 65, 0.08);
+            background: var(--glow);
+            opacity: 1;
         }
 
         /* Projects */
@@ -587,8 +734,8 @@
         }
 
         .project-card {
-            background: linear-gradient(135deg, rgba(0, 255, 65, 0.05) 0%, rgba(0, 255, 65, 0.02) 100%);
-            border: 2px solid rgba(0, 255, 65, 0.3);
+            background: linear-gradient(135deg, var(--shadow) 0%, transparent 100%);
+            border: 2px solid var(--primary);
             border-radius: 10px;
             padding: clamp(15px, 3vw, 25px);
             transition: all 0.4s ease;
@@ -603,7 +750,7 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(0, 255, 65, 0.15), transparent);
+            background: linear-gradient(90deg, transparent, var(--glow), transparent);
             transition: left 0.6s ease;
         }
 
@@ -625,7 +772,8 @@
         }
 
         .project-desc {
-            color: rgba(0, 255, 65, 0.75);
+            color: var(--text);
+            opacity: 0.85;
             font-size: clamp(0.8rem, 1.8vw, 0.9rem);
             line-height: 1.7;
             margin-bottom: 15px;
@@ -640,15 +788,15 @@
         .tech-tag {
             font-size: clamp(0.65rem, 1.5vw, 0.75rem);
             padding: clamp(4px, 1vw, 5px) clamp(8px, 2vw, 12px);
-            border: 1px solid rgba(0, 255, 65, 0.5);
+            border: 1px solid var(--primary);
             border-radius: 4px;
             color: var(--tertiary);
-            background: rgba(0, 255, 65, 0.08);
+            background: var(--shadow);
             transition: all 0.3s ease;
         }
 
         .tech-tag:hover {
-            background: rgba(0, 255, 65, 0.15);
+            background: var(--glow);
             transform: scale(1.05);
         }
 
@@ -715,7 +863,7 @@
             text-align: center;
             margin-top: 60px;
             padding-top: 30px;
-            border-top: 1px solid rgba(0, 255, 65, 0.2);
+            border-top: 1px solid var(--primary);
             opacity: 0.7;
             font-size: clamp(0.7rem, 1.8vw, 0.85rem);
         }
@@ -748,6 +896,17 @@
             .terminal-input {
                 font-size: 0.85rem;
             }
+
+            .theme-toggle {
+                width: 32px;
+                height: 32px;
+                top: 15px;
+                right: 15px;
+            }
+
+            .theme-toggle i {
+                font-size: 14px;
+            }
         }
 
         @media (max-width: 480px) {
@@ -766,6 +925,12 @@
     </style>
 </head>
 <body>
+    <!-- Theme Toggle - Top Right -->
+    <div class="theme-toggle" onclick="toggleTheme()" title="Toggle Theme">
+        <i class="fas fa-moon" id="theme-icon"></i>
+        <span class="theme-label" id="theme-label">DARK</span>
+    </div>
+
     <div class="container">
         <div class="terminal">
             <div class="terminal-header">
@@ -1057,7 +1222,7 @@
         </div>
     </div>
 
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
     <script>
         // All 8 projects data
         const allProjects = {
@@ -1484,7 +1649,7 @@
     You're not in the sudoers file. This incident will be reported to... well, just me. 😉
   </div>
   <div style="margin-top: 20px; padding: 12px; background: rgba(0,255,65,0.1); border-radius: 4px;">
-    💡 <strong>Hint:</strong> Try <code style="color: var(--tertiary);">cat resume</code> or <code style="color: var(--tertiary);">pwd</code> for more easter eggs!
+    💡 <strong>Hint:</strong> Try <code style="color: var(--tertiary);">pwd</code> for an easter egg!
   </div>
 </div>`,
 
@@ -1496,26 +1661,6 @@
   </div>
   <div style="margin-top: 15px; padding: 10px; background: rgba(0,255,65,0.08); border-radius: 4px; opacity: 0.9; font-size: 0.9rem;">
     💡 You're browsing my professional portfolio! Try <code style="color: var(--tertiary);">ls</code> to see what's here 😉
-  </div>
-</div>`,
-
-            cat: `<div style="color: var(--secondary); font-weight: 700; font-size: 1.05rem; margin-bottom: 15px;">📄 cat resume</div>
-<div style="padding: 20px; background: rgba(0,255,65,0.05); border-radius: 8px; font-family: 'JetBrains Mono', monospace;">
-  <div style="padding: 15px; background: rgba(0,0,0,0.3); border-radius: 6px; line-height: 1.8;">
-    <span style="color: var(--tertiary);">$</span> cat resume.txt<br>
-    <br>
-    <span style="color: var(--primary);">╔══════════════════════════════════╗</span><br>
-    <span style="color: var(--primary);">║    RAKESH KIRUPANANDAN           ║</span><br>
-    <span style="color: var(--primary);">║    Senior DevOps Engineer        ║</span><br>
-    <span style="color: var(--primary);">╚══════════════════════════════════╝</span><br>
-    <br>
-    <span style="opacity: 0.9;">Experience: 5+ years</span><br>
-    <span style="opacity: 0.9;">Projects: 8 completed</span><br>
-    <span style="opacity: 0.9;">Certifications: 3</span><br>
-    <span style="opacity: 0.9;">Expertise: Cloud Migration, K8s, CI/CD</span>
-  </div>
-  <div style="margin-top: 15px; padding: 12px; background: rgba(0,255,65,0.1); border-radius: 6px; border: 1px solid var(--primary);">
-    💡 For the full resume: <code style="color: var(--tertiary);">download</code> or <code style="color: var(--tertiary);">resume</code>
   </div>
 </div>`,
 
@@ -1708,16 +1853,61 @@
     </script>
     <script>
         window.addEventListener("load", () => {
-        if (sessionStorage.getItem("bootPlayed")) return;
-        sessionStorage.setItem("bootPlayed", "true");
-        const input = document.getElementById("terminal-input");
-        window.scrollTo(0, 0);
-        setTimeout(() => {
-            if (input) input.focus();
-        }, 1400);
-        setTimeout(() => {
-            window.scrollTo({ top: 0, behavior: "smooth" });
-        }, 2800);
+            if (sessionStorage.getItem("bootPlayed")) return;
+            sessionStorage.setItem("bootPlayed", "true");
+            
+            const input = document.getElementById("terminal-input");
+            
+            // Start at top
+            window.scrollTo(0, 0);
+            
+            // After 1.4s, focus input (which scrolls to it)
+            setTimeout(() => {
+                if (input) input.focus();
+            }, 1400);
+            
+            // After 2.8s, smoothly scroll back to top
+            setTimeout(() => {
+                window.scrollTo({ top: 0, behavior: "smooth" });
+            }, 2800);
+        });
+    </script>
+    <script>
+        // Theme Toggle Function
+        function toggleTheme() {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            
+            html.setAttribute('data-theme', newTheme === 'dark' ? '' : 'light');
+            
+            const icon = document.getElementById('theme-icon');
+            const label = document.getElementById('theme-label');
+            
+            if (newTheme === 'light') {
+                icon.className = 'fas fa-sun';
+                label.textContent = 'LIGHT';
+            } else {
+                icon.className = 'fas fa-moon';
+                label.textContent = 'DARK';
+            }
+            
+            localStorage.setItem('theme', newTheme);
+        }
+
+        // Update icon/label on page load based on current theme
+        window.addEventListener('load', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const icon = document.getElementById('theme-icon');
+            const label = document.getElementById('theme-label');
+            
+            if (currentTheme === 'light') {
+                icon.className = 'fas fa-sun';
+                if (label) label.textContent = 'LIGHT';
+            } else {
+                icon.className = 'fas fa-moon';
+                if (label) label.textContent = 'DARK';
+            }
         });
     </script>
 </body>
