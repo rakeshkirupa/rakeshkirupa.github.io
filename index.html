@@ -507,14 +507,15 @@
             transform: translateX(-50%) translateY(0) scale(1);
         }
         @keyframes coreWave {
-            0%, 100% { transform: rotate(0deg); }
-            20% { transform: rotate(-14deg); }
-            60% { transform: rotate(14deg); }
+            0%   { transform: translate(-50%, -50%) translateY(0); }
+            25%  { transform: translate(-50%, -50%) translateY(-7px); }
+            45%  { transform: translate(-50%, -50%) translateY(0); }
+            65%  { transform: translate(-50%, -50%) translateY(-4px); }
+            100% { transform: translate(-50%, -50%) translateY(0); }
         }
-        .solar-core.is-waving img,
-        .solar-core.is-waving i { animation: coreWave 0.55s ease-in-out 2; }
+        .solar-core.is-waving { animation: coreWave 0.8s ease-in-out; }
         @media (prefers-reduced-motion: reduce) {
-            .solar-core.is-waving img, .solar-core.is-waving i { animation: none; }
+            .solar-core.is-waving { animation: none; }
         }
 
         .orbit-ring {
@@ -1846,7 +1847,6 @@ const PROJECT_COUNT = Object.keys(allProjects).length;
   <div style="margin-bottom: 8px;"><strong style="color: var(--tertiary);">download</strong> - Download the resume PDF</div>
   <div style="margin-bottom: 8px;"><strong style="color: var(--tertiary);">hire</strong> - Recruiter snapshot</div>
   <div style="margin-bottom: 8px;"><strong style="color: var(--tertiary);">stats</strong> - Portfolio statistics</div>
-  <div style="margin-bottom: 8px;"><strong style="color: var(--tertiary);">arch &lt;name&gt;</strong> - Architecture flow</div>
   <div><strong style="color: var(--tertiary);">clear</strong> - Clear terminal screen</div>
 </div>
 <div style="margin-top: 15px; padding: 10px; background: var(--accent-strong); border-radius: 5px;">
@@ -2320,14 +2320,25 @@ const PROJECT_COUNT = Object.keys(allProjects).length;
                 addOutput(typeof cmd === 'function' ? cmd() : cmd);
             } else if (lowerCommand === 'hire') {
                 addOutput(typeof terminalCommands.hire === 'function' ? terminalCommands.hire() : terminalCommands.hire);
-            } else if (lowerCommand.startsWith('arch ') || lowerCommand.startsWith('architecture ')) {
-                const key = lowerCommand.startsWith('architecture ') ? lowerCommand.slice(13).trim() : lowerCommand.slice(5).trim();
-                const flow = typeof renderArchFlow === 'function' ? renderArchFlow(key) : null;
+            } else if (lowerCommand === 'arch' || lowerCommand === 'architecture' ||
+                       lowerCommand.startsWith('arch ') || lowerCommand.startsWith('architecture ')) {
+                const key = lowerCommand.startsWith('architecture ') ? lowerCommand.slice(13).trim()
+                          : lowerCommand.startsWith('arch ') ? lowerCommand.slice(5).trim() : '';
+                const flow = (key && typeof renderArchFlow === 'function') ? renderArchFlow(key) : null;
                 if (flow) {
                     const title = (allProjects[key] && allProjects[key].name) || key;
                     addOutput('<div style="font-weight:600;margin-bottom:8px;color:var(--tertiary)">Architecture — ' + escapeHtml(title) + '</div>' + flow);
                 } else {
-                    addOutput('<div class="error">No flow for "<strong>' + escapeHtml(key) + '</strong>". Try release-governance, eks-ci-platform, data-workbench…</div>');
+                    const keys = (typeof architectureFlows === 'object' && architectureFlows) ? Object.keys(architectureFlows) : [];
+                    const chips = keys.map(function (k) {
+                        return '<button type="button" class="cmd-chip" onclick="runShellCommand(\'arch ' + k + '\')">' + k + '</button>';
+                    }).join(' ');
+                    const note = key ? '<div class="error" style="margin-bottom:12px;">No architecture flow named "<strong>' + escapeHtml(key) + '</strong>".</div>' : '';
+                    addOutput(note +
+                        '<div style="color: var(--secondary); font-weight: 700; font-size: 1.05rem; margin-bottom: 8px;">Architecture flows</div>' +
+                        '<div style="opacity: 0.9; margin-bottom: 6px;">See how a system is built — a step-by-step pipeline.</div>' +
+                        '<div style="opacity: 0.9; margin-bottom: 12px;"><strong style="color: var(--primary);">How to use:</strong> type <strong style="color: var(--tertiary);">arch &lt;name&gt;</strong> &nbsp;(example: <code style="color: var(--primary);">arch release-governance</code>) — or just tap one:</div>' +
+                        '<div class="cmd-chips">' + chips + '</div>');
                 }
             } else if (lowerCommand === 'hello' || lowerCommand === 'hi' || lowerCommand === 'hey') {
                 addOutput('<div style="color: var(--primary); font-weight: 600;">👋 Hello! Welcome back! Type <strong>"help"</strong> to see what I can do.</div>');
