@@ -453,8 +453,9 @@
             z-index: 5;
             box-shadow: 0 0 28px var(--glow), inset 0 0 16px rgba(0, 255, 65, 0.1);
             padding: 0;
-            overflow: hidden;
+            overflow: visible;
             color: var(--primary);
+            cursor: pointer;
         }
 
         .solar-core img {
@@ -467,6 +468,53 @@
         .solar-core i {
             font-size: 46px;
             color: var(--primary);
+        }
+
+        /* Avatar easter egg: click → wave + speech bubble */
+        .core-bubble {
+            position: absolute;
+            left: 50%;
+            bottom: calc(100% + 10px);
+            transform: translateX(-50%) translateY(6px) scale(0.9);
+            background: var(--terminal-bg);
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            font-size: var(--fs-xs);
+            font-weight: 700;
+            white-space: nowrap;
+            padding: 6px 12px;
+            border-radius: 8px;
+            box-shadow: 0 0 14px var(--glow);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 200ms ease, transform 200ms ease;
+            z-index: 30;
+        }
+        .core-bubble::after {
+            content: "";
+            position: absolute;
+            left: 50%;
+            bottom: -5px;
+            transform: translateX(-50%) rotate(45deg);
+            width: 9px;
+            height: 9px;
+            background: var(--terminal-bg);
+            border-right: 1px solid var(--primary);
+            border-bottom: 1px solid var(--primary);
+        }
+        .core-bubble.is-show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0) scale(1);
+        }
+        @keyframes coreWave {
+            0%, 100% { transform: rotate(0deg); }
+            20% { transform: rotate(-14deg); }
+            60% { transform: rotate(14deg); }
+        }
+        .solar-core.is-waving img,
+        .solar-core.is-waving i { animation: coreWave 0.55s ease-in-out 2; }
+        @media (prefers-reduced-motion: reduce) {
+            .solar-core.is-waving img, .solar-core.is-waving i { animation: none; }
         }
 
         .orbit-ring {
@@ -1182,16 +1230,17 @@
                 gap: var(--s4);
             }
             .devops-animation .solar-system {
-                width: min(84vw, 288px);
-                height: min(84vw, 288px);
+                width: min(76vw, 256px);
+                height: min(76vw, 256px);
             }
             .devops-animation { min-height: 300px; }
-            .solar-core { width: 58px; height: 58px; }
+            .solar-core { width: 46px; height: 46px; }
+            .solar-core i { font-size: 26px; }
             .planet {
-                font-size: 8.5px;
-                min-width: 38px;
-                height: 24px;
-                padding: 0 6px;
+                font-size: 7.5px;
+                min-width: 30px;
+                height: 19px;
+                padding: 0 5px;
             }
             .achieve-title { font-size: var(--fs-base); }
         }
@@ -1967,6 +2016,48 @@ const PROJECT_COUNT = Object.keys(allProjects).length;
   </div>
 </div>`,
 
+            uptime: `<div style="color: var(--secondary); font-weight: 700; font-size: 1.05rem; margin-bottom: 15px;">uptime</div>
+<div style="padding: 15px 18px; background: var(--accent-mid); border-radius: 8px; font-family: 'JetBrains Mono', monospace; line-height: 1.8;">
+  <span style="color: var(--tertiary);">$</span> up <strong style="color: var(--primary);">5.5 years</strong>, 0 unplanned outages, load average: ☕ ☕ ☕
+</div>`,
+
+            'kubectl get pods': function () {
+                const rows = [
+                    ['NAME', 'READY', 'STATUS', 'RESTARTS', 'AGE'],
+                    ['release-gate-7d9f4b8', '1/1', 'Running', '0', '5.5y'],
+                    ['promotion-gate-5c2a1', '1/1', 'Running', '0', '5.5y'],
+                    ['data-workbench-superset', '1/1', 'Running', '0', '312d'],
+                    ['qualcast-scanner-8f3d', '1/1', 'Running', '0', '210d'],
+                    ['argocd-server-6b9c9d', '1/1', 'Running', '0', '1y']
+                ];
+                const w = [26, 8, 10, 11, 5];
+                const body = rows.map(function (r, ri) {
+                    const line = r.map(function (c, ci) { return String(c).padEnd(w[ci]); }).join('');
+                    return ri === 0 ? '<span style="opacity:0.55">' + line + '</span>' : line;
+                }).join('\n');
+                return '<div style="color: var(--secondary); font-weight: 700; font-size: 1.05rem; margin-bottom: 15px;">kubectl get pods</div>' +
+                    '<div style="padding: 15px; background: var(--accent-mid); border-radius: 8px; overflow-x: auto;">' +
+                    '<pre style="margin:0; font-family:\'JetBrains Mono\',monospace; font-size:0.82rem; line-height:1.7; color: var(--primary); white-space: pre;">' + body + '</pre></div>';
+            },
+
+            'docker ps': function () {
+                const rows = [
+                    ['CONTAINER ID', 'IMAGE', 'STATUS', 'PORTS', 'NAMES'],
+                    ['a1b2c3d4e5f6', 'jenkins:lts', 'Up 5.5 years', '8080/tcp', 'ci-controller'],
+                    ['b2c3d4e5f6a1', 'sonarqube:9.9', 'Up 2 years', '9000/tcp', 'code-quality'],
+                    ['c3d4e5f6a1b2', 'grafana:latest', 'Up 3 years', '3000/tcp', 'observability'],
+                    ['d4e5f6a1b2c3', 'prom/prometheus', 'Up 3 years', '9090/tcp', 'metrics']
+                ];
+                const w = [15, 18, 16, 11, 14];
+                const body = rows.map(function (r, ri) {
+                    const line = r.map(function (c, ci) { return String(c).padEnd(w[ci]); }).join('');
+                    return ri === 0 ? '<span style="opacity:0.55">' + line + '</span>' : line;
+                }).join('\n');
+                return '<div style="color: var(--secondary); font-weight: 700; font-size: 1.05rem; margin-bottom: 15px;">docker ps</div>' +
+                    '<div style="padding: 15px; background: var(--accent-mid); border-radius: 8px; overflow-x: auto;">' +
+                    '<pre style="margin:0; font-family:\'JetBrains Mono\',monospace; font-size:0.82rem; line-height:1.7; color: var(--primary); white-space: pre;">' + body + '</pre></div>';
+            },
+
             resume: function() {
                 return '<div style="color: var(--secondary); font-weight: 700; font-size: 1.05rem; margin-bottom: 15px;">Resume</div>' +
                 '<div style="padding: 20px; background: var(--accent-mid); border-radius: 8px; line-height: 2;">' +
@@ -2091,6 +2182,10 @@ const PROJECT_COUNT = Object.keys(allProjects).length;
 </div>`
         };
         terminalCommands.cv = terminalCommands.download;
+        // Easter-egg aliases so short forms work too
+        terminalCommands.kubectl = terminalCommands['kubectl get pods'];
+        terminalCommands['k get pods'] = terminalCommands['kubectl get pods'];
+        terminalCommands.docker = terminalCommands['docker ps'];
 
         // Terminal functionality
         const terminalInput = document.getElementById('terminal-input');
@@ -2404,6 +2499,34 @@ const PROJECT_COUNT = Object.keys(allProjects).length;
             }, 3600);
         })();
 
+        // Avatar easter egg: click the core → wave + speech bubble
+        (function initCoreWave() {
+            const core = document.querySelector('.solar-core');
+            if (!core) return;
+            const bubble = document.createElement('div');
+            bubble.className = 'core-bubble';
+            bubble.textContent = '$ hey there 👋';
+            core.appendChild(bubble);
+            core.setAttribute('role', 'button');
+            core.setAttribute('tabindex', '0');
+            let t = null;
+            function wave() {
+                core.classList.remove('is-waving');
+                void core.offsetWidth; // restart animation
+                core.classList.add('is-waving');
+                bubble.classList.add('is-show');
+                clearTimeout(t);
+                t = setTimeout(function () {
+                    bubble.classList.remove('is-show');
+                    core.classList.remove('is-waving');
+                }, 2600);
+            }
+            core.addEventListener('click', wave);
+            core.addEventListener('keydown', function (e) {
+                if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); wave(); }
+            });
+        })();
+
         // Solar system: readable labels + reliable hover tooltips
         (function initSolar() {
             const system = document.getElementById('solar-system');
@@ -2489,7 +2612,6 @@ const PROJECT_COUNT = Object.keys(allProjects).length;
             // labels stay upright (boxes never rotate → never invert), pauses on hover
             (function orbit() {
                 if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-                if (window.innerWidth <= 900) return; // static on mobile/tablet — no room to rotate cleanly
                 const planets = Array.prototype.map.call(system.querySelectorAll('.planet'), function (p) {
                     const l = parseFloat(p.style.left), t = parseFloat(p.style.top);
                     return { el: p, base: Math.atan2(50 - t, l - 50) };
