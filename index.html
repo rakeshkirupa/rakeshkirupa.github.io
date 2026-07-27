@@ -3,13 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; img-src 'self' data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; script-src 'self' 'unsafe-inline'; connect-src 'self'; form-action 'none'; frame-src 'none'">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
     <title>Rakesh Kirupanandan | Senior DevOps Engineer</title>
     <link rel="icon" href="assets/icons/favicon.ico">
     <link rel="icon" type="image/png" href="assets/icons/favicon.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Orbitron:wght@900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer">
     <script>
         // CRITICAL: Run before any rendering to prevent light theme flash
         (function() {
@@ -31,6 +33,28 @@
             --text: #00ff41;
             --shadow: #00ff4133;
             --glow: #00ff4166;
+            /* 8-point spacing */
+            --s1: 8px;
+            --s2: 16px;
+            --s3: 24px;
+            --s4: 32px;
+            --s5: 48px;
+            --s6: 64px;
+            /* type scale */
+            --fs-xs: 12px;
+            --fs-sm: 14px;
+            --fs-base: 15px;
+            --fs-md: 17px;
+            --fs-lg: 20px;
+            --fs-xl: 26px;
+            --fs-hero: clamp(26px, 4vw, 44px);
+            --lh-tight: 1.2;
+            --lh-body: 1.65;
+            --max: 1180px;
+            --radius: 8px;
+            --accent-mid: rgba(0, 255, 65, 0.08);
+            --accent-strong: rgba(0, 255, 65, 0.14);
+            --surface: rgba(0, 0, 0, 0.35);
         }
 
         [data-theme="light"] {
@@ -42,6 +66,9 @@
             --text: #1b5e20;
             --shadow: #2e7d3222;
             --glow: #2e7d3233;
+            --accent-mid: rgba(46, 125, 50, 0.08);
+            --accent-strong: rgba(46, 125, 50, 0.12);
+            --surface: rgba(255, 255, 255, 0.7);
         }
 
         * {
@@ -54,11 +81,14 @@
             font-family: 'JetBrains Mono', monospace;
             background: var(--bg);
             color: var(--text);
+            font-size: var(--fs-base);
+            line-height: var(--lh-body);
             overflow-x: hidden;
-            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"><rect width="10" height="10" fill="%2300ff41"/></svg>') 10 10, auto;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="18"><rect x="1" y="1" width="7" height="15" fill="%2300ff41" opacity="0.9"/></svg>') 4 9, auto;
             transition: background 0.3s ease, color 0.3s ease;
             opacity: 0;
             animation: fadeInBody 0.5s ease-out 0.1s forwards;
+            -webkit-font-smoothing: antialiased;
         }
 
         @keyframes fadeInBody {
@@ -67,33 +97,32 @@
             }
         }
 
-        /* Theme Toggle - Small Icon Only (Option A) */
+        /* Theme Toggle - inline in terminal header */
         .theme-toggle {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 10000;
             background: var(--terminal-bg);
-            border: 2px solid var(--primary);
+            border: 1.5px solid var(--primary);
             border-radius: 50%;
-            width: 35px;
-            height: 35px;
+            width: 28px;
+            height: 28px;
+            padding: 0;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 2px 8px var(--shadow);
+            box-shadow: 0 0 8px var(--shadow);
             transition: all 0.3s ease;
+            flex-shrink: 0;
+            margin-left: var(--s1);
         }
 
         .theme-toggle:hover {
-            box-shadow: 0 4px 15px var(--glow);
-            transform: scale(1.1);
+            box-shadow: 0 0 12px var(--glow);
+            transform: scale(1.12);
             border-color: var(--secondary);
         }
 
         .theme-toggle i {
-            font-size: 16px;
+            font-size: 13px;
             color: var(--primary);
             transition: transform 0.5s ease, color 0.3s ease;
         }
@@ -156,13 +185,16 @@
         }
 
         .container {
-            max-width: 1400px;
+            max-width: var(--max);
             margin: 0 auto;
-            padding: 20px;
+            padding: var(--s3) var(--s3) var(--s5);
+            position: relative;
+            z-index: 2;
         }
 
         /* Terminal Window */
         .terminal {
+            position: relative;
             background: var(--terminal-bg);
             border: 2px solid var(--primary);
             border-radius: 12px;
@@ -170,9 +202,9 @@
                 0 0 30px var(--shadow),
                 0 0 60px var(--shadow),
                 inset 0 0 20px rgba(0, 255, 65, 0.05);
-            margin-bottom: 30px;
+            margin-bottom: var(--s4);
             animation: terminalBoot 0.5s ease-out;
-            overflow: hidden;
+            overflow: visible;
             transition: all 0.3s ease;
         }
 
@@ -200,8 +232,9 @@
             border-bottom: 1px solid var(--primary);
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: var(--s1);
             transition: background 0.3s ease;
+            min-height: 48px;
         }
 
         [data-theme="light"] .terminal-header {
@@ -222,23 +255,27 @@
 
         .terminal-title {
             margin-left: auto;
-            font-size: 12px;
+            margin-right: 0;
+            font-size: var(--fs-xs);
             opacity: 0.8;
-            letter-spacing: 1px;
+            letter-spacing: 0.04em;
+            white-space: nowrap;
         }
 
         .terminal-body {
-            padding: clamp(15px, 4vw, 30px);
+            padding: var(--s4) var(--s4) var(--s5);
         }
 
         /* Welcome Section */
         .welcome-section {
             display: grid;
-            grid-template-columns: 1fr auto;
-            gap: 40px;
-            margin-bottom: 40px;
+            grid-template-columns: minmax(0, 1fr) 420px;
+            gap: var(--s5);
+            margin: 0 0 var(--s5);
             align-items: center;
         }
+
+        .devops-animation { justify-self: center; }
 
         .profile-info-section {
             animation: slideInLeft 0.6s ease-out;
@@ -257,16 +294,18 @@
 
         .glitch-title {
             font-family: 'Orbitron', sans-serif;
-            font-size: clamp(1.5rem, 5vw, 3.5rem);
+            font-size: var(--fs-hero);
             font-weight: 900;
+            line-height: var(--lh-tight);
             color: var(--primary);
             text-shadow: 
                 0 0 10px var(--glow),
                 0 0 20px var(--glow),
                 2px 2px 0px #00cc33;
-            letter-spacing: 3px;
-            margin-bottom: 15px;
+            letter-spacing: 0.03em;
+            margin-bottom: var(--s2);
             animation: flicker 4s infinite alternate;
+            word-break: break-word;
         }
 
         [data-theme="light"] .glitch-title {
@@ -282,162 +321,275 @@
         }
 
         .subtitle {
-            font-size: clamp(0.85rem, 2.5vw, 1.2rem);
+            font-size: var(--fs-lg);
+            font-weight: 700;
             color: var(--secondary);
-            margin-bottom: 15px;
+            margin-bottom: var(--s2);
+            line-height: 1.4;
+            letter-spacing: 0.01em;
+        }
+
+        .hero-spec {
+            font-size: var(--fs-base);
+            line-height: 1.7;
+            color: var(--text);
+            opacity: 0.78;
+            max-width: 100%;
+            margin-bottom: var(--s3);
+        }
+
+        .hero-spec .spec-i { white-space: nowrap; }
+
+        .hero-divider {
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, var(--primary), transparent);
+            opacity: 0.4;
+            margin-bottom: var(--s3);
+        }
+
+        /* Achievement rotator — category · outcome · proof */
+        .achieve-card {
+            margin: 0 0 var(--s4);
+            padding: 0;
+            max-width: 100%;
+            min-height: 92px;
+            transition: opacity 280ms ease;
+        }
+
+        .achieve-card.is-fading {
+            opacity: 0;
+        }
+
+        .achieve-category {
+            font-size: var(--fs-xs);
+            font-weight: 700;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--tertiary);
+            opacity: 0.85;
+            margin-bottom: 6px;
+        }
+
+        .achieve-title {
+            font-size: var(--fs-md);
+            font-weight: 700;
+            color: var(--primary);
+            line-height: 1.5;
+            letter-spacing: -0.01em;
+            margin-bottom: var(--s1);
+        }
+
+        .achieve-proof {
+            font-size: var(--fs-sm);
+            font-weight: 400;
+            color: var(--tertiary);
+            line-height: 1.5;
+            opacity: 0.95;
+        }
+
+        /* Hero action buttons */
+        .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--s2);
+        }
+
+        .hero-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 9px 18px;
+            border: 1.5px solid var(--primary);
+            border-radius: var(--radius);
+            color: var(--primary);
+            background: var(--surface);
+            font-size: var(--fs-sm);
+            font-weight: 600;
+            text-decoration: none;
+            letter-spacing: 0.02em;
+            transition: all 0.25s ease;
+        }
+
+        .hero-btn:hover {
+            background: var(--primary);
+            color: var(--bg);
+            box-shadow: 0 0 16px var(--glow);
+            transform: translateY(-2px);
+        }
+
+
+        /* Engineering Solar System */
+        .devops-animation {
+            width: 100%;
+            min-height: 360px;
+            display: grid;
+            place-items: center;
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .solar-system {
+            width: min(86vw, 380px);
+            height: min(86vw, 380px);
+            position: relative;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .solar-core {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 104px;
+            height: 104px;
+            border-radius: 50%;
+            background: var(--terminal-bg);
+            border: 2px solid var(--primary);
+            display: grid;
+            place-items: center;
+            text-align: center;
+            z-index: 5;
+            box-shadow: 0 0 28px var(--glow), inset 0 0 16px rgba(0, 255, 65, 0.1);
+            padding: 0;
+            overflow: hidden;
+            color: var(--primary);
+        }
+
+        .solar-core img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        .solar-core i {
+            font-size: 46px;
+            color: var(--primary);
+        }
+
+        .orbit-ring {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            border: 1px solid rgba(0, 255, 65, 0.28);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 12px rgba(0, 255, 65, 0.05);
+        }
+
+        .orbit-ring.r1 { width: 48%; height: 48%; }
+        .orbit-ring.r2 { width: 76%; height: 76%; }
+        .orbit-ring.r3 { width: 100%; height: 100%; }
+
+        .planet {
+            position: absolute;
+            min-width: 50px;
+            height: 30px;
+            transform: translate(-50%, -50%);
+            padding: 0 9px;
+            border-radius: 999px;
+            background: var(--terminal-bg);
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            display: grid;
+            place-items: center;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: color 200ms, border-color 200ms, box-shadow 200ms, background 200ms;
+            z-index: 2;
+            box-shadow: 0 0 10px var(--shadow);
+            box-sizing: border-box;
+        }
+
+        .planet {
+            animation: planetGlow 5s ease-in-out infinite;
+        }
+        .planet:nth-child(2) { animation-delay: .6s; }
+        .planet:nth-child(3) { animation-delay: 1.2s; }
+        .planet:nth-child(4) { animation-delay: 1.8s; }
+        .planet:nth-child(5) { animation-delay: 2.4s; }
+
+        @keyframes planetGlow {
+            0%, 100% { box-shadow: 0 0 8px var(--shadow); }
+            50%      { box-shadow: 0 0 16px var(--glow); }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .planet { animation: none; }
+        }
+
+        .planet::before {
+            content: "";
+            position: absolute;
+            inset: -8px;
+            border-radius: 999px;
+        }
+
+        .planet:hover,
+        .planet:focus-visible,
+        .planet.is-hot {
+            color: var(--bg);
+            background: var(--primary);
+            border-color: var(--tertiary);
+            box-shadow: 0 0 0 4px var(--shadow), 0 0 16px var(--glow);
+            outline: none;
+            z-index: 6;
+        }
+
+        .planet-tooltip {
+            position: fixed;
+            z-index: 10003;
+            min-width: 168px;
+            max-width: 240px;
+            background: var(--terminal-bg);
+            border: 1px solid var(--primary);
+            border-radius: var(--radius);
+            padding: var(--s2);
+            pointer-events: none;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(8px);
+            transition: opacity 160ms, transform 160ms, visibility 160ms;
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
+            font-size: var(--fs-xs);
+        }
+
+        .planet-tooltip.is-visible {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+            transform: translateY(0);
+        }
+
+        .planet-tooltip h4 {
+            font-size: var(--fs-sm);
+            margin-bottom: var(--s1);
+            color: var(--primary);
+        }
+
+        .planet-tooltip ul {
+            list-style: none;
+            color: var(--text);
+            opacity: 0.85;
             line-height: 1.5;
         }
 
-        .tagline {
-            opacity: 0.85;
-            font-size: clamp(0.75rem, 2vw, 0.95rem);
-            line-height: 1.6;
+        .planet-tooltip li::before {
+            content: "✓ ";
+            color: var(--tertiary);
         }
 
-        /* DevOps Animation */
-        .devops-animation {
-            width: clamp(250px, 30vw, 300px);
-            height: clamp(250px, 30vw, 300px);
-            position: relative;
-            animation: floatAnimation 3s ease-in-out infinite;
-        }
-
-        @keyframes floatAnimation {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-        }
-
-        .laptop {
-            width: clamp(160px, 25vw, 200px);
-            height: clamp(96px, 15vw, 120px);
-            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
-            border-radius: 8px 8px 0 0;
-            position: absolute;
-            bottom: 20%;
-            left: 50%;
-            transform: translateX(-50%);
-            border: 2px solid var(--primary);
-            box-shadow: 0 0 20px var(--shadow);
-            transition: box-shadow 0.3s ease;
-        }
-
-        [data-theme="light"] .laptop {
-            box-shadow: 0 0 5px var(--shadow);
-        }
-
-        .laptop::before {
-            content: "";
-            width: 90%;
-            height: 83%;
-            background: var(--terminal-bg);
-            position: absolute;
-            top: 8%;
-            left: 5%;
-            border-radius: 4px;
-            box-shadow: inset 0 0 20px rgba(0, 255, 65, 0.3);
-            transition: box-shadow 0.3s ease;
-        }
-
-        [data-theme="light"] .laptop::before {
-            box-shadow: inset 0 0 5px rgba(46, 125, 50, 0.1);
-        }
-
-        .laptop::after {
-            content: "";
-            width: 120%;
-            height: 8%;
-            background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%);
-            position: absolute;
-            bottom: -8%;
-            left: 50%;
-            transform: translateX(-50%);
-            border-radius: 0 0 8px 8px;
-            border: 2px solid rgba(0, 255, 65, 0.3);
-            border-top: none;
-        }
-
-        .code-lines {
-            position: absolute;
-            top: 20%;
-            left: 10%;
-            display: flex;
-            flex-direction: column;
-            gap: clamp(3px, 1vw, 5px);
-        }
-
-        .code-line {
-            height: 3px;
-            background: var(--primary);
-            border-radius: 2px;
-            animation: codeTyping 2s ease-in-out infinite;
-            box-shadow: 0 0 5px var(--glow);
-            transition: box-shadow 0.3s ease;
-        }
-
-        [data-theme="light"] .code-line {
-            box-shadow: 0 0 1px var(--glow);
-        }
-
-        .code-line:nth-child(1) { width: clamp(50px, 10vw, 80px); animation-delay: 0s; }
-        .code-line:nth-child(2) { width: clamp(75px, 15vw, 120px); animation-delay: 0.3s; }
-        .code-line:nth-child(3) { width: clamp(40px, 8vw, 60px); animation-delay: 0.6s; }
-        .code-line:nth-child(4) { width: clamp(60px, 12vw, 100px); animation-delay: 0.9s; }
-
-        @keyframes codeTyping {
-            0%, 100% { opacity: 0.3; width: 20%; }
-            50% { opacity: 1; }
-        }
-
-        .cloud-icons {
-            position: absolute;
-            top: 10%;
-            width: 100%;
-            display: flex;
-            justify-content: space-around;
-            padding: 0 10%;
-        }
-
-        .cloud-icon {
-            width: clamp(35px, 8vw, 45px);
-            height: clamp(35px, 8vw, 45px);
-            background: rgba(0, 255, 65, 0.1);
-            border: 2px solid var(--primary);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: clamp(0.7rem, 2vw, 1rem);
-            animation: cloudFloat 4s ease-in-out infinite;
-            box-shadow: 0 0 15px var(--shadow);
-            transition: box-shadow 0.3s ease;
-        }
-
-        [data-theme="light"] .cloud-icon {
-            box-shadow: 0 0 3px var(--shadow);
-            background: rgba(46, 125, 50, 0.05);
-        }
-
-        .cloud-icon:nth-child(1) { animation-delay: 0s; }
-        .cloud-icon:nth-child(2) { animation-delay: 0.5s; }
-        .cloud-icon:nth-child(3) { animation-delay: 1s; }
-
-        @keyframes cloudFloat {
-            0%, 100% { transform: translateY(0px) scale(1); }
-            50% { transform: translateY(-15px) scale(1.1); }
-        }
-
-        .deployment-arrow {
-            position: absolute;
-            bottom: 42%;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: clamp(1.5rem, 4vw, 2rem);
-            animation: deployPulse 1.5s ease-in-out infinite;
-        }
-
-        @keyframes deployPulse {
-            0%, 100% { opacity: 0.3; transform: translateX(-50%) translateY(0); }
-            50% { opacity: 1; transform: translateX(-50%) translateY(10px); }
+        @media (prefers-reduced-motion: reduce) {
+            .orbit-ring,
+            .planet {
+                animation: none !important;
+            }
         }
 
         .prompt {
@@ -449,45 +601,52 @@
 
         /* Interactive Terminal */
         .terminal-interactive {
-            margin-bottom: 35px;
-            padding: clamp(15px, 3vw, 25px);
+            margin-bottom: var(--s5);
+            padding: var(--s3);
             background: rgba(0, 255, 65, 0.03);
-            border: 2px solid var(--primary);
-            border-radius: 10px;
+            border: 1px solid var(--primary);
+            border-radius: var(--radius);
             box-shadow: 
                 0 0 20px var(--shadow),
                 inset 0 0 20px rgba(0, 255, 65, 0.05);
         }
 
         .terminal-interactive-title {
-            font-size: clamp(1rem, 3vw, 1.4rem);
+            font-size: var(--fs-xs);
             color: var(--primary);
-            margin-bottom: 20px;
+            margin-bottom: var(--s2);
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: var(--s1);
             font-weight: 700;
+            letter-spacing: 0.03em;
+            font-family: 'JetBrains Mono', monospace;
+            opacity: 0.95;
         }
 
         .terminal-interactive-title::before {
-            content: "⚡";
-            font-size: 1.5rem;
+            content: "";
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--primary);
+            box-shadow: 0 0 8px var(--glow);
             animation: pulse 2s ease-in-out infinite;
         }
 
         @keyframes pulse {
             0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.7; transform: scale(1.2); }
+            50% { opacity: 0.55; transform: scale(0.85); }
         }
 
         .terminal-output {
-            min-height: clamp(200px, 40vh, 300px);
-            max-height: clamp(300px, 50vh, 500px);
+            min-height: 320px;
+            max-height: 480px;
             overflow-y: auto;
-            margin-bottom: 20px;
-            padding: clamp(12px, 3vw, 20px);
-            font-size: clamp(0.75rem, 2vw, 0.9rem);
-            line-height: 1.8;
+            margin-bottom: var(--s2);
+            padding: var(--s3);
+            font-size: var(--fs-sm);
+            line-height: var(--lh-body);
             background: rgba(0, 0, 0, 0.4);
             border-radius: 8px;
             border: 1px solid var(--primary);
@@ -625,7 +784,7 @@
 
         /* Content Sections */
         .section {
-            margin-bottom: 40px;
+            margin-bottom: var(--s5);
             animation: fadeInUp 0.6s ease-out backwards;
         }
 
@@ -641,13 +800,13 @@
         }
 
         .section-title {
-            font-size: clamp(1.2rem, 3vw, 1.6rem);
-            margin-bottom: 25px;
-            color: var(--secondary);
-            border-left: 5px solid var(--primary);
-            padding-left: 20px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
+            font-size: clamp(var(--fs-lg), 2.2vw, var(--fs-xl));
+            line-height: var(--lh-tight);
+            margin-bottom: var(--s3);
+            color: var(--primary);
+            border-left: 3px solid var(--primary);
+            padding-left: var(--s2);
+            letter-spacing: 0.02em;
             text-shadow: 0 0 10px var(--glow);
             font-weight: 700;
         }
@@ -657,9 +816,9 @@
         }
 
         .command-line {
-            margin-bottom: 15px;
-            line-height: 1.8;
-            font-size: clamp(0.8rem, 2vw, 0.95rem);
+            margin-bottom: var(--s2);
+            line-height: var(--lh-body);
+            font-size: var(--fs-sm);
         }
 
         .command-line::before {
@@ -670,34 +829,34 @@
 
         /* Skills Categories */
         .skills-category {
-            margin-bottom: 30px;
+            margin-bottom: var(--s3);
         }
 
         .category-title {
-            font-size: clamp(1rem, 2.5vw, 1.1rem);
+            font-size: var(--fs-sm);
             color: var(--primary);
-            margin-bottom: 15px;
+            margin-bottom: var(--s2);
             font-weight: 700;
-            border-bottom: 2px solid var(--primary);
-            opacity: 0.8;
-            padding-bottom: 8px;
+            border-bottom: 1px solid var(--primary);
+            opacity: 0.85;
+            padding-bottom: var(--s1);
         }
 
         .skills-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(clamp(120px, 20vw, 150px), 1fr));
-            gap: clamp(10px, 2vw, 15px);
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--s1);
         }
 
         .skill-item {
-            padding: clamp(10px, 2vw, 14px);
-            border: 2px solid var(--primary);
-            border-radius: 6px;
+            padding: 6px 12px;
+            border: 1px solid var(--primary);
+            border-radius: var(--radius);
             text-align: center;
-            background: var(--shadow);
-            transition: all 0.3s ease;
+            background: rgba(0, 255, 65, 0.04);
+            transition: border-color 200ms, box-shadow 200ms, transform 200ms, background 200ms;
             position: relative;
-            font-size: clamp(0.75rem, 1.8vw, 0.9rem);
+            font-size: var(--fs-xs);
             font-weight: 500;
             opacity: 0.9;
         }
@@ -720,27 +879,33 @@
 
         .skill-item:hover {
             border-color: var(--secondary);
-            box-shadow: 0 0 20px var(--glow);
-            transform: scale(1.08);
-            background: var(--glow);
+            box-shadow: 0 0 12px var(--glow);
+            transform: translateY(-2px);
+            background: rgba(0, 255, 65, 0.1);
             opacity: 1;
         }
 
         /* Projects */
         .projects-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(clamp(250px, 40vw, 300px), 1fr));
-            gap: clamp(15px, 3vw, 25px);
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--s3);
+        }
+
+        @media (max-width: 900px) {
+            .projects-grid { grid-template-columns: 1fr; }
         }
 
         .project-card {
             background: linear-gradient(135deg, var(--shadow) 0%, transparent 100%);
-            border: 2px solid var(--primary);
+            border: 1px solid var(--primary);
             border-radius: 10px;
-            padding: clamp(15px, 3vw, 25px);
+            padding: var(--s3);
             transition: all 0.4s ease;
             position: relative;
             overflow: hidden;
+            display: flex;
+            flex-direction: column;
         }
 
         .project-card::before {
@@ -760,36 +925,71 @@
 
         .project-card:hover {
             border-color: var(--primary);
-            box-shadow: 0 0 25px var(--shadow);
-            transform: translateY(-8px);
+            box-shadow: 0 0 20px var(--shadow);
+            transform: translateY(-4px);
         }
+
+        .project-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            align-self: flex-start;
+            font-size: var(--fs-xs);
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--tertiary);
+            padding: 3px 11px;
+            margin-bottom: var(--s2);
+            border: 1px solid rgba(0, 255, 65, 0.35);
+            border-radius: 999px;
+            background: var(--accent-mid);
+        }
+        [data-theme="light"] .project-status { border-color: rgba(46, 125, 50, 0.35); }
+        .project-status::before {
+            content: "";
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--tertiary);
+            box-shadow: 0 0 6px var(--tertiary);
+            animation: statusPulse 2.4s ease-in-out infinite;
+        }
+        @keyframes statusPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.35; }
+        }
+        @media (prefers-reduced-motion: reduce) { .project-status::before { animation: none; } }
 
         .project-title {
             color: var(--primary);
             font-weight: 700;
-            margin-bottom: 12px;
-            font-size: clamp(0.95rem, 2.5vw, 1.15rem);
+            margin-bottom: var(--s2);
+            font-size: var(--fs-md);
+            line-height: var(--lh-tight);
         }
 
         .project-desc {
             color: var(--text);
             opacity: 0.85;
-            font-size: clamp(0.8rem, 1.8vw, 0.9rem);
-            line-height: 1.7;
-            margin-bottom: 15px;
+            font-size: var(--fs-sm);
+            line-height: var(--lh-body);
+            margin-bottom: var(--s2);
         }
 
         .project-tech {
             display: flex;
-            gap: clamp(6px, 1.5vw, 10px);
+            gap: var(--s1);
             flex-wrap: wrap;
+            margin-top: auto;
+            padding-top: var(--s2);
         }
 
         .tech-tag {
-            font-size: clamp(0.65rem, 1.5vw, 0.75rem);
-            padding: clamp(4px, 1vw, 5px) clamp(8px, 2vw, 12px);
+            font-size: var(--fs-xs);
+            padding: 4px 10px;
             border: 1px solid var(--primary);
-            border-radius: 4px;
+            border-radius: var(--radius);
             color: var(--tertiary);
             background: var(--shadow);
             transition: all 0.3s ease;
@@ -803,25 +1003,25 @@
         /* Contact */
         .contact-links {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(clamp(150px, 30vw, 200px), 1fr));
-            gap: clamp(15px, 3vw, 20px);
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: var(--s2);
         }
 
         .contact-link {
             color: var(--primary);
             text-decoration: none;
-            padding: clamp(12px, 2.5vw, 15px) clamp(15px, 3vw, 25px);
-            border: 2px solid var(--primary);
-            border-radius: 8px;
-            transition: all 0.4s ease;
+            padding: var(--s2) var(--s3);
+            border: 1px solid var(--primary);
+            border-radius: var(--radius);
+            transition: transform 200ms, box-shadow 200ms, background 200ms, color 200ms;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
+            gap: var(--s1);
             position: relative;
             overflow: hidden;
             font-weight: 600;
-            font-size: clamp(0.8rem, 2vw, 0.95rem);
+            font-size: var(--fs-sm);
         }
 
         .contact-link::before {
@@ -847,13 +1047,13 @@
         }
 
         /* Resume Link Hover Effect - Header only (subtle) */
-        p a[href*="drive.google.com"]:hover {
+        p a[href*="resume"]:hover {
             text-shadow: 0 0 10px var(--glow);
             opacity: 0.8;
         }
 
         /* Resume Button Hover Effect - Bottom section (prominent, no background change) */
-        .section a[href*="drive.google.com"]:hover {
+        .section a[href*="resume"]:hover {
             transform: scale(1.05) translateY(-3px);
             box-shadow: 0 0 40px var(--glow);
         }
@@ -861,11 +1061,60 @@
         /* Footer */
         .footer {
             text-align: center;
-            margin-top: 60px;
-            padding-top: 30px;
+            margin-top: var(--s4);
+            padding-top: var(--s3);
             border-top: 1px solid var(--primary);
             opacity: 0.7;
             font-size: clamp(0.7rem, 1.8vw, 0.85rem);
+        }
+
+        /* Résumé CTA — clean icon-badge card */
+        .resume-cta {
+            display: flex;
+            align-items: center;
+            gap: var(--s3);
+            margin-top: var(--s3);
+            padding: var(--s3) var(--s4);
+            border: 1px solid var(--primary);
+            border-radius: var(--radius);
+            background: var(--accent-mid);
+            flex-wrap: wrap;
+        }
+        .resume-cta-badge {
+            display: grid;
+            place-items: center;
+            width: 48px;
+            height: 48px;
+            flex-shrink: 0;
+            border-radius: 10px;
+            background: var(--accent-strong);
+            border: 1px solid var(--primary);
+            font-size: 20px;
+            color: var(--primary);
+        }
+        .resume-cta-text { display: flex; flex-direction: column; gap: 3px; flex: 1; min-width: 180px; }
+        .resume-cta-text strong { color: var(--primary); font-size: var(--fs-md); font-weight: 700; }
+        .resume-cta-desc { color: var(--text); opacity: 0.7; font-size: var(--fs-sm); }
+        .resume-cta-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 24px;
+            background: var(--primary);
+            color: var(--bg);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: var(--fs-base);
+            border-radius: var(--radius);
+            white-space: nowrap;
+            box-shadow: 0 0 16px var(--glow);
+            transition: transform 200ms ease, box-shadow 200ms ease;
+        }
+        .resume-cta-btn:hover { transform: translateY(-2px); box-shadow: 0 0 28px var(--glow); }
+        @media (max-width: 560px) {
+            .resume-cta { flex-direction: column; align-items: stretch; text-align: center; }
+            .resume-cta-text { align-items: center; }
+            .resume-cta-btn { justify-content: center; }
         }
 
         .blink-cursor {
@@ -885,6 +1134,9 @@
                 text-align: center;
             }
 
+            .hero-actions { justify-content: center; }
+            .achieve-card { margin-left: auto; margin-right: auto; }
+
             .devops-animation {
                 margin: 0 auto;
             }
@@ -895,6 +1147,21 @@
 
             .terminal-input {
                 font-size: 0.85rem;
+            }
+
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: var(--s2);
+            }
+
+            .terminal-body {
+                padding: var(--s3) var(--s2) var(--s4);
+            }
+
+            .welcome-section {
+                gap: var(--s3);
             }
 
             .theme-toggle {
@@ -909,27 +1176,166 @@
             }
         }
 
-        @media (max-width: 480px) {
-            .container {
-                padding: 10px;
+        @media (max-width: 900px) {
+            .welcome-section {
+                grid-template-columns: 1fr;
+                gap: var(--s4);
             }
+            .devops-animation .solar-system {
+                width: min(84vw, 288px);
+                height: min(84vw, 288px);
+            }
+            .devops-animation { min-height: 300px; }
+            .solar-core { width: 58px; height: 58px; }
+            .planet {
+                font-size: 8.5px;
+                min-width: 38px;
+                height: 24px;
+                padding: 0 6px;
+            }
+            .achieve-title { font-size: var(--fs-base); }
+        }
 
-            .terminal-body {
-                padding: 15px;
-            }
+        /* Scroll cue — draws the eye to the interactive terminal */
+        .scroll-cue {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            width: fit-content;
+            margin: 0 auto var(--s4);
+            color: var(--tertiary);
+            text-decoration: none;
+            font-size: var(--fs-sm);
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            opacity: 0.85;
+            transition: opacity 0.2s ease, color 0.2s ease;
+        }
+        .scroll-cue:hover { opacity: 1; color: var(--primary); }
+        .scroll-cue i { font-size: 14px; animation: cueBounce 1.6s ease-in-out infinite; }
+        @keyframes cueBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(6px); }
+        }
+        @media (prefers-reduced-motion: reduce) { .scroll-cue i { animation: none; } }
 
-            .devops-animation {
-                transform: scale(0.9);
-            }
+        /* Clickable quick-command chips */
+        .cmd-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            padding-left: 20px;
+            margin-top: 10px;
+        }
+        .cmd-chip {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: var(--fs-xs);
+            font-weight: 700;
+            color: var(--primary);
+            background: var(--accent-mid);
+            border: 1px solid var(--primary);
+            border-radius: 6px;
+            padding: 5px 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .cmd-chip::before { content: '$ '; opacity: 0.55; }
+        .cmd-chip:hover,
+        .cmd-chip:focus-visible {
+            background: var(--primary);
+            color: var(--bg);
+            box-shadow: 0 0 12px var(--glow);
+            outline: none;
+        }
+
+        /* Ambient drifting tech icons behind everything */
+        .bg-icons {
+            position: fixed;
+            inset: 0;
+            overflow: hidden;
+            z-index: 0;
+            pointer-events: none;
+        }
+        .bg-icons i {
+            position: absolute;
+            color: var(--primary);
+            opacity: 0.06;
+            animation: bgDrift linear infinite;
+            will-change: transform;
+        }
+        [data-theme="light"] .bg-icons i { opacity: 0.05; }
+
+        /* Cloud-topology lines that occasionally connect the drifting icons */
+        .bg-net {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        .bg-net line {
+            stroke: var(--primary);
+            stroke-width: 1;
+            opacity: 0;
+            filter: drop-shadow(0 0 3px var(--glow));
+            animation: netPulse 14s ease-in-out infinite;
+        }
+        @keyframes netPulse {
+            0%, 100% { opacity: 0; }
+            42%, 58% { opacity: 0.13; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .bg-net line { animation: none; }
+        }
+
+        @keyframes bgDrift {
+            0%   { transform: translate(0, 0) rotate(0deg); }
+            50%  { transform: translate(18px, -26px) rotate(6deg); }
+            100% { transform: translate(0, 0) rotate(0deg); }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .bg-icons i { animation: none; }
         }
     </style>
 </head>
 <body>
-    <!-- Theme Toggle - Top Right -->
-    <div class="theme-toggle" onclick="toggleTheme()" title="Toggle Theme">
-        <i class="fas fa-moon" id="theme-icon"></i>
-        <span class="theme-label" id="theme-label">DARK</span>
+    <div class="bg-icons" aria-hidden="true">
+        <svg class="bg-net" xmlns="http://www.w3.org/2000/svg">
+            <line x1="4%"  y1="8%"  x2="22%" y2="18%" style="animation-delay:0s"></line>
+            <line x1="22%" y1="18%" x2="30%" y2="30%" style="animation-delay:-2s"></line>
+            <line x1="30%" y1="30%" x2="56%" y2="46%" style="animation-delay:-4s"></line>
+            <line x1="56%" y1="46%" x2="62%" y2="12%" style="animation-delay:-6s"></line>
+            <line x1="62%" y1="12%" x2="80%" y2="5%"  style="animation-delay:-8s"></line>
+            <line x1="30%" y1="30%" x2="12%" y2="62%" style="animation-delay:-10s"></line>
+            <line x1="12%" y1="62%" x2="6%"  y2="86%" style="animation-delay:-12s"></line>
+            <line x1="56%" y1="46%" x2="90%" y2="55%" style="animation-delay:-3s"></line>
+            <line x1="90%" y1="55%" x2="95%" y2="70%" style="animation-delay:-5s"></line>
+            <line x1="56%" y1="46%" x2="72%" y2="78%" style="animation-delay:-7s"></line>
+            <line x1="72%" y1="78%" x2="88%" y2="92%" style="animation-delay:-9s"></line>
+            <line x1="72%" y1="78%" x2="42%" y2="90%" style="animation-delay:-11s"></line>
+            <line x1="92%" y1="22%" x2="90%" y2="55%" style="animation-delay:-1s"></line>
+        </svg>
+        <i class="fab fa-aws"        style="top:8%;left:4%;font-size:48px;animation-duration:20s;animation-delay:0s"></i>
+        <i class="fab fa-docker"     style="top:22%;left:92%;font-size:40px;animation-duration:17s;animation-delay:-3s"></i>
+        <i class="fas fa-cubes"      style="top:40%;left:2%;font-size:44px;animation-duration:19s;animation-delay:-6s"></i>
+        <i class="fab fa-github"     style="top:70%;left:95%;font-size:36px;animation-duration:15s;animation-delay:-2s"></i>
+        <i class="fab fa-python"     style="top:86%;left:6%;font-size:40px;animation-duration:21s;animation-delay:-8s"></i>
+        <i class="fab fa-linux"      style="top:55%;left:90%;font-size:46px;animation-duration:16s;animation-delay:-4s"></i>
+        <i class="fab fa-jenkins"    style="top:12%;left:62%;font-size:34px;animation-duration:22s;animation-delay:-10s"></i>
+        <i class="fas fa-terminal"   style="top:90%;left:42%;font-size:30px;animation-duration:18s;animation-delay:-5s"></i>
+        <i class="fas fa-cloud"      style="top:30%;left:30%;font-size:50px;animation-duration:24s;animation-delay:-12s"></i>
+        <i class="fas fa-server"     style="top:62%;left:12%;font-size:34px;animation-duration:17s;animation-delay:-7s"></i>
+        <i class="fas fa-database"   style="top:5%;left:80%;font-size:30px;animation-duration:19s;animation-delay:-9s"></i>
+        <i class="fab fa-git-alt"    style="top:78%;left:72%;font-size:32px;animation-duration:15s;animation-delay:-3s"></i>
+        <i class="fas fa-code-branch" style="top:46%;left:56%;font-size:28px;animation-duration:23s;animation-delay:-11s"></i>
+        <i class="fab fa-node-js"    style="top:92%;left:88%;font-size:30px;animation-duration:16s;animation-delay:-6s"></i>
+        <i class="fas fa-shield-halved" style="top:18%;left:22%;font-size:34px;animation-duration:20s;animation-delay:-8s"></i>
+        <i class="fas fa-infinity"   style="top:66%;left:36%;font-size:40px;animation-duration:26s;animation-delay:-13s"></i>
     </div>
+
+    <div class="planet-tooltip" id="planet-tooltip" role="tooltip" aria-hidden="true"></div>
 
     <div class="container">
         <div class="terminal">
@@ -937,59 +1343,86 @@
                 <div class="terminal-button"></div>
                 <div class="terminal-button"></div>
                 <div class="terminal-button"></div>
-                <div class="terminal-title">rakesh@devops-portfolio:~$</div>
+                <div class="terminal-title">rakesh@portfolio:~$</div>
+                <button class="theme-toggle" onclick="toggleTheme()" title="Toggle Theme" aria-label="Toggle light and dark theme">
+                    <i class="fas fa-moon" id="theme-icon"></i>
+                </button>
             </div>
             <div class="terminal-body">
                 <!-- Welcome Section -->
                 <div class="welcome-section">
                     <div class="profile-info-section">
                         <h1 class="glitch-title">RAKESH KIRUPANANDAN</h1>
-                        <p class="subtitle">$ whoami > Senior DevOps Engineer @ Foodhub</p>
-                        <p class="tagline">
-                            🚀 AWS & Oracle Cloud Migration Specialist | 5+ Years Experience<br>
-                            🐳 Kubernetes, Terraform, CI/CD Expert | Leading DevOps Teams
-                        </p>
-                        <p style="margin-top: 20px; font-size: clamp(0.85rem, 2vw, 0.95rem);">
-                            Feel free to check out my <a href="https://drive.google.com/file/d/1qPfSX9qPpXbwtd57oq9JzAvpiEhj4F5A/view" target="_blank" rel="noopener noreferrer" style="color: var(--primary); text-decoration: none; font-weight: 600; transition: all 0.3s ease;"><i class="far fa-file-alt" style="font-size: 18px; margin-right: 5px;"></i>Resume</a> to explore my professional journey.
-                        </p>
+                        <p class="subtitle">Senior DevOps Engineer</p>
+                        <p class="hero-spec"><span class="spec-i">Platform&nbsp;Engineering</span> <span class="spec-i">• Cloud&nbsp;Architecture</span> <span class="spec-i">• CI/CD&nbsp;Platforms</span> <span class="spec-i">• Kubernetes</span> <span class="spec-i">• DevSecOps</span></p>
+                        <div class="hero-divider"></div>
+                        <div class="achieve-card" id="achieve-card" aria-live="polite">
+                            <div class="achieve-category" id="achieve-category">Migration</div>
+                            <div class="achieve-title" id="achieve-title">70+ Services Migrated</div>
+                            <div class="achieve-proof" id="achieve-proof">AWS → Oracle Cloud Infrastructure</div>
+                        </div>
+                        <div class="hero-actions">
+                            <a class="hero-btn" href="assets/resume/LTS_FH_Rakesh_Kirupanandan.pdf" target="_blank" rel="noopener noreferrer"><i class="far fa-file-alt"></i> Resume</a>
+                            <a class="hero-btn" href="https://www.linkedin.com/in/rakesh-kirupanandan-66988b202" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin"></i> LinkedIn</a>
+                        </div>
                     </div>
                     
-                    <!-- DevOps Animation -->
+                    <!-- Engineering Solar System -->
                     <div class="devops-animation">
-                        <div class="cloud-icons">
-                            <div class="cloud-icon">☁️</div>
-                            <div class="cloud-icon">⚙️</div>
-                            <div class="cloud-icon">🐳</div>
-                        </div>
-                        <div class="deployment-arrow">↓</div>
-                        <div class="laptop">
-                            <div class="code-lines">
-                                <div class="code-line"></div>
-                                <div class="code-line"></div>
-                                <div class="code-line"></div>
-                                <div class="code-line"></div>
+                        <div class="solar-system" id="solar-system" aria-label="Engineering solar system">
+                            <div class="solar-core" aria-label="Rakesh — DevOps Engineer">
+                                <img src="assets/icons/avatar.png" alt="Rakesh" onerror="this.outerHTML='&lt;i class=\'fas fa-user\' aria-hidden=\'true\'&gt;&lt;/i&gt;'">
+                            </div>
+                            <div class="orbit-ring r1" data-ring="engineering">
+                                <button type="button" class="planet" data-id="github" data-section="projects" aria-label="GitHub" title="GitHub" style="left:95.11%;top:34.55%">GitHub</button>
+                                <button type="button" class="planet" data-id="python" data-section="skills" aria-label="Python" title="Python" style="left:4.89%;top:34.55%">Python</button>
+                                <button type="button" class="planet" data-id="jenkins" data-section="projects" aria-label="Jenkins" title="Jenkins" style="left:79.39%;top:90.45%">Jenkins</button>
+                            </div>
+                            <div class="orbit-ring r2" data-ring="platform">
+                                <button type="button" class="planet" data-id="kubernetes" data-section="skills" aria-label="Kubernetes" title="Kubernetes" style="left:79.39%;top:9.55%">K8s</button>
+                                <button type="button" class="planet" data-id="argocd" data-section="projects" aria-label="ArgoCD" title="ArgoCD" style="left:20.61%;top:9.55%">ArgoCD</button>
+                                <button type="button" class="planet" data-id="docker" data-section="skills" aria-label="Docker" title="Docker" style="left:95.11%;top:65.45%">Docker</button>
+                                <button type="button" class="planet" data-id="helm" data-section="skills" aria-label="Helm" title="Helm" style="left:4.89%;top:65.45%">Helm</button>
+                                <button type="button" class="planet" data-id="terraform" data-section="projects" aria-label="Terraform" title="Terraform" style="left:50%;top:100%">Terraform</button>
+                            </div>
+                            <div class="orbit-ring r3" data-ring="cloud">
+                                <button type="button" class="planet" data-id="cloudfront" data-section="skills" aria-label="CloudFront" title="CloudFront" style="left:50%;top:0%">CloudFront</button>
+                                <button type="button" class="planet" data-id="linux" data-section="skills" aria-label="Linux" title="Linux" style="left:95.11%;top:34.55%">Linux</button>
+                                <button type="button" class="planet" data-id="oci" data-section="projects" aria-label="OCI" title="OCI" style="left:4.89%;top:34.55%">OCI</button>
+                                <button type="button" class="planet" data-id="aws" data-section="projects" aria-label="AWS" title="AWS" style="left:79.39%;top:90.45%">AWS</button>
+                                <button type="button" class="planet" data-id="prometheus" data-section="skills" aria-label="Prometheus" title="Prometheus" style="left:20.61%;top:90.45%">Prom</button>
                             </div>
                         </div>
                     </div>
                 </div>
 
+                <!-- Scroll cue -->
+                <a class="scroll-cue" href="#terminal-interactive" onclick="var t=document.querySelector('.terminal-interactive');t.scrollIntoView({behavior:'smooth',block:'start'});var i=document.getElementById('terminal-input');if(i)i.focus({preventScroll:true});return false;" aria-label="Explore via interactive terminal">
+                    <span>Explore via Interactive Terminal</span>
+                    <i class="fas fa-chevron-down" aria-hidden="true"></i>
+                </a>
+
                 <!-- Interactive Terminal -->
                 <div class="terminal-interactive">
-                    <div class="terminal-interactive-title">Interactive Terminal</div>
+                    <div class="terminal-interactive-title">rakesh@terminal:~$</div>
                     <div class="terminal-output" id="terminal-output">
                         <div class="output-line success">
                             <span class="prompt">$</span> <strong>Welcome to my portfolio!</strong> 👋
                         </div>
                         <div class="output-line">
-                            <span class="prompt">$</span> I'm Rakesh, a Senior DevOps Engineer with 5+ years of experience.
+                            <span class="prompt">$</span> I'm Rakesh — Senior DevOps Engineer.
                         </div>
                         <div class="output-line" style="margin-top: 15px;">
-                            <span class="prompt">$</span> <strong style="color: var(--tertiary);">Quick Commands:</strong>
+                            <span class="prompt">$</span> <strong style="color: var(--tertiary);">Try a command</strong> — click one or type below:
                         </div>
-                        <div class="output-line" style="padding-left: 20px; opacity: 0.9;">
-                            <strong>help</strong> - All commands | <strong>about</strong> - About me<br>
-                            <strong>skills</strong> - My expertise | <strong>projects</strong> - My work<br>
-                            <strong>project &lt;name&gt;</strong> - Project details | <strong>contact</strong> - Get in touch
+                        <div class="cmd-chips">
+                            <button type="button" class="cmd-chip" onclick="runShellCommand('help')">help</button>
+                            <button type="button" class="cmd-chip" onclick="runShellCommand('about')">about</button>
+                            <button type="button" class="cmd-chip" onclick="runShellCommand('skills')">skills</button>
+                            <button type="button" class="cmd-chip" onclick="runShellCommand('projects')">projects</button>
+                            <button type="button" class="cmd-chip" onclick="runShellCommand('experience')">experience</button>
+                            <button type="button" class="cmd-chip" onclick="runShellCommand('contact')">contact</button>
+                            <button type="button" class="cmd-chip" onclick="runShellCommand('clear')">clear</button>
                         </div>
                         <!-- <div class="output-line" style="margin-top: 15px; opacity: 0.8;">
                             <span class="prompt">$</span> Type a command to explore! Try "projects" to see my work.
@@ -1000,7 +1433,7 @@
                         <input type="text" class="terminal-input" id="terminal-input" placeholder="Type a command..." autocomplete="off">
                     </div>
                     <div class="terminal-help">
-                        💡 <strong>Pro Tip:</strong> Use ↑/↓ arrows for command history. Mobile users can scroll to see all content below!
+                        💡 <strong>Tip:</strong> Use ↑ / ↓ for command history, or tap a command above to run it.
                     </div>
                 </div>
 
@@ -1008,62 +1441,65 @@
                 <div class="section">
                     <h2 class="section-title">&gt; About Me</h2>
                     <p class="command-line">Senior DevOps Engineer at Foodhub, Chennai</p>
-                    <p class="command-line">5+ years of experience in cloud migration, infrastructure automation, and DevOps practices</p>
-                    <p class="command-line">Leading team of DevOps engineers and designing architecture for new projects</p>
-                    <p class="command-line">Expert in AWS, Oracle Cloud, Terraform, Kubernetes, and CI/CD pipeline design <span class="blink-cursor">█</span></p>
+                    <p class="command-line">5.5 years in cloud delivery, Kubernetes, and DevSecOps</p>
+                    <p class="command-line">Release governance, EKS CI, and a data workbench serving 300+ engineers</p>
+                    <p class="command-line">AWS · OCI · Terraform · Kubernetes · CI/CD <span class="blink-cursor">█</span></p>
                 </div>
 
                 <!-- Projects Section - Shows top 3, terminal shows all -->
-                <div class="section">
+                <div class="section" id="projects">
                     <h2 class="section-title">&gt; Featured Projects (Top 3)</h2>
                     <div class="projects-grid">
                         <div class="project-card">
-                            <div class="project-title">▸ paltalk-migration</div>
+                            <div class="project-status">Production</div>
+                            <div class="project-title">▸ Release Governance Platform</div>
                             <div class="project-desc">
-                                AWS to Oracle Cloud migration of 70+ services from ECS to OKE. Migrated 50+ repositories to GitHub Actions with reusable workflows.
+                                Compliance Gate + Promotion Gate — PR quality/security checks and serverless promotion validation before production.
                             </div>
                             <div class="project-tech">
-                                <span class="tech-tag">OCI</span>
-                                <span class="tech-tag">OKE</span>
-                                <span class="tech-tag">AWS</span>
-                                <span class="tech-tag">GitHub Actions</span>
+                                <span class="tech-tag">GitHub Apps</span>
+                                <span class="tech-tag">Jenkins</span>
+                                <span class="tech-tag">Lambda</span>
+                                <span class="tech-tag">API Gateway</span>
                             </div>
                         </div>
                         <div class="project-card">
-                            <div class="project-title">▸ neuberg-migration</div>
+                            <div class="project-status">Production</div>
+                            <div class="project-title">▸ EKS CI Platform</div>
                             <div class="project-desc">
-                                Healthcare infrastructure migration from GoDaddy VPS to AWS ECS. 8 websites migrated with zero downtime.
+                                Jenkins on EKS with Shared Libraries — scalable build agents and standardized pipelines across teams.
                             </div>
                             <div class="project-tech">
-                                <span class="tech-tag">AWS ECS</span>
-                                <span class="tech-tag">Terraform</span>
-                                <span class="tech-tag">Docker</span>
+                                <span class="tech-tag">Amazon EKS</span>
+                                <span class="tech-tag">Jenkins</span>
+                                <span class="tech-tag">Shared Libraries</span>
                             </div>
                         </div>
                         <div class="project-card">
-                            <div class="project-title">▸ devops-automation</div>
+                            <div class="project-status">Production</div>
+                            <div class="project-title">▸ Data Workbench on EKS</div>
                             <div class="project-desc">
-                                CI/CD automation with GitLab on Fargate, SonarQube integration, and Grafana/Prometheus monitoring.
+                                Superset + Keycloak on EKS for 300+ engineers — multi-database self-service with SSO/RBAC.
                             </div>
                             <div class="project-tech">
-                                <span class="tech-tag">Fargate</span>
-                                <span class="tech-tag">SonarQube</span>
-                                <span class="tech-tag">Grafana</span>
+                                <span class="tech-tag">EKS</span>
+                                <span class="tech-tag">Superset</span>
+                                <span class="tech-tag">Keycloak</span>
                             </div>
                         </div>
                     </div>
-                    <p style="margin-top: 20px; text-align: center; opacity: 0.8; font-size: 0.9rem;">
-                        💡 Type <strong style="color: var(--tertiary);">"projects"</strong> in the terminal above to see all 8 projects!
+                    <p style="margin-top: var(--s3); text-align: center; opacity: 0.8; font-size: var(--fs-sm);">
+                        Type <strong style="color: var(--tertiary);">projects</strong> in the shell to see the full list.
                     </p>
                 </div>
 
                 <!-- Experience Section -->
-                <div class="section">
+                <div class="section" id="experience">
                     <h2 class="section-title">&gt; Professional Experience</h2>
                     <div class="command-line" style="margin-bottom: 25px;">
                         <strong style="color: var(--primary); font-size: 1.1rem;">Senior DevOps Engineer</strong> @ Foodhub
-                        <br><span style="opacity: 0.75; font-size: 0.9rem; margin-left: 10px;">📍 Chennai, India | 📅 Current Position</span>
-                        <br><span style="opacity: 0.85; margin-left: 10px;">Leading DevOps operations, cloud infrastructure, and automation strategies for food-tech platform.</span>
+                        <br><span style="opacity: 0.75; font-size: 0.9rem; margin-left: 10px;">📍 Chennai, India | 📅 Nov 2025 – Present</span>
+                        <br><span style="opacity: 0.85; margin-left: 10px;">Leading release governance, cloud infrastructure, and CI/CD automation for a food-tech platform.</span>
                     </div>
                     <div class="command-line" style="margin-bottom: 25px;">
                         <strong style="color: var(--primary); font-size: 1.1rem;">Senior DevOps Engineer</strong> @ Thapovan Info System Inc
@@ -1087,12 +1523,12 @@
                     <h2 class="section-title">&gt; Education & Certifications</h2>
                     <p class="command-line"><strong style="color: var(--primary);">Oracle Cloud Infrastructure Architect Associate</strong> - Oracle</p>
                     <p class="command-line"><strong style="color: var(--primary);">GitOps Fundamentals</strong> - Codefresh</p>
-                    <p class="command-line"><strong style="color: var(--primary);">B1 Business Preliminary</strong> - Cambridge University</p>
+                    <p class="command-line"><strong style="color: var(--primary);">B1 Business Preliminary</strong> - Cambridge English</p>
                     <p class="command-line"><strong style="color: var(--primary);">B.E. Electrical & Electronics</strong> - Vel Tech (2016-2020)</p>
                 </div>
 
                 <!-- Skills Section - Categorized -->
-                <div class="section">
+                <div class="section" id="skills">
                     <h2 class="section-title">&gt; Technical Skills</h2>
                     
                     <div class="skills-category">
@@ -1186,30 +1622,24 @@
                         <a href="https://www.linkedin.com/in/rakesh-kirupanandan-66988b202" class="contact-link" target="_blank" rel="noopener noreferrer">
                             <span>›</span> LinkedIn
                         </a>
-                        <a href="mailto:rakeshkirupa276@gmail.com" class="contact-link">
+                        <a href="#" data-contact="email" class="contact-link">
                             <span>›</span> Email
                         </a>
-                        <a href="tel:+919962415414" class="contact-link">
+                        <a href="#" data-contact="tel" class="contact-link">
                             <span>›</span> Call
                         </a>
                     </div>
-                </div>
 
-                <!-- Resume Download Section - Prominent & Separate -->
-                <div class="section" style="margin-top: 50px;">
-                    <h2 class="section-title" style="text-align: center; border-left: none; padding-left: 0;">&gt; Download Resume</h2>
-                    <div style="text-align: center; padding: 40px 20px; background: linear-gradient(135deg, rgba(0, 255, 65, 0.08) 0%, rgba(0, 255, 65, 0.03) 100%); border-radius: 15px; border: 2px solid var(--primary); box-shadow: 0 0 30px var(--shadow);">
-                        <div style="margin-bottom: 25px; font-size: clamp(0.9rem, 2vw, 1.05rem); opacity: 0.95; line-height: 1.8;">
-                            📄 View my complete professional journey, certifications, and detailed project portfolio
+                    <!-- Résumé CTA — clean icon-badge card -->
+                    <div class="resume-cta">
+                        <div class="resume-cta-badge"><i class="fas fa-terminal" aria-hidden="true"></i></div>
+                        <div class="resume-cta-text">
+                            <strong class="resume-cta-file">resume.pdf</strong>
+                            <span class="resume-cta-desc">Experience • Projects • Certifications</span>
                         </div>
-                        <a href="https://drive.google.com/file/d/1qPfSX9qPpXbwtd57oq9JzAvpiEhj4F5A/view" target="_blank" rel="noopener noreferrer" style="display: inline-flex; align-items: center; gap: 15px; padding: 20px 40px; background: var(--primary); color: var(--bg); text-decoration: none; font-weight: 700; font-size: clamp(1rem, 2.5vw, 1.2rem); border-radius: 10px; transition: all 0.4s ease; box-shadow: 0 0 20px var(--glow); border: 2px solid var(--primary);">
-                            <i class="far fa-file-alt" style="font-size: clamp(1.3rem, 3vw, 1.5rem);"></i>
-                            <span>RESUME</span>
-                            <span style="font-size: clamp(1.2rem, 3vw, 1.5rem);">→</span>
+                        <a class="resume-cta-btn" href="assets/resume/LTS_FH_Rakesh_Kirupanandan.pdf" download="Rakesh_Kirupanandan_Resume.pdf">
+                            <i class="fas fa-download" aria-hidden="true"></i> Download
                         </a>
-                        <div style="margin-top: 20px; font-size: clamp(0.8rem, 1.8vw, 0.9rem); opacity: 0.8;">
-                            💼 Complete work history • 🎓 Certifications • 🚀 Project details • 🛠️ Technical skills
-                        </div>
                     </div>
                 </div>
 
@@ -1217,15 +1647,56 @@
                 <div class="footer">
                     <p>© 2026 Rakesh Kirupanandan. Built with DevOps principles <span class="blink-cursor">█</span></p>
                     <p style="margin-top: 10px;">$ echo "Thanks for visiting! Let's build something amazing together."</p>
-                </div>
+    </div>
             </div>
         </div>
     </div>
 
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
     <script>
-        // All 8 projects data
-        const allProjects = {
+        const RESUME_URL = 'assets/resume/LTS_FH_Rakesh_Kirupanandan.pdf';
+        const LINKEDIN_URL = 'https://www.linkedin.com/in/rakesh-kirupanandan-66988b202';
+        // Contact details assembled from parts so the plain strings never appear
+        // contiguously in the page source (deters basic email/phone scrapers).
+        const CONTACT_EMAIL = 'rakeshkirupa276' + '@' + 'gmail' + '.com';
+        const CONTACT_TEL = '+91' + '99624' + '15414';
+        const CONTACT_TEL_DISPLAY = '+91 ' + '99624' + ' ' + '15414';
+        // Populate the visible contact links after load (kept out of static HTML).
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('[data-contact="email"]').forEach(function (a) { a.href = 'mailto:' + CONTACT_EMAIL; });
+            document.querySelectorAll('[data-contact="tel"]').forEach(function (a) { a.href = 'tel:' + CONTACT_TEL; });
+        });
+
+const allProjects = {
+            "release-governance": {
+                name: "Release Governance Platform",
+                description: "Organization-wide release and PR governance: Compliance Gate (GitHub Apps + Jenkins) enforces automated security, quality, and compliance checks on every pull request; Promotion Gate (AWS Lambda + API Gateway) validates release promotions, enforces branch lineage, and prevents unauthorized production releases.",
+                tech: ["GitHub Apps", "Jenkins", "AWS Lambda", "API Gateway", "DevSecOps"],
+                highlights: ["PR-level compliance automation", "Serverless promotion validation", "Branch lineage enforcement", "Safer production releases"]
+            },
+            "eks-ci-platform": {
+                name: "EKS CI Platform",
+                description: "Architected and implemented a containerized Jenkins CI platform on Amazon EKS, replacing static build infrastructure with scalable Kubernetes-based build agents. Delivered reusable Jenkins Shared Libraries to standardize build, test, and deployment pipelines and accelerate onboarding of new services.",
+                tech: ["Amazon EKS", "Jenkins", "Shared Libraries", "Kubernetes", "CI/CD"],
+                highlights: ["Scalable K8s build agents", "Reusable Shared Libraries", "Higher build throughput", "Standardized pipelines"]
+            },
+            "data-workbench": {
+                name: "Data Workbench on EKS",
+                description: "Designed and delivered a highly available Apache Superset data workbench on Amazon EKS with Keycloak SSO/RBAC. Enables 300+ engineers to connect to multiple databases for self-service exploration and querying, with platform-managed scaling and reliability.",
+                tech: ["Amazon EKS", "Apache Superset", "Keycloak", "SSO/RBAC", "Kubernetes"],
+                highlights: ["Multi-database workbench", "300+ engineer adoption", "Keycloak SSO/RBAC", "EKS scaling & reliability"]
+            },
+            "qualcast": {
+                name: "QualCast Code Quality Platform",
+                description: "Developed QualCast, a centralized code-quality platform that consolidated SonarQube reporting and automated analysis, providing organization-wide visibility into code quality.",
+                tech: ["SonarQube", "Jenkins", "Code Quality", "Automation"],
+                highlights: ["Centralized quality reporting", "Automated analysis", "Org-wide visibility"]
+            },
+            "argocd-templates": {
+                name: "ArgoCD Deployment Templates",
+                description: "Developed reusable ArgoCD deployment templates to standardize GitOps-based application deployments across services.",
+                tech: ["ArgoCD", "GitOps", "Kubernetes", "CI/CD"],
+                highlights: ["Reusable GitOps templates", "Standardized deployments", "Faster service onboarding"]
+            },
             "paltalk-migration": {
                 name: "AWS to Oracle Cloud Migration (Paltalk)",
                 description: "Comprehensive cloud migration project migrating 70+ services from AWS ECS to Oracle Kubernetes Engine (OKE). Configured Site-to-Site VPN for secure hybrid cloud connectivity. Managed OCI networking with VCN and load balancers. Migrated 50+ repositories from GitLab CI/CD to GitHub Actions with reusable workflow templates. Implemented Atlantis for Terraform automation with remote state storage.",
@@ -1276,405 +1747,350 @@
             }
         };
 
-        // Terminal Commands
+const PROJECT_COUNT = Object.keys(allProjects).length;
+
+        const architectureFlows = {
+            "release-governance": ["GitHub PR", "GitHub App", "Jenkins / Compliance checks", "Lambda (Promotion Gate)", "API Gateway", "Validation + branch lineage", "Status check", "Merge / Promote"],
+            "eks-ci-platform": ["Git push", "Jenkins controller", "EKS build agents", "Shared Libraries", "Build / Test / Scan", "Artifact publish", "Deploy stage"],
+            "data-workbench": ["Engineer login", "Keycloak SSO / RBAC", "Apache Superset", "Connection pool", "Multiple databases", "Dashboards & queries", "EKS autoscaling"],
+            "paltalk-migration": ["AWS ECS workloads", "Site-to-Site VPN", "OCI VCN / LB", "OKE services", "GitHub Actions migration", "Atlantis Terraform", "Hybrid operations"],
+            "qualcast": ["CI pipelines", "SonarQube analysis", "QualCast aggregation", "Org-wide quality view", "Feedback to teams"],
+            "argocd-templates": ["Git repo", "ArgoCD application", "Reusable templates", "Sync to cluster", "GitOps status"]
+        };
+
+        function renderArchFlow(key) {
+            const steps = architectureFlows[key];
+            if (!steps) return null;
+            let html = '<div class="arch-flow">';
+            steps.forEach((step, i) => {
+                html += '<div class="arch-step">' + escapeHtml(step) + '</div>';
+                if (i < steps.length - 1) html += '<div class="arch-arrow">↓</div>';
+            });
+            html += '</div>';
+            return html;
+        }
+
+        function runShellCommand(cmd) {
+            const input = document.getElementById('terminal-input');
+            const shell = document.getElementById('shell');
+            if (shell) shell.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            if (input) {
+                input.focus({ preventScroll: true });
+                input.value = '';
+            }
+            executeCommand(cmd);
+            commandHistory.push(cmd);
+            historyIndex = commandHistory.length;
+        }
+
+
         const terminalCommands = {
-            help: `<div style="color: var(--secondary); font-weight: 700; font-size: 1.05rem; margin-bottom: 15px;">📚 Available Commands</div>
-<div style="padding: 15px; background: rgba(0,255,65,0.05); border-radius: 8px; border-left: 3px solid var(--primary);">
+            help: `<div style="color: var(--secondary); font-weight: 700; font-size: 1.05rem; margin-bottom: 15px;">Available Commands</div>
+<div style="padding: 15px; background: var(--accent-mid); border-radius: 8px; border-left: 3px solid var(--primary);">
   <div style="margin-bottom: 8px;"><strong style="color: var(--tertiary);">help</strong> - Display this help menu</div>
   <div style="margin-bottom: 8px;"><strong style="color: var(--tertiary);">about</strong> - Learn about my background and expertise</div>
   <div style="margin-bottom: 8px;"><strong style="color: var(--tertiary);">skills</strong> - View categorized technical skills</div>
-  <div style="margin-bottom: 8px;"><strong style="color: var(--tertiary);">experience</strong> - Professional career journey</div>
+  <div style="margin-bottom: 8px;"><strong style="color: var(--tertiary);">experience</strong> - My career timeline</div>
   <div style="margin-bottom: 8px;"><strong style="color: var(--tertiary);">projects</strong> - See what I've built</div>
-  <div style="margin-bottom: 8px;"><strong style="color: var(--tertiary);">contact</strong> - Get my contact information</div>
-  <div style="margin-bottom: 8px;"><strong style="color: var(--tertiary);">resume</strong> - View resume information</div>
-  <div style="margin-bottom: 8px;"><strong style="color: var(--tertiary);">download</strong> - Download my resume</div>
+  <div style="margin-bottom: 8px;"><strong style="color: var(--tertiary);">contact</strong> - Ways to reach me</div>
+  <div style="margin-bottom: 8px;"><strong style="color: var(--tertiary);">resume</strong> - Preview my resume</div>
+  <div style="margin-bottom: 8px;"><strong style="color: var(--tertiary);">download</strong> - Download the resume PDF</div>
+  <div style="margin-bottom: 8px;"><strong style="color: var(--tertiary);">hire</strong> - Recruiter snapshot</div>
   <div style="margin-bottom: 8px;"><strong style="color: var(--tertiary);">stats</strong> - Portfolio statistics</div>
-  <div style="margin-bottom: 8px;"><strong style="color: var(--tertiary);">theme</strong> - Change terminal theme</div>
+  <div style="margin-bottom: 8px;"><strong style="color: var(--tertiary);">arch &lt;name&gt;</strong> - Architecture flow</div>
   <div><strong style="color: var(--tertiary);">clear</strong> - Clear terminal screen</div>
 </div>
-<div style="margin-top: 15px; padding: 10px; background: rgba(0,255,65,0.08); border-radius: 5px;">
-  💡 <strong>Tip:</strong> Try "stats" for quick overview, or explore hidden commands!
+<div style="margin-top: 15px; padding: 10px; background: var(--accent-strong); border-radius: 5px;">
+  Tip: Try "stats" for a quick overview, or explore hidden commands.
 </div>`,
 
             date: () => new Date().toDateString(),
-
             time: () => new Date().toLocaleTimeString(),
 
-            about: `<div style="color: var(--secondary); font-weight: 700; font-size: 1.05rem; margin-bottom: 15px;">👨‍💻 About Rakesh Kirupanandan</div>
-<div style="padding: 15px; background: rgba(0,255,65,0.05); border-radius: 8px; line-height: 1.8;">
+            about: `<div style="color: var(--secondary); font-weight: 700; font-size: 1.05rem; margin-bottom: 15px;">About Rakesh Kirupanandan</div>
+<div style="padding: 15px; background: var(--accent-mid); border-radius: 8px; line-height: 1.8;">
   <div style="margin-bottom: 12px;">
     Senior DevOps Engineer at <strong style="color: var(--primary);">Foodhub</strong>, Chennai, India
   </div>
-  
-  <div style="margin-bottom: 12px; padding: 12px; background: rgba(0,255,65,0.08); border-radius: 5px;">
-    📊 <strong>Experience:</strong> 5+ years<br>
-    🎯 <strong>Specialization:</strong> Cloud Migration, Infrastructure Automation, DevOps<br>
-    👥 <strong>Role:</strong> Leading DevOps operations for food-tech platform
+  <div style="margin-bottom: 12px; padding: 12px; background: var(--accent-strong); border-radius: 5px;">
+    <strong>Experience:</strong> 5.5 years<br>
+    <strong>Specialization:</strong> DevOps, CI/CD, Kubernetes, DevSecOps<br>
+    <strong>Focus:</strong> Secure, scalable platforms across AWS and OCI
   </div>
-  
   <div style="margin-bottom: 12px;">
     <strong style="color: var(--primary);">Key Achievements:</strong><br>
-    • Migrated 70+ services from AWS to Oracle Cloud<br>
-    • Migrated 50+ repositories to GitHub Actions<br>
-    • Led multiple zero-downtime migrations<br>
-    • Implemented Terraform automation with Atlantis<br>
-    • Designed scalable cloud architectures
+    • Built Release Governance Platform (Compliance Gate + Promotion Gate)<br>
+    • Delivered EKS CI Platform with Jenkins Shared Libraries<br>
+    • Data workbench on EKS for 300+ engineers (multi-DB)<br>
+    • Migrated 70+ services AWS → OCI (OKE) and 50+ repos to GitHub Actions<br>
+    • Star Performer Award — Foodhub (May 2026)
   </div>
-  
-  <div style="padding: 10px; background: rgba(0,255,65,0.08); border-radius: 5px;">
-    🎓 <strong>Certifications:</strong><br>
+  <div style="padding: 10px; background: var(--accent-strong); border-radius: 5px;">
+    <strong>Certifications &amp; Education:</strong><br>
     • Oracle Cloud Infrastructure Architect Associate<br>
     • GitOps Fundamentals (Codefresh)<br>
     • B1 Business Preliminary (Cambridge)<br>
-    • B.E. Electrical & Electronics (Vel Tech, 2016-2020)
+    • B.E. Electrical &amp; Electronics (Vel Tech, 2016-2020)
   </div>
 </div>`,
 
-            skills: `<div style="color: var(--secondary); font-weight: 700; font-size: 1.05rem; margin-bottom: 15px;">🛠️ Technical Skills</div>
-<div style="padding: 15px; background: rgba(0,255,65,0.05); border-radius: 8px; line-height: 1.8;">
-  
+            skills: `<div style="color: var(--secondary); font-weight: 700; font-size: 1.05rem; margin-bottom: 15px;">Technical Skills</div>
+<div style="padding: 15px; background: var(--accent-mid); border-radius: 8px; line-height: 1.8;">
   <div style="margin-bottom: 15px;">
-    <strong style="color: var(--primary); font-size: 1rem;">☁️ Cloud Platforms</strong>
-    <div style="padding-left: 15px; margin-top: 5px;">AWS (EC2, ECS, S3, VPC, Lambda, RDS, CloudWatch) • Oracle Cloud (OCI, OKE) • Site-to-Site VPN • Load Balancing • Auto Scaling</div>
+    <strong style="color: var(--primary);">Cloud Platforms</strong>
+    <div style="padding-left: 15px; margin-top: 5px;">AWS (EC2, ECS, EKS, S3, VPC, Lambda, API Gateway, CloudFront, Route 53, ELB/ALB, RDS, DynamoDB, CloudWatch) • Oracle Cloud (OCI, OKE, Vault, VCN, IAM)</div>
   </div>
-  
   <div style="margin-bottom: 15px;">
-    <strong style="color: var(--primary); font-size: 1rem;">🔄 CI/CD & Automation</strong>
-    <div style="padding-left: 15px; margin-top: 5px;">GitHub Actions • GitLab CI • Jenkins • Terraform • Ansible • Atlantis • Infrastructure as Code</div>
+    <strong style="color: var(--primary);">CI/CD &amp; Automation</strong>
+    <div style="padding-left: 15px; margin-top: 5px;">Jenkins • GitHub Actions • GitLab CI • ArgoCD • Terraform • Ansible • Atlantis • Helm</div>
   </div>
-  
   <div style="margin-bottom: 15px;">
-    <strong style="color: var(--primary); font-size: 1rem;">🐳 Containers & Orchestration</strong>
-    <div style="padding-left: 15px; margin-top: 5px;">Docker • Kubernetes • OKE (Oracle Kubernetes) • AWS Fargate • ECS • Container Orchestration</div>
+    <strong style="color: var(--primary);">Containers &amp; Orchestration</strong>
+    <div style="padding-left: 15px; margin-top: 5px;">Docker • Kubernetes • Amazon EKS • OKE • AWS Fargate • ECS • Harbor</div>
   </div>
-  
   <div style="margin-bottom: 15px;">
-    <strong style="color: var(--primary); font-size: 1rem;">📊 Monitoring & Quality</strong>
-    <div style="padding-left: 15px; margin-top: 5px;">Prometheus • Grafana • Kibana • CloudWatch • SonarQube (SAST) • Selenium • End-to-End Testing</div>
+    <strong style="color: var(--primary);">DevSecOps &amp; Platform</strong>
+    <div style="padding-left: 15px; margin-top: 5px;">SonarQube • Semgrep • Trivy • Gitleaks • Keycloak • Teleport • Apache Superset • Healenium • BrowserStack • Maestro</div>
   </div>
-  
   <div style="margin-bottom: 15px;">
-    <strong style="color: var(--primary); font-size: 1rem;">💻 Programming & Scripting</strong>
-    <div style="padding-left: 15px; margin-top: 5px;">Python • Bash/Shell Scripting • Ruby • YAML • JSON</div>
+    <strong style="color: var(--primary);">Monitoring &amp; Observability</strong>
+    <div style="padding-left: 15px; margin-top: 5px;">Prometheus • Grafana • Kibana • CloudWatch</div>
   </div>
-  
   <div style="margin-bottom: 15px;">
-    <strong style="color: var(--primary); font-size: 1rem;">🗄️ Databases</strong>
-    <div style="padding-left: 15px; margin-top: 5px;">MySQL • PostgreSQL • MongoDB • DynamoDB • Database Migration</div>
+    <strong style="color: var(--primary);">Programming &amp; Scripting</strong>
+    <div style="padding-left: 15px; margin-top: 5px;">Python • Bash/Shell • Node.js • Ruby • YAML • JSON</div>
   </div>
-  
   <div>
-    <strong style="color: var(--primary); font-size: 1rem;">🛠️ Other Tools</strong>
-    <div style="padding-left: 15px; margin-top: 5px;">Nginx • Apache • Git • Linux/Ubuntu • Kafka • PM2 • SSL/TLS • Network Security</div>
+    <strong style="color: var(--primary);">Databases &amp; Tools</strong>
+    <div style="padding-left: 15px; margin-top: 5px;">MySQL • PostgreSQL • MongoDB • DynamoDB • Nginx • Apache • Git • Kafka • Certbot • PM2</div>
   </div>
 </div>`,
 
-            experience: `<div style="color: var(--secondary); font-weight: 700; font-size: 1.05rem; margin-bottom: 15px;">💼 Professional Experience</div>
+            experience: `<div style="color: var(--secondary); font-weight: 700; font-size: 1.05rem; margin-bottom: 15px;">Professional Experience</div>
 
-<div style="padding: 15px; background: rgba(0,255,65,0.05); border-radius: 8px; margin-bottom: 15px; border-left: 3px solid var(--primary);">
+<div style="padding: 15px; background: var(--accent-mid); border-radius: 8px; margin-bottom: 15px; border-left: 3px solid var(--primary);">
   <div style="font-size: 1.05rem; font-weight: 700; color: var(--primary); margin-bottom: 8px;">
     Senior DevOps Engineer @ Foodhub
   </div>
   <div style="opacity: 0.8; margin-bottom: 10px; font-size: 0.9rem;">
-    📍 Chennai, India | 📅 Current Position
+    Chennai, India | Nov 2025 – Present
   </div>
   <div style="line-height: 1.7;">
-    <strong>Current Responsibilities:</strong><br>
-    • Leading DevOps operations for food-tech platform<br>
-    • Managing cloud infrastructure and automation strategies<br>
-    • Implementing scalable deployment pipelines<br>
-    • Ensuring high availability and system reliability<br>
-    • Optimizing cloud costs and performance
+    <strong>Governance &amp; platforms:</strong><br>
+    • Release Governance Platform — Compliance Gate + Promotion Gate<br>
+    • QualCast centralized code-quality platform<br>
+    • Data Workbench on EKS (Superset + Keycloak) for 300+ engineers<br>
+    • EKS CI Platform with Jenkins Shared Libraries<br>
+    • Reusable ArgoCD GitOps deployment templates<br>
+    • EKS upgrades, Teleport/PHP modernization, multi-arch Docker, Maestro/BrowserStack/Healenium<br>
+    • Standardized CI/CD across 40+ repositories; AWS cost optimization
   </div>
 </div>
 
-<div style="padding: 15px; background: rgba(0,255,65,0.05); border-radius: 8px; margin-bottom: 15px; border-left: 3px solid rgba(0,255,65,0.5);">
+<div style="padding: 15px; background: var(--accent-mid); border-radius: 8px; margin-bottom: 15px; border-left: 3px solid var(--primary);">
   <div style="font-size: 1.05rem; font-weight: 700; color: var(--primary); margin-bottom: 8px;">
     Senior DevOps Engineer @ Thapovan Info System Inc
   </div>
   <div style="opacity: 0.8; margin-bottom: 10px; font-size: 0.9rem;">
-    📍 Chennai, India | 📅 April 2024 - Previous
+    Chennai, India | Apr 2024 – Oct 2025
   </div>
   <div style="line-height: 1.7;">
     <strong>Key Responsibilities:</strong><br>
-    • Led cloud migration of 70+ services from AWS to Oracle Cloud (OKE)<br>
+    • Led migration of 70+ services from AWS ECS to Oracle Cloud (OKE)<br>
     • Migrated 50+ repositories from GitLab CI/CD to GitHub Actions<br>
     • Implemented Atlantis for Terraform automation<br>
-    • Designed architecture for new projects<br>
-    • Managed team of DevOps engineers<br>
-    • Established hybrid cloud connectivity with Site-to-Site VPN<br>
-    • Implemented OCI IAM policies and security controls
+    • Hybrid cloud Site-to-Site VPN; OCI IAM and networking<br>
+    • Neuberg: zero-downtime migration of 8 sites to AWS ECS
   </div>
 </div>
 
-<div style="padding: 15px; background: rgba(0,255,65,0.05); border-radius: 8px; margin-bottom: 15px; border-left: 3px solid rgba(0,255,65,0.5);">
+<div style="padding: 15px; background: var(--accent-mid); border-radius: 8px; margin-bottom: 15px; border-left: 3px solid var(--primary);">
   <div style="font-size: 1.05rem; font-weight: 700; color: var(--primary); margin-bottom: 8px;">
     DevOps Engineer @ Thapovan Info System Inc
   </div>
   <div style="opacity: 0.8; margin-bottom: 10px; font-size: 0.9rem;">
-    📍 Chennai, India | 📅 April 2022 - March 2024
+    Chennai, India | Apr 2022 – Mar 2024
   </div>
   <div style="line-height: 1.7;">
     <strong>Key Achievements:</strong><br>
     • Migrated servers from EC2 to ECS with capacity providers<br>
-    • Implemented auto-scaling GitLab CI on AWS Fargate<br>
-    • Deployed SonarQube for code quality analysis (SAST)<br>
-    • Managed production deployments with SQL audits<br>
-    • Set up Grafana & Prometheus monitoring<br>
-    • Migrated Selenium servers to ECS cluster
+    • Auto-scaling GitLab CI on AWS Fargate<br>
+    • SonarQube (SAST) on ECS; Grafana &amp; Prometheus monitoring<br>
+    • Lifestyle Housing: Terraform + Ansible automation
   </div>
 </div>
 
-<div style="padding: 15px; background: rgba(0,255,65,0.05); border-radius: 8px; border-left: 3px solid rgba(0,255,65,0.5);">
+<div style="padding: 15px; background: var(--accent-mid); border-radius: 8px; border-left: 3px solid var(--primary);">
   <div style="font-size: 1.05rem; font-weight: 700; color: var(--primary); margin-bottom: 8px;">
     Junior DevOps Engineer @ Thapovan Info System Inc
   </div>
   <div style="opacity: 0.8; margin-bottom: 10px; font-size: 0.9rem;">
-    📍 Chennai, India | 📅 May 2021 - March 2022
+    Chennai, India | May 2021 – Mar 2022
   </div>
   <div style="line-height: 1.7;">
     <strong>Foundation Work:</strong><br>
-    • Optimized AWS infrastructure migrating to ECS Fargate<br>
-    • Automated deployments with Jenkins<br>
-    • Implemented CloudWatch monitoring and alarms<br>
-    • Designed reusable Terraform templates<br>
-    • Containerized applications with Docker
+    • ECS Fargate migrations with Jenkins automation<br>
+    • CloudWatch monitoring and alarms<br>
+    • Reusable Terraform templates; Docker containerization
   </div>
 </div>`,
 
             projects: function() {
-                let output = '<div style="color: var(--secondary); font-weight: 700; font-size: 1.05rem; margin-bottom: 15px;">🚀 My Projects</div>';
-                output += '<div style="padding: 15px; background: rgba(0,255,65,0.05); border-radius: 8px; line-height: 1.8;">';
-                
+                let output = '<div style="color: var(--secondary); font-weight: 700; font-size: 1.05rem; margin-bottom: 15px;">Projects (' + PROJECT_COUNT + ')</div>';
+                output += '<div style="padding: 15px; background: var(--accent-mid); border-radius: 8px; line-height: 1.8;">';
                 Object.keys(allProjects).forEach((key, index) => {
-                    output += '<div style="padding: 10px; margin-bottom: 8px; background: rgba(0,255,65,0.08); border-left: 3px solid var(--primary); border-radius: 4px;">';
+                    output += '<div style="padding: 10px; margin-bottom: 8px; background: var(--accent-strong); border-left: 3px solid var(--primary); border-radius: 4px;">';
                     output += '<strong style="color: var(--primary);">' + (index + 1) + '. ' + key + '</strong><br>';
                     output += '<span style="opacity: 0.9; font-size: 0.9rem;">' + allProjects[key].name + '</span>';
                     output += '</div>';
                 });
-                
-                output += '<div style="margin-top: 20px; padding: 12px; background: rgba(0,255,65,0.1); border-radius: 6px; border: 1px solid var(--primary);">';
-                output += '💡 <strong>For details:</strong> Use <strong style="color: var(--tertiary);">project &lt;name&gt;</strong> or <strong style="color: var(--tertiary);">project &lt;number&gt;</strong><br>';
-                output += '<span style="opacity: 0.85; font-size: 0.9rem;">Example: <code style="color: var(--primary);">project 1</code> or <code style="color: var(--primary);">project paltalk-migration</code></span>';
-                output += '</div>';
-                
-                output += '</div>';
+                output += '<div style="margin-top: 20px; padding: 12px; background: var(--accent-strong); border-radius: 6px; border: 1px solid var(--primary);">';
+                output += '<strong>For details:</strong> <strong style="color: var(--tertiary);">project &lt;name&gt;</strong> or <strong style="color: var(--tertiary);">project &lt;number&gt;</strong><br>';
+                output += '<span style="opacity: 0.85; font-size: 0.9rem;">Example: <code style="color: var(--primary);">project 1</code> or <code style="color: var(--primary);">project eks-ci-platform</code></span>';
+                output += '</div></div>';
                 return output;
             },
 
-            ls: `<div style="color: var(--secondary); font-weight: 700; font-size: 1.05rem; margin-bottom: 15px;">⚡ Accessing System</div>
-<div style="padding: 20px; background: rgba(0,255,65,0.05); border-radius: 8px; font-family: 'JetBrains Mono', monospace;">
+            ls: `<div style="color: var(--secondary); font-weight: 700; font-size: 1.05rem; margin-bottom: 15px;">Accessing System</div>
+<div style="padding: 20px; background: var(--accent-mid); border-radius: 8px;">
   <div style="margin-bottom: 15px; opacity: 0.9; line-height: 2;">
-    <span style="color: var(--primary);">⚡ Accessing mainframe...</span><br>
-    <span style="color: var(--primary);">⚡ Decrypting files...</span><br>
-    <span style="color: var(--primary);">⚡ Bypassing firewall...</span>
+    <span style="color: var(--primary);">Accessing mainframe...</span><br>
+    <span style="color: var(--primary);">Decrypting files...</span><br>
+    <span style="color: var(--primary);">Bypassing firewall...</span>
   </div>
-  <div style="margin: 20px 0; padding: 15px; background: rgba(0,255,65,0.1); border-left: 4px solid var(--primary); border-radius: 4px;">
-    <strong style="font-size: 1.1rem;">Just kidding! 😄</strong><br>
-    <span style="opacity: 0.85; margin-top: 8px; display: block;">This isn't a real terminal, but you found a hidden command!</span>
+  <div style="margin: 20px 0; padding: 15px; background: var(--accent-strong); border-left: 4px solid var(--primary); border-radius: 4px;">
+    <strong style="font-size: 1.1rem;">Just kidding!</strong><br>
+    <span style="opacity: 0.85; margin-top: 8px; display: block;">This isn't a real terminal — but you found a hidden command.</span>
   </div>
-  <div style="padding: 12px; background: rgba(0,255,65,0.08); border-radius: 5px;">
-    💡 <strong>Try these commands instead:</strong><br>
-    <span style="opacity: 0.9;">• <code style="color: var(--tertiary);">help</code> - See all commands</span><br>
-    <span style="opacity: 0.9;">• <code style="color: var(--tertiary);">projects</code> - See what I've built</span><br>
-    <span style="opacity: 0.9;">• <code style="color: var(--tertiary);">stats</code> - Portfolio statistics</span>
+  <div style="padding: 12px; background: var(--accent-strong); border-radius: 5px;">
+    Try <code style="color: var(--tertiary);">help</code>, <code style="color: var(--tertiary);">projects</code>, or <code style="color: var(--tertiary);">stats</code>.
   </div>
 </div>`,
 
-            resume: `<div style="color: var(--secondary); font-weight: 700; font-size: 1.05rem; margin-bottom: 15px;">📄 Resume</div>
-<div style="padding: 20px; background: rgba(0,255,65,0.05); border-radius: 8px; line-height: 2;">
-  <div style="margin-bottom: 20px;">
-    Download my professional resume to learn more about my experience, skills, and accomplishments.
-  </div>
-  
-  <div style="padding: 15px; background: rgba(0,255,65,0.1); border: 2px solid var(--primary); border-radius: 8px; text-align: center;">
-    <a href="https://drive.google.com/file/d/1qPfSX9qPpXbwtd57oq9JzAvpiEhj4F5A/view" target="_blank" rel="noopener noreferrer" style="color: var(--primary); text-decoration: none; font-weight: 700; font-size: 1.1rem; display: inline-flex; align-items: center; gap: 10px;">
-      <i class="far fa-file-alt" style="font-size: 24px;"></i>
-      <span>RESUME</span>
-      <span style="font-size: 1.3rem;">→</span>
-    </a>
-  </div>
-  
-  <div style="margin-top: 20px; opacity: 0.85; font-size: 0.9rem;">
-    📊 <strong>Includes:</strong> Complete work history, certifications, project details, technical skills
-  </div>
+            resume: function() {
+                return '<div style="color: var(--secondary); font-weight: 700; font-size: 1.05rem; margin-bottom: 15px;">Resume</div>' +
+                '<div style="padding: 20px; background: var(--accent-mid); border-radius: 8px; line-height: 2;">' +
+                '<div style="margin-bottom: 20px;">Download my professional resume for experience, skills, and accomplishments.</div>' +
+                '<div style="padding: 15px; background: var(--accent-strong); border: 2px solid var(--primary); border-radius: 8px; text-align: center;">' +
+                '<a href="' + RESUME_URL + '" target="_blank" rel="noopener noreferrer" style="color: var(--primary); text-decoration: none; font-weight: 700; font-size: 1.1rem;">RESUME →</a>' +
+                '</div></div>';
+            },
+
+            contact: function() {
+                return '<div style="color: var(--secondary); font-weight: 700; font-size: 1.05rem; margin-bottom: 15px;">Contact Information</div>' +
+                '<div style="padding: 20px; background: var(--accent-mid); border-radius: 8px; line-height: 2;">' +
+                '<div style="margin-bottom: 15px; padding: 12px; background: var(--accent-strong); border-radius: 6px;">' +
+                '<strong style="color: var(--primary);">GitHub:</strong><br>' +
+                '<a href="https://github.com/rakeshkirupa" target="_blank" rel="noopener noreferrer" style="color: var(--tertiary); text-decoration: none;">→ github.com/rakeshkirupa</a></div>' +
+                '<div style="margin-bottom: 15px; padding: 12px; background: var(--accent-strong); border-radius: 6px;">' +
+                '<strong style="color: var(--primary);">LinkedIn:</strong><br>' +
+                '<a href="' + LINKEDIN_URL + '" target="_blank" rel="noopener noreferrer" style="color: var(--tertiary); text-decoration: none;">→ linkedin.com/in/rakesh-kirupanandan-66988b202</a></div>' +
+                '<div style="margin-bottom: 15px; padding: 12px; background: var(--accent-strong); border-radius: 6px;">' +
+                '<strong style="color: var(--primary);">Email:</strong><br>' +
+                '<a href="mailto:' + CONTACT_EMAIL + '" style="color: var(--tertiary); text-decoration: none;">→ ' + CONTACT_EMAIL + '</a></div>' +
+                '<div style="padding: 12px; background: var(--accent-strong); border-radius: 6px;">' +
+                '<strong style="color: var(--primary);">Phone:</strong><br>' +
+                '<a href="tel:' + CONTACT_TEL + '" style="color: var(--tertiary); text-decoration: none;">→ ' + CONTACT_TEL_DISPLAY + '</a></div></div>';
+            },
+
+            download: function() {
+                return '<div style="color: var(--secondary); font-weight: 700; font-size: 1.05rem; margin-bottom: 15px;">Download Resume</div>' +
+                '<div style="padding: 20px; background: var(--accent-mid); border-radius: 8px;">' +
+                '<div style="padding: 15px; background: var(--accent-strong); border: 2px solid var(--primary); border-radius: 8px; text-align: center;">' +
+                '<a href="' + RESUME_URL + '" target="_blank" rel="noopener noreferrer" style="color: var(--primary); text-decoration: none; font-weight: 700; font-size: 1.1rem;">Click to View/Download Resume →</a>' +
+                '</div></div>';
+            },
+
+            cv: null,
+
+            stats: function() {
+                return '<div style="color: var(--secondary); font-weight: 700; font-size: 1.05rem; margin-bottom: 15px;">Platform Statistics</div>' +
+                '<div style="padding: 20px; background: var(--accent-mid); border-radius: 8px; line-height: 2;">' +
+                '<div><strong>Engineers supported:</strong> 300+</div>' +
+                '<div><strong>Services migrated:</strong> 70+</div>' +
+                '<div><strong>Repos → GitHub Actions:</strong> 50+</div>' +
+                '<div><strong>Repos CI standardized:</strong> 40+</div>' +
+                '<div><strong>Zero-downtime sites:</strong> 8</div>' +
+                '<div><strong>Projects catalogued:</strong> ' + PROJECT_COUNT + '</div>' +
+                '<div><strong>Experience:</strong> 5.5 years</div>' +
+                '<div><strong>Award:</strong> Star Performer — Foodhub (May 2026)</div>' +
+                '</div>';
+            },
+
+
+
+            hire: function() {
+                return '<div style="color: var(--secondary); font-weight: 700; font-size: 1.05rem; margin-bottom: 15px;">Hire brief</div>' +
+                '<div style="padding: 16px; background: var(--accent-mid); border-radius: 8px; line-height: 1.8;">' +
+                '<div style="margin-bottom: 12px;"><strong style="color: var(--primary);">Rakesh Kirupanandan</strong> — Senior DevOps Engineer @ Foodhub</div>' +
+                '<div style="margin-bottom: 12px; padding: 10px; background: var(--accent-strong); border-radius: 6px;">' +
+                '5.5 years · CI/CD, release governance, Kubernetes, DevSecOps<br>' +
+                '300+ engineers · 70+ services migrated · 50+ repos to GitHub Actions</div>' +
+                '<div style="margin-bottom: 12px;"><strong style="color: var(--primary);">Top work</strong><br>' +
+                '• Release Governance (Compliance + Promotion Gate)<br>' +
+                '• EKS CI Platform (Jenkins Shared Libraries)<br>' +
+                '• Data Workbench on EKS (Superset + Keycloak)</div>' +
+                '<div style="margin-bottom: 12px;"><a href="' + RESUME_URL + '" target="_blank" rel="noopener noreferrer" style="color: var(--tertiary);">→ Resume PDF</a> · ' +
+                '<a href="' + LINKEDIN_URL + '" target="_blank" rel="noopener noreferrer" style="color: var(--tertiary);">→ LinkedIn</a> · ' +
+                '<a href="mailto:' + CONTACT_EMAIL + '" style="color: var(--tertiary);">→ Email</a></div>' +
+                '<div style="opacity:0.85; font-size:0.9rem;">Tip: <code style="color: var(--tertiary);">arch release-governance</code> for an architecture flow.</div>' +
+                '</div>';
+            },
+
+            coffee: `<div style="color: var(--secondary); font-weight: 700; font-size: 1.05rem; margin-bottom: 12px;">coffee</div>
+<div style="padding: 16px; background: var(--accent-mid); border-radius: 8px; line-height: 1.9;">
+  Brewing coffee...<br>
+  Warming CI agents...<br>
+  Queue depth: acceptable<br>
+  <span style="color: var(--tertiary);">Status: caffeinated. Pipelines may proceed.</span>
 </div>`,
 
-            contact: `<div style="color: var(--secondary); font-weight: 700; font-size: 1.05rem; margin-bottom: 15px;">📬 Contact Information</div>
-<div style="padding: 20px; background: rgba(0,255,65,0.05); border-radius: 8px; line-height: 2;">
-  
-  <div style="margin-bottom: 15px; padding: 12px; background: rgba(0,255,65,0.08); border-radius: 6px;">
-    <strong style="color: var(--primary);">GitHub:</strong><br>
-    <a href="https://github.com/rakeshkirupa" target="_blank" style="color: var(--tertiary); text-decoration: none;">
-      → github.com/rakeshkirupa
-    </a>
-  </div>
-  
-  <div style="margin-bottom: 15px; padding: 12px; background: rgba(0,255,65,0.08); border-radius: 6px;">
-    <strong style="color: var(--primary);">LinkedIn:</strong><br>
-    <a href="https://linkedin.com/in/rakesh-kirupanandan" target="_blank" style="color: var(--tertiary); text-decoration: none;">
-      → linkedin.com/in/rakesh-kirupanandan
-    </a>
-  </div>
-  
-  <div style="margin-bottom: 15px; padding: 12px; background: rgba(0,255,65,0.08); border-radius: 6px;">
-    <strong style="color: var(--primary);">Email:</strong><br>
-    <a href="mailto:rakeshkirupa276@gmail.com" style="color: var(--tertiary); text-decoration: none;">
-      → rakeshkirupa276@gmail.com
-    </a>
-  </div>
-  
-  <div style="padding: 12px; background: rgba(0,255,65,0.08); border-radius: 6px;">
-    <strong style="color: var(--primary);">Phone:</strong><br>
-    <a href="tel:+919962415414" style="color: var(--tertiary); text-decoration: none;">
-      → +91 99624 15414
-    </a>
-  </div>
-  
-  <div style="margin-top: 20px; padding: 15px; background: rgba(0,255,65,0.1); border-radius: 6px; border: 1px solid rgba(0,255,65,0.3);">
-    💬 <strong>Let's Connect!</strong><br>
-    Open to DevOps opportunities, collaborations, and tech discussions!
-  </div>
-</div>`,
-
-            // New Commands
-            download: `<div style="color: var(--secondary); font-weight: 700; font-size: 1.05rem; margin-bottom: 15px;">📥 Download Resume</div>
-<div style="padding: 20px; background: rgba(0,255,65,0.05); border-radius: 8px;">
-  <div style="margin-bottom: 20px; opacity: 0.9;">
-    Download my professional resume to learn more about my experience, skills, and accomplishments.
-  </div>
-  <div style="padding: 15px; background: rgba(0,255,65,0.1); border: 2px solid var(--primary); border-radius: 8px; text-align: center;">
-    <a href="https://drive.google.com/file/d/1qPfSX9qPpXbwtd57oq9JzAvpiEhj4F5A/view" target="_blank" rel="noopener noreferrer" style="color: var(--primary); text-decoration: none; font-weight: 700; font-size: 1.1rem;">
-      📄 Click to View/Download Resume →
-    </a>
-  </div>
-  <div style="margin-top: 15px; opacity: 0.85; font-size: 0.9rem;">
-    💡 Opens in a new tab
-  </div>
-</div>`,
-
-            cv: `<div style="color: var(--secondary); font-weight: 700; font-size: 1.05rem; margin-bottom: 15px;">📥 Download CV</div>
-<div style="padding: 20px; background: rgba(0,255,65,0.05); border-radius: 8px;">
-  <div style="margin-bottom: 20px; opacity: 0.9;">
-    Redirecting to resume download...
-  </div>
-  <div style="padding: 15px; background: rgba(0,255,65,0.1); border: 2px solid var(--primary); border-radius: 8px; text-align: center;">
-    <a href="https://drive.google.com/file/d/1qPfSX9qPpXbwtd57oq9JzAvpiEhj4F5A/view" target="_blank" rel="noopener noreferrer" style="color: var(--primary); text-decoration: none; font-weight: 700; font-size: 1.1rem;">
-      📄 Click to View/Download →
-    </a>
-  </div>
-</div>`,
-
-            stats: `<div style="color: var(--secondary); font-weight: 700; font-size: 1.05rem; margin-bottom: 15px;">📊 Portfolio Statistics</div>
-<div style="padding: 20px; background: rgba(0,255,65,0.05); border-radius: 8px; font-family: 'JetBrains Mono', monospace;">
-  <div style="padding: 20px; background: rgba(0,255,65,0.08); border: 2px solid var(--primary); border-radius: 10px;">
-    <div style="text-align: center; margin-bottom: 20px; font-size: 1.1rem; font-weight: 700;">
-      ╔════════════════════════════════════╗<br>
-      ║     PORTFOLIO STATISTICS           ║<br>
-      ╚════════════════════════════════════╝
-    </div>
-    <div style="line-height: 2; font-size: 0.95rem;">
-      <div style="padding: 8px; background: rgba(0,255,65,0.05); border-radius: 4px; margin-bottom: 8px;">
-        🚀 <strong>Projects Completed:</strong> 8
-      </div>
-      <div style="padding: 8px; background: rgba(0,255,65,0.05); border-radius: 4px; margin-bottom: 8px;">
-        🛠️  <strong>Technologies Mastered:</strong> 48+
-      </div>
-      <div style="padding: 8px; background: rgba(0,255,65,0.05); border-radius: 4px; margin-bottom: 8px;">
-        ⏱️  <strong>Years of Experience:</strong> 5+
-      </div>
-      <div style="padding: 8px; background: rgba(0,255,65,0.05); border-radius: 4px; margin-bottom: 8px;">
-        🎓 <strong>Certifications:</strong> 3
-      </div>
-      <div style="padding: 8px; background: rgba(0,255,65,0.05); border-radius: 4px; margin-bottom: 8px;">
-        ☁️  <strong>Cloud Platforms:</strong> AWS, Oracle Cloud (OCI)
-      </div>
-      <div style="padding: 8px; background: rgba(0,255,65,0.05); border-radius: 4px;">
-        🐳 <strong>Orchestration:</strong> Kubernetes, Docker, ECS
-      </div>
-    </div>
-  </div>
-</div>`,
-
-            theme: `<div style="color: var(--secondary); font-weight: 700; font-size: 1.05rem; margin-bottom: 15px;">🎨 Terminal Themes</div>
-<div style="padding: 20px; background: rgba(0,255,65,0.05); border-radius: 8px;">
-  <div style="margin-bottom: 20px;">
-    <strong>Available themes:</strong>
-  </div>
-  <div style="padding: 15px; background: rgba(0,255,65,0.08); border-radius: 6px; line-height: 2;">
-    ● <strong style="color: var(--primary);">matrix</strong> - Classic green terminal (current)<br>
-    ○ <strong>hacker</strong> - Dark green on black<br>
-    ○ <strong>ocean</strong> - Blue & cyan waves<br>
-    ○ <strong>sunset</strong> - Warm orange & red<br>
-    ○ <strong>dracula</strong> - Purple & pink<br>
-    ○ <strong>light</strong> - Clean light mode
-  </div>
-  <div style="margin-top: 20px; padding: 12px; background: rgba(0,255,65,0.1); border-radius: 6px; border: 1px solid var(--primary);">
-    💡 <strong>Usage:</strong> <code style="color: var(--tertiary);">theme &lt;name&gt;</code><br>
-    <span style="opacity: 0.85; font-size: 0.9rem;">Example: <code style="color: var(--primary);">theme ocean</code> or use the 🌙 button above!</span>
-  </div>
-  <div style="margin-top: 15px; opacity: 0.8; font-size: 0.9rem;">
-    ⚠️ Theme switching via command coming soon! Use the theme toggle button (🌙) for now.
-  </div>
-</div>`,
-
-            // Easter Eggs
-            whoami: `<div style="color: var(--secondary); font-weight: 700; font-size: 1.05rem; margin-bottom: 15px;">👤 Who Am I?</div>
-<div style="padding: 20px; background: rgba(0,255,65,0.05); border-radius: 8px; line-height: 1.8;">
-  <div style="padding: 15px; background: rgba(0,255,65,0.08); border-left: 4px solid var(--primary); border-radius: 4px; margin-bottom: 15px;">
+            whoami: `<div style="color: var(--secondary); font-weight: 700; font-size: 1.05rem; margin-bottom: 15px;">Who Am I?</div>
+<div style="padding: 20px; background: var(--accent-mid); border-radius: 8px; line-height: 1.8;">
+  <div style="padding: 15px; background: var(--accent-strong); border-left: 4px solid var(--primary); border-radius: 4px; margin-bottom: 15px;">
     <strong style="font-size: 1.1rem;">Rakesh Kirupanandan</strong><br>
     <span style="opacity: 0.9;">Senior DevOps Engineer @ Foodhub</span>
   </div>
   <div style="opacity: 0.9;">
-    🎯 <strong>Mission:</strong> Building scalable cloud infrastructure<br>
-    💻 <strong>Specialization:</strong> AWS, Oracle Cloud, Kubernetes, Terraform<br>
-    📍 <strong>Location:</strong> Chennai, India<br>
-    ⚡ <strong>Superpower:</strong> Zero-downtime deployments
+    Mission: Reliable delivery, cloud infrastructure, and developer tooling<br>
+    Specialization: AWS, OCI, Kubernetes, Terraform, DevSecOps<br>
+    Location: Chennai, India
   </div>
-  <div style="margin-top: 15px; padding: 10px; background: rgba(0,255,65,0.1); border-radius: 4px; font-size: 0.9rem;">
-    💡 You found a hidden command! Try <code style="color: var(--tertiary);">sudo</code> next 😉
+  <div style="margin-top: 15px; padding: 10px; background: var(--accent-strong); border-radius: 4px; font-size: 0.9rem;">
+    Hidden command unlocked — try <code style="color: var(--tertiary);">sudo</code> next.
   </div>
 </div>`,
 
-            sudo: `<div style="color: #ff5555; font-weight: 700; font-size: 1.05rem; margin-bottom: 15px;">⚠️  sudo</div>
+            sudo: `<div style="color: #ff5555; font-weight: 700; font-size: 1.05rem; margin-bottom: 15px;">sudo</div>
 <div style="padding: 20px; background: rgba(255,85,85,0.1); border: 2px solid #ff5555; border-radius: 8px;">
-  <div style="margin-bottom: 15px; font-size: 1.1rem;">
-    <strong>Nice try! 😄</strong>
-  </div>
+  <div style="margin-bottom: 15px; font-size: 1.1rem;"><strong>Nice try!</strong></div>
   <div style="opacity: 0.9; line-height: 1.8;">
-    [sudo] password for rakesh: <span style="opacity: 0.5;">●●●●●●●●</span><br>
-    <br>
-    <span style="color: #ff5555;">⚠️  Access Denied</span><br>
-    <br>
-    You're not in the sudoers file. This incident will be reported to... well, just me. 😉
+    [sudo] password for rakesh: ●●●●●●●●<br><br>
+    <span style="color: #ff5555;">Access Denied</span><br><br>
+    You're not in the sudoers file. This incident will be reported to... well, just me.
   </div>
-  <div style="margin-top: 20px; padding: 12px; background: rgba(0,255,65,0.1); border-radius: 4px;">
-    💡 <strong>Hint:</strong> Try <code style="color: var(--tertiary);">pwd</code> for an easter egg!
+  <div style="margin-top: 20px; padding: 12px; background: var(--accent-strong); border-radius: 4px;">
+    Hint: try <code style="color: var(--tertiary);">pwd</code>
   </div>
 </div>`,
 
-            pwd: `<div style="color: var(--secondary); font-weight: 700; font-size: 1.05rem; margin-bottom: 15px;">📂 Print Working Directory</div>
-<div style="padding: 20px; background: rgba(0,255,65,0.05); border-radius: 8px; font-family: 'JetBrains Mono', monospace;">
-  <div style="padding: 15px; background: rgba(0,0,0,0.3); border-radius: 6px; font-size: 1.1rem;">
+            pwd: `<div style="color: var(--secondary); font-weight: 700; font-size: 1.05rem; margin-bottom: 15px;">Print Working Directory</div>
+<div style="padding: 20px; background: var(--accent-mid); border-radius: 8px;">
+  <div style="padding: 15px; background: var(--surface); border-radius: 6px; font-size: 1.1rem;">
     <span style="color: var(--tertiary);">$</span> pwd<br>
     <span style="color: var(--primary);">/home/rakesh/portfolio</span>
   </div>
-  <div style="margin-top: 15px; padding: 10px; background: rgba(0,255,65,0.08); border-radius: 4px; opacity: 0.9; font-size: 0.9rem;">
-    💡 You're browsing my professional portfolio! Try <code style="color: var(--tertiary);">ls</code> to see what's here 😉
+  <div style="margin-top: 15px; padding: 10px; background: var(--accent-strong); border-radius: 4px; opacity: 0.9; font-size: 0.9rem;">
+    Try <code style="color: var(--tertiary);">ls</code> next.
   </div>
 </div>`,
 
-            echo: `<div style="color: var(--secondary); font-weight: 700; font-size: 1.05rem; margin-bottom: 15px;">🔊 Echo</div>
-<div style="padding: 20px; background: rgba(0,255,65,0.05); border-radius: 8px;">
-  <div style="padding: 15px; background: rgba(0,255,65,0.08); border-radius: 6px;">
-    💡 <strong>Usage:</strong> <code style="color: var(--tertiary);">echo &lt;message&gt;</code><br>
-    <span style="opacity: 0.85; font-size: 0.9rem;">Example: <code style="color: var(--primary);">echo Hello World!</code></span>
-  </div>
-  <div style="margin-top: 15px; opacity: 0.9;">
-    This command needs a message to echo back!
-  </div>
+            echo: `<div style="color: var(--secondary); font-weight: 700; font-size: 1.05rem; margin-bottom: 15px;">Echo</div>
+<div style="padding: 20px; background: var(--accent-mid); border-radius: 8px;">
+  Usage: <code style="color: var(--tertiary);">echo &lt;message&gt;</code>
 </div>`
         };
+        terminalCommands.cv = terminalCommands.download;
 
         // Terminal functionality
         const terminalInput = document.getElementById('terminal-input');
@@ -1727,6 +2143,14 @@
             }
         });
 
+        function escapeHtml(str) {
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;');
+        }
+
         function executeCommand(command) {
             const lowerCommand = command.toLowerCase().trim();
             
@@ -1736,7 +2160,7 @@
             // Check for echo command
             if (lowerCommand.startsWith('echo ')) {
                 const message = command.substring(5);
-                addOutput('<div style="color: var(--primary); font-size: 1rem; padding: 10px; background: rgba(0,255,65,0.05); border-radius: 6px;">' + message + '</div>');
+                addOutput('<div style="color: var(--primary); font-size: 1rem; padding: 10px; background: rgba(0,255,65,0.05); border-radius: 6px;">' + escapeHtml(message) + '</div>');
             }
             // alias: cls -> clear
             else if (lowerCommand === 'cls') {
@@ -1787,7 +2211,7 @@
                         '</div>'
                     );
                 } else {
-                    addOutput('<div class="error">⚠️ Project "<strong>' + projectInput + '</strong>" not found.<br><br>Type <strong>"projects"</strong> to see all available projects.<br>Use <strong>"project &lt;number&gt;"</strong> or <strong>"project &lt;name&gt;"</strong></div>');
+                    addOutput('<div class="error">⚠️ Project "<strong>' + escapeHtml(projectInput) + '</strong>" not found.<br><br>Type <strong>"projects"</strong> to see all available projects.<br>Use <strong>"project &lt;number&gt;"</strong> or <strong>"project &lt;name&gt;"</strong></div>');
                 }
             }
             // Regular commands
@@ -1799,6 +2223,17 @@
             } else if (terminalCommands[lowerCommand]) {
                 const cmd = terminalCommands[lowerCommand];
                 addOutput(typeof cmd === 'function' ? cmd() : cmd);
+            } else if (lowerCommand === 'hire') {
+                addOutput(typeof terminalCommands.hire === 'function' ? terminalCommands.hire() : terminalCommands.hire);
+            } else if (lowerCommand.startsWith('arch ') || lowerCommand.startsWith('architecture ')) {
+                const key = lowerCommand.startsWith('architecture ') ? lowerCommand.slice(13).trim() : lowerCommand.slice(5).trim();
+                const flow = typeof renderArchFlow === 'function' ? renderArchFlow(key) : null;
+                if (flow) {
+                    const title = (allProjects[key] && allProjects[key].name) || key;
+                    addOutput('<div style="font-weight:600;margin-bottom:8px;color:var(--tertiary)">Architecture — ' + escapeHtml(title) + '</div>' + flow);
+                } else {
+                    addOutput('<div class="error">No flow for "<strong>' + escapeHtml(key) + '</strong>". Try release-governance, eks-ci-platform, data-workbench…</div>');
+                }
             } else if (lowerCommand === 'hello' || lowerCommand === 'hi' || lowerCommand === 'hey') {
                 addOutput('<div style="color: var(--primary); font-weight: 600;">👋 Hello! Welcome back! Type <strong>"help"</strong> to see what I can do.</div>');
             } else {
@@ -1809,7 +2244,7 @@
                     inputContainer.classList.remove('shake-error');
                 }, 500);
                 
-                addOutput('<div class="error">⚠️ <strong>Command not found:</strong> "' + command + '"<br><br>Type <strong>"help"</strong> to see all available commands.</div>');
+                addOutput('<div class="error">⚠️ <strong>Command not found:</strong> "' + escapeHtml(command) + '"<br><br>Type <strong>"help"</strong> to see all available commands.</div>');
             }
 
             // Scroll to bottom
@@ -1823,6 +2258,7 @@
             line.innerHTML = text;
             terminalOutput.appendChild(line);
         }
+
 
         // Welcome message on load
         window.addEventListener('load', () => {
@@ -1873,25 +2309,30 @@
         });
     </script>
     <script>
+        document.querySelector('.theme-toggle')?.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleTheme(); }
+        });
+
         // Theme Toggle Function
         function toggleTheme() {
             const html = document.documentElement;
             const currentTheme = html.getAttribute('data-theme');
             const newTheme = currentTheme === 'light' ? 'dark' : 'light';
             
-            html.setAttribute('data-theme', newTheme === 'dark' ? '' : 'light');
+            if (newTheme === 'light') html.setAttribute('data-theme', 'light');
+            else html.removeAttribute('data-theme');
             
             const icon = document.getElementById('theme-icon');
             const label = document.getElementById('theme-label');
             
             if (newTheme === 'light') {
-                icon.className = 'fas fa-sun';
-                label.textContent = 'LIGHT';
+                if (icon) icon.className = 'fas fa-sun';
+                if (label) label.textContent = 'LIGHT';
             } else {
-                icon.className = 'fas fa-moon';
-                label.textContent = 'DARK';
+                if (icon) icon.className = 'fas fa-moon';
+                if (label) label.textContent = 'DARK';
             }
-            
+
             localStorage.setItem('theme', newTheme);
         }
 
@@ -1909,6 +2350,192 @@
                 if (label) label.textContent = 'DARK';
             }
         });
-    </script>
+    
+        // Hero achievement rotator — title + proof only
+        (function initAchieveRotate() {
+            // Outcome-based rotation across the four pillars of the work.
+            // Only concrete, defensible metrics — no invented uptime/percentage claims.
+            const slides = [
+                {
+                    category: 'Migration',
+                    title: '70+ Services Migrated',
+                    proof: 'AWS → Oracle Cloud Infrastructure'
+                },
+                {
+                    category: 'Platform',
+                    title: '300+ Engineers Enabled',
+                    proof: 'Self-Service Data Platform on Amazon EKS'
+                },
+                {
+                    category: 'Governance',
+                    title: 'Release Governance Platform',
+                    proof: 'Compliance Gate • Promotion Gate • GitHub Apps'
+                },
+                {
+                    category: 'Automation',
+                    title: '50+ Repositories Modernized',
+                    proof: 'GitLab CI → GitHub Actions'
+                }
+            ];
+
+            const card = document.getElementById('achieve-card');
+            const catEl = document.getElementById('achieve-category');
+            const titleEl = document.getElementById('achieve-title');
+            const proofEl = document.getElementById('achieve-proof');
+            if (!card || !titleEl || !proofEl) return;
+
+            function paint(i) {
+                if (catEl) catEl.textContent = slides[i].category;
+                titleEl.textContent = slides[i].title;
+                proofEl.textContent = slides[i].proof;
+            }
+
+            paint(0);
+            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+            let i = 0;
+            setInterval(function () {
+                card.classList.add('is-fading');
+                setTimeout(function () {
+                    i = (i + 1) % slides.length;
+                    paint(i);
+                    card.classList.remove('is-fading');
+                }, 280);
+            }, 3600);
+        })();
+
+        // Solar system: readable labels + reliable hover tooltips
+        (function initSolar() {
+            const system = document.getElementById('solar-system');
+            const tip = document.getElementById('planet-tooltip');
+            if (!system || !tip) return;
+
+            const wrap = system.closest('.devops-animation') || system.parentElement;
+
+            const PLANET_TIPS = {
+                aws: { title: 'AWS', items: ['ECS', 'EKS', 'Lambda', 'API Gateway', 'CloudFront', '5.5 years'] },
+                oci: { title: 'Oracle Cloud (OCI)', items: ['OKE', 'VCN', 'IAM', 'Vault', 'Hybrid VPN'] },
+                kubernetes: { title: 'Kubernetes', items: ['EKS', 'OKE', 'Helm', 'Workloads'] },
+                docker: { title: 'Docker', items: ['CI images', 'Runtime', 'Multi-arch'] },
+                terraform: { title: 'Terraform', items: ['Atlantis', 'IaC', 'Remote state'] },
+                helm: { title: 'Helm', items: ['Charts', 'Releases', 'GitOps'] },
+                argocd: { title: 'ArgoCD', items: ['GitOps', 'Templates', 'Sync'] },
+                github: { title: 'GitHub', items: ['Actions', 'Apps', 'Rulesets', 'PR checks'] },
+                jenkins: { title: 'Jenkins', items: ['Shared Libraries', 'EKS agents'] },
+                python: { title: 'Python', items: ['Automation', 'Tooling'] },
+                linux: { title: 'Linux', items: ['Ubuntu', 'Ops', 'Hardening'] },
+                prometheus: { title: 'Prometheus', items: ['Metrics', 'Alerting', 'Grafana'] },
+                cloudfront: { title: 'CloudFront', items: ['Edge CDN', 'Delivery'] }
+            };
+
+            let hideTimer = null;
+            let activePlanet = null;
+            let parallaxOn = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+            function placeTip(planet) {
+                tip.classList.add('is-visible');
+                tip.setAttribute('aria-hidden', 'false');
+                // measure after visible for correct height
+                const rect = planet.getBoundingClientRect();
+                const tipW = tip.offsetWidth || 180;
+                const tipH = tip.offsetHeight || 120;
+                let left = rect.left + rect.width / 2 - tipW / 2;
+                left = Math.min(window.innerWidth - tipW - 12, Math.max(12, left));
+                let top = rect.top - tipH - 12;
+                if (top < 12) top = rect.bottom + 12;
+                tip.style.left = left + 'px';
+                tip.style.top = top + 'px';
+            }
+
+            function showTip(planet) {
+                const data = PLANET_TIPS[planet.dataset.id];
+                if (!data) return;
+                clearTimeout(hideTimer);
+                if (activePlanet && activePlanet !== planet) {
+                    activePlanet.classList.remove('is-hot');
+                }
+                activePlanet = planet;
+                planet.classList.add('is-hot');
+                tip.innerHTML = '<h4>' + data.title + '</h4><ul>' +
+                    data.items.map(function (i) { return '<li>' + i + '</li>'; }).join('') + '</ul>';
+                system.classList.add('is-paused');
+                placeTip(planet);
+            }
+
+            function scheduleHide() {
+                clearTimeout(hideTimer);
+                hideTimer = setTimeout(function () {
+                    tip.classList.remove('is-visible');
+                    tip.setAttribute('aria-hidden', 'true');
+                    system.classList.remove('is-paused');
+                    if (activePlanet) activePlanet.classList.remove('is-hot');
+                    activePlanet = null;
+                }, 180);
+            }
+
+            system.querySelectorAll('.planet').forEach(function (planet) {
+                planet.addEventListener('mouseenter', function () { showTip(planet); });
+                planet.addEventListener('mouseleave', scheduleHide);
+                planet.addEventListener('focus', function () { showTip(planet); });
+                planet.addEventListener('blur', scheduleHide);
+                planet.addEventListener('click', function () {
+                    const id = planet.dataset.section || 'projects';
+                    const el = document.getElementById(id);
+                    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                });
+            });
+
+            // Continuous rigid orbit — planets revolve as a locked formation,
+            // labels stay upright (boxes never rotate → never invert), pauses on hover
+            (function orbit() {
+                if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+                if (window.innerWidth <= 900) return; // static on mobile/tablet — no room to rotate cleanly
+                const planets = Array.prototype.map.call(system.querySelectorAll('.planet'), function (p) {
+                    const l = parseFloat(p.style.left), t = parseFloat(p.style.top);
+                    return { el: p, base: Math.atan2(50 - t, l - 50) };
+                });
+                const omega = (2 * Math.PI) / 90; // one gentle revolution per 90s — subtle but visible
+                let last = null, elapsed = 0;
+                function frame(ts) {
+                    if (last === null) last = ts;
+                    const dt = (ts - last) / 1000; last = ts;
+                    if (!system.classList.contains('is-paused')) {
+                        elapsed += dt;
+                        for (let k = 0; k < planets.length; k++) {
+                            const a = planets[k].base + elapsed * omega;
+                            planets[k].el.style.left = (50 + 50 * Math.cos(a)) + '%';
+                            planets[k].el.style.top = (50 - 50 * Math.sin(a)) + '%';
+                        }
+                    }
+                    requestAnimationFrame(frame);
+                }
+                requestAnimationFrame(frame);
+            })();
+
+            // Keep tip open while cursor is on the tooltip itself
+            tip.addEventListener('mouseenter', function () {
+                clearTimeout(hideTimer);
+                system.classList.add('is-paused');
+            });
+            tip.addEventListener('mouseleave', scheduleHide);
+
+            // Soft parallax only when not hovering a planet
+            if (parallaxOn) {
+                window.addEventListener('mousemove', function (e) {
+                    if (activePlanet) {
+                        system.style.transform = '';
+                        return;
+                    }
+                    const x = (e.clientX / window.innerWidth - 0.5) * 6;
+                    const y = (e.clientY / window.innerHeight - 0.5) * 6;
+                    system.style.transform = 'translate(' + x + 'px,' + y + 'px)';
+                });
+            }
+
+            window.addEventListener('scroll', function () {
+                if (activePlanet) placeTip(activePlanet);
+            }, { passive: true });
+        })();
+</script>
 </body>
 </html>
